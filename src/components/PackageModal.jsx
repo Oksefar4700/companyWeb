@@ -1,28 +1,38 @@
+// src/components/PackageModal.jsx
 "use client";
 import React from "react";
-// Kun én import – Headless UI v1.x giver dig Overlay, Panel og Title på Dialog-objektet
-import { Dialog } from "@headlessui/react";
+import {
+  Dialog,
+  DialogBackdrop,
+  DialogPanel,
+  DialogTitle,
+  DialogDescription, // valgfri, hvis du vil bruge <DialogDescription>
+} from "@headlessui/react";
 
 export default function PackageModal({ pkg, isOpen, onClose }) {
   if (!pkg) return null;
 
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-50">
-      {/* Den indbyggede overlay-subkomponent */}
-      <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-30" />
+      {/* Backdrop */}
+      <DialogBackdrop className="fixed inset-0 bg-black/30" />
 
-      {/* Centrerings-wrapper */}
+      {/* Wrapper til at centrere panelet */}
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        {/* Selve panelet */}
-        <Dialog.Panel className="bg-white rounded-2xl shadow-xl p-8 max-w-lg mx-auto">
-          <Dialog.Title className="text-2xl font-bold mb-4">
+        {/* Selve dialog‐panelet */}
+        <DialogPanel className="bg-white rounded-2xl shadow-xl p-8 max-w-lg mx-auto">
+          <DialogTitle className="text-2xl font-bold mb-4">
             {pkg.title}
-          </Dialog.Title>
+          </DialogTitle>
 
-          <p className="mb-4">{pkg.description}</p>
+          {pkg.description && (
+            <DialogDescription className="mb-4 text-gray-700">
+              {pkg.description}
+            </DialogDescription>
+          )}
 
           {pkg.details && (
-            <ul className="list-disc list-inside mb-4">
+            <ul className="list-disc list-inside mb-4 text-gray-600">
               {pkg.details.map((point) => (
                 <li key={point}>{point}</li>
               ))}
@@ -35,7 +45,7 @@ export default function PackageModal({ pkg, isOpen, onClose }) {
           >
             Luk
           </button>
-        </Dialog.Panel>
+        </DialogPanel>
       </div>
     </Dialog>
   );
