@@ -8,12 +8,12 @@ export default function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="bg-white shadow fixed w-full z-50">
+    <header className="bg-white shadow fixed top-0 left-0 w-full z-50">
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-800">CompanyWeb</h1>
 
         <nav className="hidden md:flex space-x-6 text-gray-700">
-          <Link href="/#packages" className="hover:text-indigo-600">
+          <Link href="/packages" className="hover:text-indigo-600">
             Pakker
           </Link>
           <Link href="/#about" className="hover:text-indigo-600">
@@ -36,7 +36,7 @@ export default function Header() {
         <nav className="bg-white border-t md:hidden">
           <ul className="flex flex-col p-4 space-y-2 text-gray-700">
             <li>
-              <Link href="/#packages" onClick={() => setOpen(false)}>
+              <Link href="/packages" onClick={() => setOpen(false)}>
                 Pakker
               </Link>
             </li>
@@ -53,8 +53,6 @@ export default function Header() {
           </ul>
         </nav>
       )}
-
-      <div className="h-16 md:h-20" />
     </header>
   );
 }
