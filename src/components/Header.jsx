@@ -1,58 +1,40 @@
 "use client";
 
-import React, { useState } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
-  const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const links = [
+    { href: "/", label: "Hjem" },
+    { href: "/portfolio", label: "Portfolio" },
+    { href: "/booking", label: "Booking" },
+    { href: "/shop", label: "Shop" },
+  ];
 
   return (
-    <header className="bg-white shadow fixed top-0 left-0 w-full z-50">
-      <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-800">CompanyWeb</h1>
-
-        <nav className="hidden md:flex space-x-6 text-gray-700">
-          <Link href="/packages" className="hover:text-indigo-600">
-            Pakker
-          </Link>
-          <Link href="/#about" className="hover:text-indigo-600">
-            Om os
-          </Link>
-          <Link href="/#contact" className="hover:text-indigo-600">
-            Kontakt
-          </Link>
-        </nav>
-
-        <button
-          className="md:hidden focus:outline-none text-gray-700"
-          onClick={() => setOpen(!open)}
-        >
-          {open ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-
-      {open && (
-        <nav className="bg-white border-t md:hidden">
-          <ul className="flex flex-col p-4 space-y-2 text-gray-700">
-            <li>
-              <Link href="/packages" onClick={() => setOpen(false)}>
-                Pakker
+    <header className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
+      <nav className="max-w-6xl mx-auto flex justify-between items-center p-4">
+        <Link href="/" className="text-2xl font-bold text-gray-900">
+          CompanyWeb
+        </Link>
+        <ul className="flex space-x-6">
+          {links.map((link) => (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                className={`text-lg transition ${
+                  pathname === link.href
+                    ? "text-blue-600 font-semibold"
+                    : "text-gray-700 hover:text-gray-900"
+                }`}
+              >
+                {link.label}
               </Link>
             </li>
-            <li>
-              <Link href="/#about" onClick={() => setOpen(false)}>
-                Om os
-              </Link>
-            </li>
-            <li>
-              <Link href="/#contact" onClick={() => setOpen(false)}>
-                Kontakt
-              </Link>
-            </li>
-          </ul>
-        </nav>
-      )}
+          ))}
+        </ul>
+      </nav>
     </header>
   );
 }
