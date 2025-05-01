@@ -1,43 +1,42 @@
+// src/app/page.js
 "use client";
 
-import Hero from "../components/Hero";
-import Packages from "../components/Packages";
-import AboutSection from "../components/AboutSection";
-import ContactForm from "../components/ContactForm";
+import AnimatedSection from "@/components/AnimatedSection";
+import Hero from "@/components/Hero";
+import TeamSection from "@/components/TeamSection";
 
 export default function HomePage() {
   return (
     <main>
-      {/* HERO */}
-      <Hero />
-
-      {/* PAKKER-SECTION med gradient-baggrund */}
-      <section
-        id="packages"
-        className="relative bg-gradient-to-b from-indigo-50 to-white py-20"
+      <AnimatedSection
+        id="hero"
+        from="bottom"
+        className="relative h-[80vh] flex items-center justify-center gradient-bg"
       >
+        <Hero />
+      </AnimatedSection>
+
+      <AnimatedSection id="cases" from="left" className="py-20 bg-indigo-50">
         <div className="container mx-auto px-6">
           <h2 className="text-4xl font-bold mb-12 text-center text-gray-800">
-            Vælg din løsning
+            Vores Cases
           </h2>
-          <Packages />
+          {/* Her kan du loope dine to case-cards */}
         </div>
-      </section>
+      </AnimatedSection>
 
-      {/* OM OS */}
-      <section id="about" className="bg-gray-900 text-gray-100 py-16">
-        <div className="container mx-auto px-6">
-          <AboutSection />
-        </div>
-      </section>
+      <TeamSection />
 
-      {/* KONTAKT */}
-      <section id="contact" className="bg-gray-50 text-gray-900 py-16">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-6 text-center">Kontakt os</h2>
-          <ContactForm />
+      <AnimatedSection
+        id="contact"
+        from="bottom"
+        className="py-20 bg-gray-900 text-white"
+      >
+        <div className="container mx-auto px-6 text-center">
+          <h2 className="text-4xl font-bold mb-4">Kontakt os</h2>
+          {/* Kontaktformular eller CTA-knap */}
         </div>
-      </section>
+      </AnimatedSection>
     </main>
   );
 }
