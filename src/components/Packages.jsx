@@ -1,46 +1,78 @@
+// src/components/Packages.jsx
 "use client";
 
-import React from "react";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { packages } from "../data/packages";
 
 export default function Packages() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: false, amount: 0.3 });
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50, scale: 0.95 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        delay: i * 0.15,
+        type: "spring",
+        stiffness: 120,
+        damping: 20,
+      },
+    }),
+  };
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-      {packages.map((pkg) => (
-        <Link
-          key={pkg.slug}
-          href={`/packages/${pkg.slug}`}
-          className="group block transform hover:-translate-y-2 transition-transform"
-        >
-          <div className="relative bg-white rounded-2xl shadow-lg p-8 flex flex-col h-full">
-            {/* Badge */}
-            <div className="absolute -top-4 left-6 bg-indigo-600 text-white text-xs uppercase px-3 py-1 rounded-full">
-              Ny
+    <section
+      ref={ref}
+      id="packages"
+      className="py-20 bg-[var(--color-secondary)]"
+    >
+      <motion.h2
+        initial={{ opacity: 0, y: -30 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }}
+        transition={{ duration: 0.6 }}
+        className="text-4xl font-bold mb-12 text-center text-[var(--color-foreground)]"
+      >
+        Vælg din løsning
+      </motion.h2>
+
+      <div className="container mx-auto px-6 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {packages.map((pkg, idx) => (
+          <motion.div
+            key={pkg.slug}
+            custom={idx}
+            variants={cardVariants}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            className="flex flex-col bg-[var(--color-secondary)] rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl hover:scale-[1.02] transition-transform"
+          >
+            {/* Placeholder image */}
+            <div className="relative w-full h-48 bg-gray-700 flex items-center justify-center">
+              <span className="text-gray-500 italic">Billede kommer snart</span>
             </div>
 
-            {/* Titel & pris */}
-            <div className="mb-6">
-              <h3 className="text-2xl font-semibold text-gray-800 group-hover:text-indigo-600">
+            <div className="p-6 flex flex-col flex-grow">
+              <h3 className="text-2xl font-semibold mb-2 text-[var(--color-foreground)]">
                 {pkg.title}
               </h3>
-              <p className="mt-2 text-3xl font-bold text-indigo-600">
+              <p className="text-gray-300 mb-4 flex-grow">{pkg.description}</p>
+              <p className="text-lg font-bold mb-4 text-[var(--color-foreground)]">
                 {pkg.price.toLocaleString("da-DK")} kr.
               </p>
+              <Link
+                href={`/packages/${pkg.slug}`}
+                className="btn-primary mt-auto"
+              >
+                Se detaljer
+              </Link>
             </div>
-
-            {/* Kort beskrivelse */}
-            <p className="text-gray-600 flex-grow">{pkg.description}</p>
-
-            {/* Se detaljer */}
-            <div className="mt-6 pt-6 border-t flex items-center justify-between">
-              <span className="text-indigo-600 font-medium">Se detaljer</span>
-              <ArrowRight className="text-indigo-600 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </div>
-        </Link>
-      ))}
-    </div>
+          </motion.div>
+        ))}
+      </div>
+    </section>
   );
 }

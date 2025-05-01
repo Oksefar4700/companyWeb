@@ -1,42 +1,44 @@
-// src/app/page.js
 "use client";
 
-import AnimatedSection from "@/components/AnimatedSection";
-import Hero from "@/components/Hero";
-import TeamSection from "@/components/TeamSection";
+import Hero from "../components/Hero";
+import Packages from "../components/Packages";
+import CasesList from "../components/CasesList";
+import AboutSection from "../components/AboutSection";
+import TeamSection from "../components/TeamSection";
+import ContactForm from "../components/ContactForm";
 
 export default function HomePage() {
   return (
     <main>
-      <AnimatedSection
-        id="hero"
-        from="bottom"
-        className="relative h-[80vh] flex items-center justify-center gradient-bg"
-      >
+      {/* HERO */}
+      <section id="hero" className="pt-[var(--header-height)]">
         <Hero />
-      </AnimatedSection>
+      </section>
 
-      <AnimatedSection id="cases" from="left" className="py-20 bg-indigo-50">
-        <div className="container mx-auto px-6">
-          <h2 className="text-4xl font-bold mb-12 text-center text-gray-800">
-            Vores Cases
-          </h2>
-          {/* Her kan du loope dine to case-cards */}
+      {/* PAKKER / LØSNINGER */}
+      <Packages />
+
+      {/* CASES / PORTFOLIO */}
+      <CasesList />
+
+      {/* OM OS + TEAM */}
+      <section id="about" className="bg-gray-100 text-gray-900 py-20">
+        <div className="container mx-auto px-6 space-y-12">
+          <AboutSection />
+          <TeamSection />
         </div>
-      </AnimatedSection>
+      </section>
 
-      <TeamSection />
-
-      <AnimatedSection
+      {/* KONTAKT */}
+      <section
         id="contact"
-        from="bottom"
-        className="py-20 bg-gray-900 text-white"
+        className="bg-gray-900 text-white py-20 text-center"
       >
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="text-4xl font-bold mb-4">Kontakt os</h2>
-          {/* Kontaktformular eller CTA-knap */}
+        <div className="container mx-auto px-6">
+          <h2 className="text-3xl font-bold mb-6">Kontakt os</h2>
+          <ContactForm />
         </div>
-      </AnimatedSection>
+      </section>
     </main>
   );
 }

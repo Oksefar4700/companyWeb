@@ -1,17 +1,17 @@
-// src/components/Hero.jsx
 "use client";
 
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
+const galleryImages = [
+  "/images/image.png",
+  "/images/image1.png",
+  "/images/image2.png",
+  "/images/image3.png",
+];
+
 export default function Hero() {
-  const galleryImages = [
-    "/images/image.png",
-    "/images/image1.png",
-    "/images/image2.png",
-    "/images/image3.png",
-  ];
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
@@ -22,10 +22,10 @@ export default function Hero() {
   }, []);
 
   return (
-    <div className="relative h-full w-full">
-      {/* Video + overlay */}
+    <div className="relative h-[calc(100vh-var(--header-height))] w-full overflow-hidden">
+      {/* Baggrundsvideo */}
       <video
-        className="absolute top-0 left-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover"
         src="/hero-video.mp4"
         autoPlay
         loop
@@ -34,7 +34,7 @@ export default function Hero() {
       />
       <div className="absolute inset-0 bg-black/50" />
 
-      {/* Tekst: fly-in animation */}
+      {/* Tekst med fly-in */}
       <div className="relative z-10 px-6 text-center max-w-3xl mx-auto">
         <motion.h1
           initial={{ x: -100, opacity: 0 }}
@@ -48,7 +48,7 @@ export default function Hero() {
           initial={{ x: 100, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-lg md:text-xl text-white mb-8 max-w-2xl mx-auto drop-shadow"
+          className="text-lg md:text-xl text-white mb-8 drop-shadow"
         >
           Skræddersyede løsninger – fra portfolio til komplekse webshops.
         </motion.p>
@@ -62,8 +62,8 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Slideshow */}
-      <div className="relative z-10 mt-12 w-full h-80 md:h-96 overflow-hidden">
+      {/* Stort slideshow */}
+      <div className="relative z-10 mt-12 w-full h-80 md:h-96">
         <motion.img
           key={galleryImages[current]}
           src={galleryImages[current]}
