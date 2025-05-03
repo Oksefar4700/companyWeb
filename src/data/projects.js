@@ -1,3 +1,4 @@
+// src/data/projects.js
 const projects = [
   {
     slug: "projekt-1",

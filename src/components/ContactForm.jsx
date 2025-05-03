@@ -1,8 +1,10 @@
+// src/components/ContactForm.jsx
 "use client";
 
 import { useForm } from "react-hook-form";
-import { db } from "@/lib/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { User, Mail, MessageSquare } from "lucide-react";
 
 export default function ContactForm() {
   const {
@@ -27,55 +29,134 @@ export default function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="max-w-lg mx-auto bg-white p-8 rounded-xl shadow"
+      className="max-w-md mx-auto space-y-6"
     >
       {isSubmitSuccessful && (
-        <p className="mb-4 text-green-600">
-          Tak for din besked! Vi vender tilbage hurtigst muligt.
-        </p>
+        <div className="text-green-600 font-medium text-center">
+          🎉 Tak! Vi vender tilbage hurtigst muligt.
+        </div>
       )}
 
-      <div className="mb-4">
-        <label className="block mb-1 font-medium">Navn</label>
+      {/* Navn */}
+      <div className="relative">
+        <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
         <input
+          id="name"
+          type="text"
+          placeholder=" "
           {...register("name", { required: "Navn er påkrævet" })}
-          className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="
+            peer h-12 w-full pl-12 pr-4 bg-gray-100 rounded-lg
+            border border-gray-300 shadow-sm
+            focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]
+            transition
+          "
         />
+        <label
+          htmlFor="name"
+          className="
+            absolute left-12 top-0 -translate-y-1/2 text-gray-500 text-base
+            bg-gray-100 px-1 z-10 transition-all
+            peer-placeholder-shown:top-1/2
+            peer-placeholder-shown:text-base
+            peer-placeholder-shown:-translate-y-1/2
+            peer-focus:top-0
+            peer-focus:text-sm
+            peer-focus:-translate-y-1/2
+            peer-focus:text-[var(--color-primary)]
+          "
+        >
+          Dit navn
+        </label>
         {errors.name && (
-          <p className="text-red-600 mt-1">{errors.name.message}</p>
+          <p className="mt-1 text-red-600 text-sm">{errors.name.message}</p>
         )}
       </div>
 
-      <div className="mb-4">
-        <label className="block mb-1 font-medium">Email</label>
+      {/* Email */}
+      <div className="relative">
+        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
         <input
+          id="email"
           type="email"
+          placeholder=" "
           {...register("email", { required: "Email er påkrævet" })}
-          className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="
+            peer h-12 w-full pl-12 pr-4 bg-gray-100 rounded-lg
+            border border-gray-300 shadow-sm
+            focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]
+            transition
+          "
         />
+        <label
+          htmlFor="email"
+          className="
+            absolute left-12 top-0 -translate-y-1/2 text-gray-500 text-base
+            bg-gray-100 px-1 z-10 transition-all
+            peer-placeholder-shown:top-1/2
+            peer-placeholder-shown:text-base
+            peer-placeholder-shown:-translate-y-1/2
+            peer-focus:top-0
+            peer-focus:text-sm
+            peer-focus:-translate-y-1/2
+            peer-focus:text-[var(--color-primary)]
+          "
+        >
+          Din email
+        </label>
         {errors.email && (
-          <p className="text-red-600 mt-1">{errors.email.message}</p>
+          <p className="mt-1 text-red-600 text-sm">{errors.email.message}</p>
         )}
       </div>
 
-      <div className="mb-4">
-        <label className="block mb-1 font-medium">Besked</label>
+      {/* Besked */}
+      <div className="relative">
+        <MessageSquare className="absolute left-4 top-4 text-gray-400" />
         <textarea
-          rows="4"
+          id="message"
+          rows={4}
+          placeholder=" "
           {...register("message", { required: "Besked er påkrævet" })}
-          className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="
+            peer w-full pl-12 pr-4 pt-6 pb-3 bg-gray-100 rounded-lg
+            border border-gray-300 shadow-sm
+            focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]
+            transition resize-none
+          "
         />
+        <label
+          htmlFor="message"
+          className="
+            absolute left-12 top-0 -translate-y-1/2 text-gray-500 text-base
+            bg-gray-100 px-1 z-10 transition-all
+            peer-placeholder-shown:top-4
+            peer-placeholder-shown:text-base
+            peer-placeholder-shown:-translate-y-1/2
+            peer-focus:top-0
+            peer-focus:text-sm
+            peer-focus:-translate-y-1/2
+            peer-focus:text-[var(--color-primary)]
+          "
+        >
+          Din besked
+        </label>
         {errors.message && (
-          <p className="text-red-600 mt-1">{errors.message.message}</p>
+          <p className="mt-1 text-red-600 text-sm">{errors.message.message}</p>
         )}
       </div>
 
+      {/* Send-knap */}
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+        className="
+          w-full py-3 bg-[var(--color-primary)] text-black
+          rounded-lg font-semibold shadow
+          hover:bg-[var(--color-accent)] transition-transform hover:scale-105
+          disabled:opacity-50
+        "
       >
-        {isSubmitting ? "Sender..." : "Send besked"}
+        {isSubmitting ? "Sender…" : "Send besked"}
       </button>
     </form>
   );
