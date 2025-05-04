@@ -1,10 +1,10 @@
 // src/components/CasesList.jsx
 "use client";
 
-import { motion, useAnimation, useInView } from "framer-motion";
 import { useRef, useEffect } from "react";
-import Link from "next/link";
+import { motion, useAnimation, useInView } from "framer-motion";
 import projects from "../data/projects";
+import ExpandableCaseCard from "./ExpandableCaseCard";
 
 export default function CasesList() {
   const ref = useRef(null);
@@ -15,123 +15,124 @@ export default function CasesList() {
     controls.start(inView ? "visible" : "hidden");
   }, [controls, inView]);
 
-  const variants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: (i) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: i * 0.2,
-        type: "spring",
-        stiffness: 100,
-        damping: 20,
-      },
-    }),
-  };
+  // Generer 15 partikler med varierende størrelse, farve, pos, duration og delay
+  const particles = Array.from({ length: 15 }).map((_, i) => {
+    // størrelse
+    const size = 4 + Math.random() * 4 + "px"; // 4–8px
+    // farver
+    const colors = [
+      "var(--color-primary)",
+      "var(--color-accent)",
+      "var(--color-secondary)",
+    ];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    // duration 12–20s
+    const duration = 12 + Math.random() * 8 + "s";
+    // delay 0–6s
+    const delay = Math.random() * 6 + "s";
 
-  // En lysere palette med hvid baggrund og gyldne accenter
-  const accentClasses = [
-    "bg-[var(--color-primary)]", // gylden
-    "bg-[var(--color-accent)]", // mørk gylden
-    "bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)]",
-  ];
-  const textBgClasses = [
-    "bg-white text-[var(--color-background)]", // hvid baggrund, mørk tekst
-    "bg-[var(--color-secondary)] text-[var(--color-foreground)]", // charcoal baggrund, lys tekst
-    "bg-white text-[var(--color-background)]",
-  ];
+    // position med 20% chance for kant-placement
+    const rndX = Math.random();
+    const left =
+      rndX < 0.2
+        ? `${Math.random() * 5}%`
+        : rndX > 0.8
+        ? `${95 + Math.random() * 5}%`
+        : `${Math.random() * 100}%`;
+
+    const rndY = Math.random();
+    const top =
+      rndY < 0.2
+        ? `${Math.random() * 5}%`
+        : rndY > 0.8
+        ? `${95 + Math.random() * 5}%`
+        : `${Math.random() * 100}%`;
+
+    return { id: i, size, color, duration, delay, top, left };
+  });
+
+  const headingVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: { opacity: 1, y: 0 },
+  };
+  const underlineVariants = {
+    hidden: { scaleX: 0 },
+    visible: { scaleX: 1 },
+  };
+  const gridVariants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.1 } },
+  };
 
   return (
     <section
       id="cases"
       ref={ref}
-      className="relative py-20 bg-white scroll-mt-[var(--header-height)]"
+      className="relative py-24 bg-white overflow-hidden scroll-mt-[var(--header-height)]"
     >
-      <div className="container mx-auto px-6 relative z-10">
-        <h2 className="text-4xl font-bold text-center mb-4 text-[var(--color-background)] font-heading">
+      {/* Partikler bagved */}
+      {particles.map((p) => (
+        <span
+          key={p.id}
+          className="particle"
+          style={{
+            width: p.size,
+            height: p.size,
+            top: p.top,
+            left: p.left,
+            backgroundColor: p.color,
+            animationDuration: p.duration,
+            animationDelay: p.delay,
+          }}
+        />
+      ))}
+
+      {/* Bløde blobs */}
+      <div className="absolute top-0 left-0 w-56 h-56 bg-[var(--color-primary)] rounded-full opacity-10 -translate-x-1/3 -translate-y-1/3 pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-72 h-72 bg-[var(--color-accent)] rounded-full opacity-10 translate-x-1/3 translate-y-1/3 pointer-events-none" />
+
+      {/* Indhold ovenpå */}
+      <div className="relative z-10 container mx-auto px-12">
+        <motion.h2
+          initial="hidden"
+          animate={controls}
+          variants={headingVariants}
+          transition={{ duration: 0.6 }}
+          className="text-4xl font-bold text-[var(--color-secondary)] text-center mb-4 font-heading"
+        >
           Vores Cases
-        </h2>
-        <div className="w-24 h-1 bg-[var(--color-primary)] mx-auto mb-12 rounded-full" />
+        </motion.h2>
 
-        <div className="space-y-16">
-          {projects.map((p, i) => {
-            const isEven = i % 2 === 1;
-            const accent = accentClasses[i % accentClasses.length];
-            const textBg = textBgClasses[i % textBgClasses.length];
+        <motion.div
+          initial="hidden"
+          animate={controls}
+          variants={underlineVariants}
+          transition={{ duration: 0.6 }}
+          className="mx-auto mb-12 w-24 h-1 bg-[var(--color-primary)] origin-left rounded-full"
+        />
 
-            return (
-              <motion.div
-                key={p.slug}
-                custom={i}
-                initial="hidden"
-                animate={controls}
-                variants={variants}
-                className={`
-                  grid items-center gap-6
-                  ${
-                    isEven ? "md:grid-cols-[3fr_2fr]" : "md:grid-cols-[2fr_3fr]"
-                  }
-                `}
-              >
-                {/* Tekst med slanted accent */}
-                <div className="relative">
-                  <div
-                    className={`
-                      absolute inset-0 ${accent}
-                      ${
-                        isEven
-                          ? "skew-y-3 origin-bottom-right"
-                          : "-skew-y-3 origin-top-left"
-                      }
-                      opacity-80
-                    `}
-                    style={{
-                      transformOrigin: isEven ? "bottom right" : "top left",
-                    }}
-                  />
-                  <div
-                    className={`relative p-12 rounded-2xl ${textBg} shadow-lg`}
-                  >
-                    <h3 className="text-3xl font-bold mb-4">{p.title}</h3>
-                    <p className="text-lg mb-6">{p.description}</p>
-                    <Link
-                      href={`/projects/${p.slug}`}
-                      className="btn-secondary inline-flex items-center justify-center group"
-                    >
-                      Læs case
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="ml-2 w-5 h-5 transform transition-transform duration-300 group-hover:translate-x-1"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Billede med selvlysende kant */}
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  className="w-full h-64 rounded-xl overflow-hidden shadow-lg ring-4 ring-[var(--color-primary)]"
-                >
-                  <img
-                    src={p.image}
-                    alt={p.title}
-                    className="object-cover w-full h-full"
-                  />
-                </motion.div>
-              </motion.div>
-            );
-          })}
-        </div>
+        <motion.div
+          initial="hidden"
+          animate={controls}
+          variants={gridVariants}
+          className="grid gap-10 md:grid-cols-2 lg:grid-cols-3"
+        >
+          {projects.map((p) => (
+            <motion.div
+              key={p.slug}
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { type: "spring", stiffness: 100, damping: 20 },
+                },
+              }}
+            >
+              <ExpandableCaseCard project={p} />
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );

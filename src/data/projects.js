@@ -1,22 +1,61 @@
 // src/data/projects.js
-const projects = [
+export const projects = [
   {
-    slug: "projekt-1",
-    title: "Projekt 1",
-    description: "Kort beskrivelse af projekt 1.",
-    image: "/images/placeholder-portfolio.png",
+    slug: "frisor-booking",
+    title: "Frisør-Booking",
+    description:
+      "Online booking-løsning for moderne frisørsaloner, med kalender-sync, e-mail-bekræftelser og SMS-påmindelser.",
+    details: [
+      "Bruger-venlig kalender-widget",
+      "E-mail + SMS-påmindelser",
+      "Google/Outlook-sync",
+      "Administrationspanel til én bruger",
+      "Responsivt design",
+    ],
+    examples: [
+      "/images/booking/frisørBooking.png",
+      "/images/booking/frisørBooking1.png",
+      "/images/booking/frisørBooking2.png",
+      "/images/booking/frisørBooking3.png",
+    ],
   },
   {
-    slug: "projekt-2",
-    title: "Projekt 2",
-    description: "Kort beskrivelse af projekt 2.",
-    image: "/images/placeholder-portfolio.png",
+    slug: "handvaerker-portfolio",
+    title: "Håndværker-Portfolio",
+    description:
+      "Professionel portfolio-side til håndværkere, der viser før/efter-projekter, kundeudtalelser og kontaktformular.",
+    details: [
+      "Galleri med før/efter billeder",
+      "Kundeudtalelser",
+      "Kontaktformular med e-mail-integration",
+      "SEO-optimeret struktur",
+      "SSL-sikret & responsivt",
+    ],
+    examples: [
+      "/images/booking/frisørBooking.png",
+      "/images/booking/frisørBooking1.png",
+      "/images/booking/frisørBooking2.png",
+      "/images/booking/frisørBooking3.png",
+    ],
   },
   {
-    slug: "projekt-3",
-    title: "Projekt 3",
-    description: "Kort beskrivelse af projekt 3.",
-    image: "/images/placeholder-portfolio.png",
+    slug: "minivirksomhed-webshop",
+    title: "Mini-Webshop",
+    description:
+      "Skalerbar webshop-platform til små virksomheder med produkt-katalog, betalings-gateway og ordrehistorik.",
+    details: [
+      "Produktoversigt & filter",
+      "Stripe/PayPal-gateway",
+      "Kunde-login & ordrehistorik",
+      "Admin-panel til lagerstyring",
+      "GDPR-kompatibel & SSL",
+    ],
+    examples: [
+      "/images/booking/frisørBooking.png",
+      "/images/booking/frisørBooking1.png",
+      "/images/booking/frisørBooking2.png",
+      "/images/booking/frisørBooking3.png",
+    ],
   },
 ];
 

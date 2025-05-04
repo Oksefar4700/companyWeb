@@ -1,3 +1,5 @@
+// src/data/packages.js
+
 export const packages = [
   {
     slug: "portfolio",
@@ -13,7 +15,12 @@ export const packages = [
       "Responsivt design",
       "1 feedback-runde",
     ],
-    examples: ["/examples/portfolio1.png", "/examples/portfolio2.png"],
+    examples: [
+      "/images/booking/frisørBooking.png",
+      "/images/booking/frisørBooking1.png",
+      "/images/booking/frisørBooking2.png",
+      "/images/booking/frisørBooking3.png",
+    ],
   },
   {
     slug: "webshop-basic",
@@ -28,7 +35,12 @@ export const packages = [
       "Responsivt design",
       "Deployment",
     ],
-    examples: ["/examples/webshop-basic1.png", "/examples/webshop-basic2.png"],
+    examples: [
+      "/images/booking/frisørBooking.png",
+      "/images/booking/frisørBooking1.png",
+      "/images/booking/frisørBooking2.png",
+      "/images/booking/frisørBooking3.png",
+    ],
   },
   {
     slug: "webshop-standard",
@@ -45,8 +57,10 @@ export const packages = [
       "SSL-certifikat",
     ],
     examples: [
-      "/examples/webshop-standard1.png",
-      "/examples/webshop-standard2.png",
+      "/images/booking/frisørBooking.png",
+      "/images/booking/frisørBooking1.png",
+      "/images/booking/frisørBooking2.png",
+      "/images/booking/frisørBooking3.png",
     ],
   },
   {
@@ -62,8 +76,10 @@ export const packages = [
       "Performance-audit",
     ],
     examples: [
-      "/examples/webshop-premium1.png",
-      "/examples/webshop-premium2.png",
+      "/images/booking/frisørBooking.png",
+      "/images/booking/frisørBooking1.png",
+      "/images/booking/frisørBooking2.png",
+      "/images/booking/frisørBooking3.png",
     ],
   },
   {
@@ -78,7 +94,12 @@ export const packages = [
       "1-bruger admin-panel",
       "Responsivt design",
     ],
-    examples: ["/examples/booking-basis1.png", "/examples/booking-basis2.png"],
+    examples: [
+      "/images/booking/frisørBooking.png",
+      "/images/booking/frisørBooking1.png",
+      "/images/booking/frisørBooking2.png",
+      "/images/booking/frisørBooking3.png",
+    ],
   },
   {
     slug: "booking-pro",
@@ -93,7 +114,12 @@ export const packages = [
       "Kunde-login",
       "GDPR-kompatibel",
     ],
-    examples: ["/examples/booking-pro1.png", "/examples/booking-pro2.png"],
+    examples: [
+      "/images/booking/frisørBooking.png",
+      "/images/booking/frisørBooking1.png",
+      "/images/booking/frisørBooking2.png",
+      "/images/booking/frisørBooking3.png",
+    ],
   },
   {
     slug: "booking-enterprise",
@@ -108,8 +134,10 @@ export const packages = [
       "Avanceret rapportering",
     ],
     examples: [
-      "/examples/booking-enterprise1.png",
-      "/examples/booking-enterprise2.png",
+      "/images/booking/frisørBooking.png",
+      "/images/booking/frisørBooking1.png",
+      "/images/booking/frisørBooking2.png",
+      "/images/booking/frisørBooking3.png",
     ],
   },
 ];
