@@ -1,36 +1,45 @@
 /* src/app/globals.css */
 @import "tailwindcss";
 
-/* --- Farve-variabler til luxury-tema --- */
+/* --- Farve-variabler --- */
 :root {
-  --color-background: #111111; /* Global body baggrund */
-  --color-foreground: #f5f5f5; /* Hoved-tekst (lys) */
-  --color-primary: #cdaf83; /* Gylden primær accent */
-  --color-secondary: #333333; /* Mørk charcoal */
-  --color-accent: #a58e65; /* Mørk gylden accent */
+  /* Sort/mørk grå */
+  --color-primary: #2e2e38;
+  /* Accent bruger nu samme som primary (sort) */
+  --color-accent: #2e2e38;
+  /* Mørk tekst */
+  --color-foreground: #1f2328;
+  /* Ren hvid */
+  --color-background: #ffffff;
+  /* Varm, lys beige */
+  --color-secondary-light: #f7f5f2;
+  /* Mørk beige til evt. variation */
+  --color-secondary-dark: #2c2f3b;
+
   --font-heading: "Poppins", sans-serif;
   --font-body: "Roboto", sans-serif;
   --header-height: 4rem;
 }
 
-/* Dark mode inversion */
+/* --- Dark-mode override (bevarer beige som lys sektion) --- */
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-background: #111111;
     --color-foreground: #f5f5f5;
+    --color-background: #1f2937;
+    /* --color-secondary-light forbliver beige */
   }
 }
 
 /* --- Base styles --- */
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--header-height);
+  }
   body {
     @apply bg-[var(--color-background)] text-[var(--color-foreground)] antialiased;
     font-family: var(--font-body);
     padding-top: var(--header-height);
-  }
-  html {
-    scroll-behavior: smooth;
-    scroll-padding-top: var(--header-height);
   }
   h1,
   h2,
@@ -42,26 +51,8 @@
   }
 }
 
-/* --- Komponent-styles --- */
-@layer components {
-  .header {
-    @apply fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-black/70;
-  }
-  .btn-primary {
-    @apply inline-block px-6 py-3 rounded-lg font-semibold shadow-lg
-      bg-[var(--color-primary)] text-black
-      hover:bg-[var(--color-accent)] hover:scale-105 transition-transform;
-  }
-  .btn-secondary {
-    @apply inline-block px-6 py-3 rounded-lg font-semibold shadow
-      border-2 border-[var(--color-primary)] bg-transparent text-[var(--color-primary)]
-      hover:bg-[var(--color-primary)] hover:text-black hover:scale-105 transition-transform;
-  }
-}
-
-/* --- Utility-klasser --- */
+/* --- Utilities --- */
 @layer utilities {
-  /* Keyframes for små drivende partikler */
   @keyframes drift {
     0% {
       transform: translate(0, 0) scale(1);
@@ -76,22 +67,35 @@
       opacity: 0.2;
     }
   }
-
   .particle {
     @apply absolute rounded-full;
-    opacity: 0.2;
-    /* duration overrides inline hvis angivet */
     animation: drift 12s ease-in-out infinite alternate;
   }
+}
 
-  /* Diagonal stripe til Packages */
-  .bg-packages-stripes {
-    background-image: repeating-linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.05) 0,
-      rgba(255, 255, 255, 0.05) 1px,
-      transparent 1px,
-      transparent 10px
-    );
+/* --- Sektioner & komponenter --- */
+@layer components {
+  /* Store sektioner: varm lys beige */
+  .section-packages,
+  .section-cases {
+    @apply bg-[var(--color-secondary-light)] text-[var(--color-foreground)];
+  }
+
+  /* Divider under overskrifter: sort */
+  .packages-divider,
+  .cases-divider {
+    @apply bg-[var(--color-primary)];
+  }
+
+  /* Kort-baggrunde: hvid */
+  .package-card,
+  .case-card {
+    @apply bg-[var(--color-background)];
+  }
+
+  /* Ikoner og links: accent (sort) */
+  .card-link,
+  .icon {
+    @apply text-[var(--color-accent)];
   }
 }

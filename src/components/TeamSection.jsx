@@ -1,6 +1,5 @@
 // src/components/TeamSection.jsx
 "use client";
-
 import AnimatedSection from "./AnimatedSection";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { useRef, useEffect } from "react";
@@ -55,7 +54,6 @@ export default function TeamSection() {
       from="right"
       className="py-20 bg-[var(--color-background)] relative overflow-hidden"
     >
-      {/* Decorative circles */}
       <div className="absolute top-0 left-0 w-32 h-32 bg-[var(--color-primary)] rounded-full opacity-10 -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-48 h-48 bg-[var(--color-accent)] rounded-full opacity-10 translate-x-1/2 translate-y-1/2 pointer-events-none" />
 
@@ -69,10 +67,10 @@ export default function TeamSection() {
         <div className="w-16 h-1 bg-[var(--color-primary)] mx-auto mb-12 rounded-full" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-          {teamMembers.map((member, idx) => (
+          {teamMembers.map((m, i) => (
             <motion.div
-              key={member.name}
-              custom={idx}
+              key={m.name}
+              custom={i}
               variants={cardVariants}
               initial="hidden"
               animate={controls}
@@ -89,19 +87,19 @@ export default function TeamSection() {
               >
                 <div className="w-32 h-32 mx-auto mb-4 rounded-full border-4 border-[var(--color-primary)] overflow-hidden">
                   <img
-                    src={member.img}
-                    alt={member.name}
+                    src={m.img}
+                    alt={m.name}
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <h3 className="text-2xl font-semibold text-[var(--color-foreground)]">
-                  {member.name}
+                  {m.name}
                 </h3>
                 <p className="text-[var(--color-foreground)] text-opacity-70 mb-2">
-                  {member.role}
+                  {m.role}
                 </p>
                 <span className="text-sm text-[var(--color-primary)]">
-                  Alder: {member.age}
+                  Alder: {m.age}
                 </span>
               </motion.div>
             </motion.div>

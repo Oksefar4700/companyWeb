@@ -1,7 +1,6 @@
 // src/components/CasesList.jsx
 "use client";
-
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
 import projects from "../data/projects";
 import ExpandableCaseCard from "./ExpandableCaseCard";
@@ -9,68 +8,40 @@ import ExpandableCaseCard from "./ExpandableCaseCard";
 export default function CasesList() {
   const ref = useRef(null);
   const controls = useAnimation();
-  const inView = useInView(ref, { once: false, amount: 0.2 });
+  const inView = useInView(ref, { amount: 0.2 });
+  const [particles, setParticles] = useState([]);
 
   useEffect(() => {
     controls.start(inView ? "visible" : "hidden");
   }, [controls, inView]);
 
-  // Generer 15 partikler med varierende størrelse, farve, pos, duration og delay
-  const particles = Array.from({ length: 15 }).map((_, i) => {
-    // størrelse
-    const size = 4 + Math.random() * 4 + "px"; // 4–8px
-    // farver
-    const colors = [
-      "var(--color-primary)",
-      "var(--color-accent)",
-      "var(--color-secondary)",
-    ];
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    // duration 12–20s
-    const duration = 12 + Math.random() * 8 + "s";
-    // delay 0–6s
-    const delay = Math.random() * 6 + "s";
-
-    // position med 20% chance for kant-placement
-    const rndX = Math.random();
-    const left =
-      rndX < 0.2
-        ? `${Math.random() * 5}%`
-        : rndX > 0.8
-        ? `${95 + Math.random() * 5}%`
-        : `${Math.random() * 100}%`;
-
-    const rndY = Math.random();
-    const top =
-      rndY < 0.2
-        ? `${Math.random() * 5}%`
-        : rndY > 0.8
-        ? `${95 + Math.random() * 5}%`
-        : `${Math.random() * 100}%`;
-
-    return { id: i, size, color, duration, delay, top, left };
-  });
-
-  const headingVariants = {
-    hidden: { opacity: 0, y: -20 },
-    visible: { opacity: 1, y: 0 },
-  };
-  const underlineVariants = {
-    hidden: { scaleX: 0 },
-    visible: { scaleX: 1 },
-  };
-  const gridVariants = {
-    hidden: {},
-    visible: { transition: { staggerChildren: 0.1 } },
-  };
+  useEffect(() => {
+    // Generér små “bolde” med accent, beige og mørk farve
+    const gen = Array.from({ length: 15 }).map((_, i) => ({
+      id: i,
+      size: `${4 + Math.random() * 4}px`,
+      color: ["#7eaedb", "#f7f5f2", "#2e2e38"][Math.floor(Math.random() * 3)],
+      duration: `${12 + Math.random() * 8}s`,
+      delay: `${Math.random() * 6}s`,
+      top: `${Math.random() * 100}%`,
+      left: `${Math.random() * 100}%`,
+    }));
+    setParticles(gen);
+  }, []);
 
   return (
     <section
-      id="cases"
       ref={ref}
-      className="relative py-24 bg-white overflow-hidden scroll-mt-[var(--header-height)]"
+      id="cases"
+      className="
+        relative overflow-hidden
+        bg-white                  /* hvid sektion */
+        text-[#1f2328]            /* mørk tekst */
+        scroll-mt-[var(--header-height)]
+        py-24
+      "
     >
-      {/* Partikler bagved */}
+      {/* Flyvende partikler */}
       {particles.map((p) => (
         <span
           key={p.id}
@@ -87,34 +58,39 @@ export default function CasesList() {
         />
       ))}
 
-      {/* Bløde blobs */}
-      <div className="absolute top-0 left-0 w-56 h-56 bg-[var(--color-primary)] rounded-full opacity-10 -translate-x-1/3 -translate-y-1/3 pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-72 h-72 bg-[var(--color-accent)] rounded-full opacity-10 translate-x-1/3 translate-y-1/3 pointer-events-none" />
+      {/* Store dekorative cirkler */}
+      <div className="absolute top-0 left-0 w-56 h-56 bg-[#7eaedb] rounded-full opacity-10 -translate-x-1/3 -translate-y-1/3 pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-72 h-72 bg-[#5a82a3] rounded-full opacity-10 translate-x-1/3 translate-y-1/3 pointer-events-none" />
 
-      {/* Indhold ovenpå */}
       <div className="relative z-10 container mx-auto px-12">
+        {/* Overskrift */}
         <motion.h2
-          initial="hidden"
+          initial={{ opacity: 0, y: -20 }}
           animate={controls}
-          variants={headingVariants}
+          variants={{ hidden: {}, visible: { opacity: 1, y: 0 } }}
           transition={{ duration: 0.6 }}
-          className="text-4xl font-bold text-[var(--color-secondary)] text-center mb-4 font-heading"
+          className="text-4xl font-bold text-center mb-4 text-[#2e2e38]"
         >
           Vores Cases
         </motion.h2>
 
+        {/* Accent-stripe under overskrift */}
         <motion.div
-          initial="hidden"
+          initial={{ scaleX: 0 }}
           animate={controls}
-          variants={underlineVariants}
+          variants={{ hidden: {}, visible: { scaleX: 1 } }}
           transition={{ duration: 0.6 }}
-          className="mx-auto mb-12 w-24 h-1 bg-[var(--color-primary)] origin-left rounded-full"
+          className="mx-auto mb-12 w-24 h-1 rounded-full bg-[#7eaedb]"
         />
 
+        {/* Kort-grid */}
         <motion.div
           initial="hidden"
           animate={controls}
-          variants={gridVariants}
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.1 } },
+          }}
           className="grid gap-10 md:grid-cols-2 lg:grid-cols-3"
         >
           {projects.map((p) => (
@@ -129,7 +105,19 @@ export default function CasesList() {
                 },
               }}
             >
-              <ExpandableCaseCard project={p} />
+              {/* Hvidt kort med beige baggrund i inner, sort kant */}
+              <div
+                className="
+                bg-[#f7f5f2]
+                border-2 border-[#2e2e38]
+                rounded-2xl
+                shadow-lg hover:shadow-2xl
+                transition-shadow
+                overflow-hidden
+              "
+              >
+                <ExpandableCaseCard project={p} />
+              </div>
             </motion.div>
           ))}
         </motion.div>

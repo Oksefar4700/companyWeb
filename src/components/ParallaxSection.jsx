@@ -11,10 +11,7 @@ export default function ParallaxSection({
       className="relative overflow-hidden bg-fixed bg-center bg-cover"
       style={{ backgroundImage: `url('${src}')`, height }}
     >
-      {/* Mørk overlay for kontrast */}
-      <div className="absolute inset-0 bg-black/50" />
-
-      {/* Centreret indhold med fast tekst */}
+      <div className="absolute inset-0 bg-[var(--color-primary)]/50 pointer-events-none" />
       <div className="relative z-10 container mx-auto px-6 h-full flex flex-col items-center justify-center text-center">
         <h2 className="text-5xl font-bold text-[var(--color-primary)] mb-4">
           Er du i tvivl om, hvilke pakker der passer til dig?

@@ -1,25 +1,23 @@
 // src/components/ExpandableCaseCard.jsx
 "use client";
-
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
 export default function ExpandableCaseCard({ project }) {
   const { title, description, details, examples } = project;
-
   const [isOpen, setIsOpen] = useState(false);
   const [current, setCurrent] = useState(0);
   const [autoRotate, setAutoRotate] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  // Auto-rotate carousel når kortet er åbent
   useEffect(() => {
     let timer;
     if (isOpen && autoRotate) {
-      timer = setInterval(() => {
-        setCurrent((i) => (i + 1) % examples.length);
-      }, 4000);
+      timer = setInterval(
+        () => setCurrent((i) => (i + 1) % examples.length),
+        4000
+      );
     }
     return () => clearInterval(timer);
   }, [isOpen, autoRotate, examples.length]);
@@ -32,18 +30,13 @@ export default function ExpandableCaseCard({ project }) {
     <>
       <motion.div
         layout
-        className="
-          border-2 border-[var(--color-primary)]
-          rounded-2xl overflow-hidden shadow-lg
-          cursor-pointer bg-gray-50
-        "
+        className="border-2 border-[var(--color-primary)] rounded-2xl overflow-hidden shadow-lg cursor-pointer bg-[var(--color-secondary)] text-[var(--color-foreground)]"
         onClick={() => {
-          setIsOpen((open) => !open);
-          setAutoRotate((open) => !open);
+          setIsOpen((o) => !o);
+          setAutoRotate((o) => !o);
         }}
         whileHover={{ scale: 1.02 }}
       >
-        {/* Forside-billede */}
         <div className="relative h-64">
           <Image
             src={examples[0]}
@@ -52,7 +45,9 @@ export default function ExpandableCaseCard({ project }) {
             style={{ objectFit: "cover" }}
           />
           <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition">
-            <h3 className="text-2xl font-bold text-white">{title}</h3>
+            <h3 className="text-2xl font-bold text-[var(--color-background)]">
+              {title}
+            </h3>
           </div>
         </div>
 
@@ -64,24 +59,17 @@ export default function ExpandableCaseCard({ project }) {
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.4 }}
-              className="
-                bg-gray-50 p-6 text-gray-800
-                border-t-2 border-[var(--color-primary)]
-              "
+              className="bg-[var(--color-secondary)] p-6 text-[var(--color-foreground)] border-t-2 border-[var(--color-primary)]"
               onClick={(e) => e.stopPropagation()}
             >
               <p className="mb-4">{description}</p>
-
               <h4 className="font-semibold mb-2">Detaljer:</h4>
               <ul className="list-disc list-inside mb-4 space-y-1">
                 {details.map((d, i) => (
                   <li key={i}>{d}</li>
                 ))}
               </ul>
-
               <h4 className="font-semibold mb-2">Galleri:</h4>
-
-              {/* CAROUSEL */}
               <div className="relative w-full h-64 overflow-hidden rounded-lg">
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.div
@@ -101,15 +89,13 @@ export default function ExpandableCaseCard({ project }) {
                     />
                   </motion.div>
                 </AnimatePresence>
-
-                {/* Prev/Next */}
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     prev();
                     setAutoRotate(false);
                   }}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/30 text-white p-2 rounded-full"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/30 text-[var(--color-background)] p-2 rounded-full"
                 >
                   ‹
                 </button>
@@ -119,12 +105,10 @@ export default function ExpandableCaseCard({ project }) {
                     next();
                     setAutoRotate(false);
                   }}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 text-white p-2 rounded-full"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 text-[var(--color-background)] p-2 rounded-full"
                 >
                   ›
                 </button>
-
-                {/* Dots */}
                 <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2">
                   {examples.map((_, i) => (
                     <span
@@ -134,14 +118,11 @@ export default function ExpandableCaseCard({ project }) {
                         setCurrent(i);
                         setAutoRotate(false);
                       }}
-                      className={`
-                        w-2 h-2 rounded-full cursor-pointer
-                        ${
-                          i === current
-                            ? "bg-[var(--color-primary)]"
-                            : "bg-white/60 hover:bg-white"
-                        }
-                      `}
+                      className={`w-2 h-2 rounded-full cursor-pointer ${
+                        i === current
+                          ? "bg-[var(--color-primary)]"
+                          : "bg-[var(--color-background)]/60 hover:bg-[var(--color-background)]"
+                      }`}
                     />
                   ))}
                 </div>
@@ -151,23 +132,19 @@ export default function ExpandableCaseCard({ project }) {
         </AnimatePresence>
       </motion.div>
 
-      {/* LIGHTBOX-MODAL */}
       <AnimatePresence>
         {lightboxOpen && (
           <motion.div
-            key="lb-wrapper"
+            key="lb"
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            {/* Overlay */}
             <div
               className="absolute inset-0 bg-black/70"
               onClick={() => setLightboxOpen(false)}
             />
-
-            {/* Billed-container */}
             <div className="relative z-10 w-[90vw] h-[90vh]">
               <Image
                 src={examples[current]}
@@ -175,25 +152,21 @@ export default function ExpandableCaseCard({ project }) {
                 fill
                 style={{ objectFit: "contain" }}
               />
-
-              {/* Luk-knap */}
               <button
                 onClick={() => setLightboxOpen(false)}
-                className="absolute top-2 right-2 z-20 text-white bg-black/40 p-2 rounded-full"
+                className="absolute top-2 right-2 z-20 text-[var(--color-background)] bg-black/40 p-2 rounded-full"
               >
                 ✕
               </button>
-
-              {/* Prev/Next i lightbox */}
               <button
                 onClick={() => prev()}
-                className="absolute left-2 top-1/2 -translate-y-1/2 z-20 text-white bg-black/40 p-2 rounded-full"
+                className="absolute left-2 top-1/2 -translate-y-1/2 z-20 text-[var(--color-background)] bg-black/40 p-2 rounded-full"
               >
                 ‹
               </button>
               <button
                 onClick={() => next()}
-                className="absolute right-2 top-1/2 -translate-y-1/2 z-20 text-white bg-black/40 p-2 rounded-full"
+                className="absolute right-2 top-1/2 -translate-y-1/2 z-20 text-[var(--color-background)] bg-black/40 p-2 rounded-full"
               >
                 ›
               </button>

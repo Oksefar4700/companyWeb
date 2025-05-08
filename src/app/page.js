@@ -4,27 +4,37 @@
 import Hero from "../components/Hero";
 import Packages from "../components/Packages";
 import CasesList from "../components/CasesList";
+import ParallaxSection from "../components/ParallaxSection";
 import AboutSection from "../components/AboutSection";
 import TeamSection from "../components/TeamSection";
-import ParallaxSection from "../components/ParallaxSection";
 import ContactSection from "../components/ContactSection";
+import ChatWidget from "../components/ChatWidget";
 
 export default function HomePage() {
   return (
     <main>
+      {/* Fuldskærms-hero */}
       <Hero />
+
+      {/* Løsninger på lys baggrund */}
       <Packages />
+
+      {/* Cases på mørk baggrund */}
       <CasesList />
+
+      {/* Parallax på lys baggrund */}
       <ParallaxSection src="/images/parallax.png" height="70vh" />
 
-      <section id="about">
-        <AboutSection />
-      </section>
+      {/* Om os på mørk baggrund */}
+      <AboutSection id="about" />
 
-      <section id="team">
-        <TeamSection />
-      </section>
+      {/* Team på lys baggrund */}
+      <TeamSection id="team" />
 
+      {/* Flydende chat-widget */}
+      <ChatWidget />
+
+      {/* Kontakt på mørk baggrund */}
       <ContactSection />
     </main>
   );
