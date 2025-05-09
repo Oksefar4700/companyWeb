@@ -3,43 +3,44 @@
 
 /* --- Farve-variabler --- */
 :root {
-  /* Sort/mørk grå */
-  --color-primary: #2e2e38;
-  /* Accent bruger nu samme som primary (sort) */
-  --color-accent: #2e2e38;
-  /* Mørk tekst */
-  --color-foreground: #1f2328;
-  /* Ren hvid */
-  --color-background: #ffffff;
-  /* Varm, lys beige */
-  --color-secondary-light: #f7f5f2;
-  /* Mørk beige til evt. variation */
-  --color-secondary-dark: #2c2f3b;
+  /* Mørke farver */
+  --color-primary: #2e2e38; /* Mørkegrå (kanter, div. tekst) */
+  --color-accent: #2e2e38; /* Accent (pt. samme som primary) */
+  --color-foreground: #1f2328; /* Mørk tekst (primær), hero gradient base */
 
+  /* Lyse farver */
+  --color-background: #ffffff; /* Hvid (primær baggrund) */
+  --color-secondary-light: #f7f5f2; /* Lys beige (sektionsbaggrunde f.eks. Packages, header) */
+  --color-secondary-dark: #2c2f3b; /* Mørk gråblå (tidligere "Mørk beige") */
+
+  /* Blå accentfarver */
+  --color-brand-blue: #7eaedb; /* Lyseblå (CTA, links, ikoner) */
+  --color-brand-blue-darker: #5a82a3; /* Mørkere blå (hover) */
+  --color-brand-blue-lighter-bg: #e3f0fc; /* Meget lys blå (hover baggrund) */
+
+  /* Typografi */
   --font-heading: "Poppins", sans-serif;
   --font-body: "Roboto", sans-serif;
-  --header-height: 4rem;
-}
 
-/* --- Dark-mode override (bevarer beige som lys sektion) --- */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-foreground: #f5f5f5;
-    --color-background: #1f2937;
-    /* --color-secondary-light forbliver beige */
-  }
+  /* Layout */
+  --header-height: 4rem; /* Header højde */
 }
 
 /* --- Base styles --- */
 @layer base {
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: var(--header-height);
+    scroll-padding-top: var(
+      --header-height
+    ); /* Undgå overlap med fast header */
   }
   body {
-    @apply bg-[var(--color-background)] text-[var(--color-foreground)] antialiased;
+    @apply bg-[var(--color-background)]
+           text-[var(--color-foreground)]
+           antialiased;
     font-family: var(--font-body);
-    padding-top: var(--header-height);
+    padding-top: var(--header-height); /* Plads til fast header */
+    overflow-x: hidden; /* Forhindre horisontal scroll */
   }
   h1,
   h2,
@@ -49,10 +50,17 @@
   h6 {
     font-family: var(--font-heading);
   }
+  img,
+  video {
+    /* Responsive medier */
+    max-width: 100%;
+    height: auto;
+  }
 }
 
 /* --- Utilities --- */
 @layer utilities {
+  /* Partikel animation */
   @keyframes drift {
     0% {
       transform: translate(0, 0) scale(1);
@@ -71,31 +79,46 @@
     @apply absolute rounded-full;
     animation: drift 12s ease-in-out infinite alternate;
   }
+
+  /* Evt. custom text-shadow her hvis Tailwind's ikke er nok */
 }
 
-/* --- Sektioner & komponenter --- */
+/* --- Komponenter (globale klasser for genbrug) --- */
 @layer components {
-  /* Store sektioner: varm lys beige */
-  .section-packages,
-  .section-cases {
-    @apply bg-[var(--color-secondary-light)] text-[var(--color-foreground)];
+  /* Sektionsbaggrund (beige) */
+  .section-beige {
+    @apply bg-[var(--color-secondary-light)]
+           text-[var(--color-foreground)]
+           py-16 sm:py-20;
   }
 
-  /* Divider under overskrifter: sort */
-  .packages-divider,
-  .cases-divider {
-    @apply bg-[var(--color-primary)];
+  /* Sektionsdivider (blå) */
+  .section-divider {
+    @apply mx-auto mb-10 sm:mb-12
+           w-20 h-1 rounded-full
+           bg-[var(--color-brand-blue)];
   }
 
-  /* Kort-baggrunde: hvid */
-  .package-card,
-  .case-card {
-    @apply bg-[var(--color-background)];
+  /* Standard kort-styling (kan bruges til f.eks. cases, testimonials) */
+  .custom-card {
+    @apply bg-[var(--color-background)]
+           border border-[var(--color-primary)]/15
+           rounded-xl shadow-lg hover:shadow-xl
+           transition-all;
   }
 
-  /* Ikoner og links: accent (sort) */
-  .card-link,
-  .icon {
-    @apply text-[var(--color-accent)];
+  /* Animér billed‐marquee (bruges i CasesList.jsx) */
+  .animate-marquee {
+    animation: marquee linear infinite;
+  }
+}
+
+/* --- Keyframes til billed‐marquee --- */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
   }
 }

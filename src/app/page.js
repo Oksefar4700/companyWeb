@@ -19,11 +19,11 @@ export default function HomePage() {
       {/* Løsninger på lys baggrund */}
       <Packages />
 
+      {/* Parallax på lys baggrund */}
+      <ParallaxSection src="/images/parallax/parallax3.png" height="70vh" />
+
       {/* Cases på mørk baggrund */}
       <CasesList />
-
-      {/* Parallax på lys baggrund */}
-      <ParallaxSection src="/images/parallax.png" height="70vh" />
 
       {/* Om os på mørk baggrund */}
       <AboutSection id="about" />

@@ -2,126 +2,272 @@
 "use client";
 import { useRef, useEffect, useState } from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
-import projects from "../data/projects";
-import ExpandableCaseCard from "./ExpandableCaseCard";
+import { projects as projectsData } from "../data/projects";
+import Lightbox from "./Lightbox";
+
+// Hjælper: grupér eksempler per projekt
+const groupImagesByProjectTitle = (projects) =>
+  projects.reduce((acc, project) => {
+    const title = project.title;
+    if (!acc[title]) acc[title] = [];
+    project.examples?.forEach((src) =>
+      acc[title].push({ src, title, alt: `${title} – eksempelbillede` })
+    );
+    return acc;
+  }, {});
+
+// Pixel-baseret marquee-loop via Framer Motion
+const CategoryImageLoop = ({ images, onImageClick, categoryTitle }) => {
+  if (!images?.length) return null;
+  const displayImages = [...images, ...images]; // 2x for kontinuerlig loop
+  const containerRef = useRef(null);
+  const [loopWidth, setLoopWidth] = useState(0);
+
+  // Når billederne mountes, mål scrollWidth/2
+  useEffect(() => {
+    if (containerRef.current) {
+      const total = containerRef.current.scrollWidth;
+      setLoopWidth(total / 2);
+    }
+  }, [images]);
+
+  return (
+    <div className="mt-4 h-56 sm:h-64 md:h-72 w-full overflow-hidden relative rounded-lg bg-black/5 shadow-inner">
+      <motion.div
+        ref={containerRef}
+        className="flex h-full"
+        animate={{ x: [0, -loopWidth] }}
+        transition={{
+          x: {
+            repeat: Infinity,
+            repeatType: "loop",
+            duration: images.length * 6, // samme hastighed som før
+            ease: "linear",
+          },
+        }}
+      >
+        {displayImages.map((image, i) => (
+          <div
+            key={`${categoryTitle}-img-${i}`}
+            className="
+              flex-shrink-0
+              h-full w-auto
+              aspect-[16/10] sm:aspect-[16/9]
+              mr-4
+              cursor-pointer
+              overflow-hidden rounded-md
+              transition-all duration-300 ease-out
+              hover:opacity-100 hover:scale-105
+            "
+            onClick={() => onImageClick(image.src)}
+          >
+            <img
+              src={image.src}
+              alt={image.alt}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+          </div>
+        ))}
+      </motion.div>
+      {/* fade‐kanter */}
+      <div
+        className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r
+                      from-[var(--color-secondary-light)]
+                      via-[var(--color-secondary-light)]/80
+                      to-transparent pointer-events-none z-10"
+      />
+      <div
+        className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l
+                      from-[var(--color-secondary-light)]
+                      via-[var(--color-secondary-light)]/80
+                      to-transparent pointer-events-none z-10"
+      />
+    </div>
+  );
+};
 
 export default function CasesList() {
-  const ref = useRef(null);
+  const sectionRef = useRef(null);
   const controls = useAnimation();
-  const inView = useInView(ref, { amount: 0.2 });
-  const [particles, setParticles] = useState([]);
+  const inView = useInView(sectionRef, { amount: 0.2 });
+
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imagesByTitle, setImagesByTitle] = useState({});
+
+  useEffect(() => {
+    setImagesByTitle(groupImagesByProjectTitle(projectsData));
+  }, []);
 
   useEffect(() => {
     controls.start(inView ? "visible" : "hidden");
-  }, [controls, inView]);
+  }, [inView, controls]);
 
-  useEffect(() => {
-    // Generér små “bolde” med accent, beige og mørk farve
-    const gen = Array.from({ length: 15 }).map((_, i) => ({
-      id: i,
-      size: `${4 + Math.random() * 4}px`,
-      color: ["#7eaedb", "#f7f5f2", "#2e2e38"][Math.floor(Math.random() * 3)],
-      duration: `${12 + Math.random() * 8}s`,
-      delay: `${Math.random() * 6}s`,
-      top: `${Math.random() * 100}%`,
-      left: `${Math.random() * 100}%`,
-    }));
-    setParticles(gen);
-  }, []);
+  const projectCategoriesToShow = [
+    "Frisør-Booking",
+    "Håndværker-Portfolio",
+    "Mini-Webshop",
+  ];
+
+  // --- Framer‐motion varianter ---
+  const circleVariant = {
+    hidden: { scale: 0, opacity: 0 },
+    visible: (custom) => ({
+      scale: 1,
+      opacity: custom.opacity,
+      transition: { duration: 1, delay: custom.delay, ease: "easeOut" },
+    }),
+  };
+  const headingVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.1 } },
+  };
+  const dividerVariants = {
+    hidden: { scaleX: 0 },
+    visible: {
+      scaleX: 1,
+      transition: { duration: 0.6, delay: 0.2, ease: [0.6, 0.05, -0.01, 0.9] },
+    },
+  };
+  const gridContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15, delayChildren: 0.3 },
+    },
+  };
+  const cardBoxVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { type: "spring", stiffness: 100, damping: 20 },
+    },
+  };
 
   return (
-    <section
-      ref={ref}
-      id="cases"
-      className="
-        relative overflow-hidden
-        bg-white                  /* hvid sektion */
-        text-[#1f2328]            /* mørk tekst */
-        scroll-mt-[var(--header-height)]
-        py-24
-      "
-    >
-      {/* Flyvende partikler */}
-      {particles.map((p) => (
-        <span
-          key={p.id}
-          className="particle"
-          style={{
-            width: p.size,
-            height: p.size,
-            top: p.top,
-            left: p.left,
-            backgroundColor: p.color,
-            animationDuration: p.duration,
-            animationDelay: p.delay,
-          }}
-        />
-      ))}
-
-      {/* Store dekorative cirkler */}
-      <div className="absolute top-0 left-0 w-56 h-56 bg-[#7eaedb] rounded-full opacity-10 -translate-x-1/3 -translate-y-1/3 pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-72 h-72 bg-[#5a82a3] rounded-full opacity-10 translate-x-1/3 translate-y-1/3 pointer-events-none" />
-
-      <div className="relative z-10 container mx-auto px-12">
-        {/* Overskrift */}
-        <motion.h2
-          initial={{ opacity: 0, y: -20 }}
-          animate={controls}
-          variants={{ hidden: {}, visible: { opacity: 1, y: 0 } }}
-          transition={{ duration: 0.6 }}
-          className="text-4xl font-bold text-center mb-4 text-[#2e2e38]"
-        >
-          Vores Cases
-        </motion.h2>
-
-        {/* Accent-stripe under overskrift */}
+    <>
+      <section
+        ref={sectionRef}
+        id="cases"
+        className="
+          relative
+          bg-[var(--color-secondary-light)]
+          text-[var(--color-foreground)]
+          scroll-mt-[var(--header-height)]
+          py-20 sm:py-24
+          overflow-x-visible overflow-y-hidden
+        "
+      >
+        {/* baggrundscirkler */}
         <motion.div
-          initial={{ scaleX: 0 }}
-          animate={controls}
-          variants={{ hidden: {}, visible: { scaleX: 1 } }}
-          transition={{ duration: 0.6 }}
-          className="mx-auto mb-12 w-24 h-1 rounded-full bg-[#7eaedb]"
-        />
-
-        {/* Kort-grid */}
-        <motion.div
+          className="
+            absolute top-0 right-0 w-72 h-72
+            bg-[var(--color-primary)] rounded-full
+            pointer-events-none z-1
+            -translate-y-1/2 translate-x-1/3
+          "
+          variants={circleVariant}
+          custom={{ delay: 0.2, opacity: 0.3 }}
           initial="hidden"
           animate={controls}
-          variants={{
-            hidden: {},
-            visible: { transition: { staggerChildren: 0.1 } },
-          }}
-          className="grid gap-10 md:grid-cols-2 lg:grid-cols-3"
-        >
-          {projects.map((p) => (
-            <motion.div
-              key={p.slug}
-              variants={{
-                hidden: { opacity: 0, y: 30 },
-                visible: {
-                  opacity: 1,
-                  y: 0,
-                  transition: { type: "spring", stiffness: 100, damping: 20 },
-                },
-              }}
-            >
-              {/* Hvidt kort med beige baggrund i inner, sort kant */}
-              <div
-                className="
-                bg-[#f7f5f2]
-                border-2 border-[#2e2e38]
-                rounded-2xl
-                shadow-lg hover:shadow-2xl
-                transition-shadow
-                overflow-hidden
-              "
-              >
-                <ExpandableCaseCard project={p} />
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
-    </section>
+        />
+        <motion.div
+          className="
+            absolute bottom-0 left-0 w-96 h-96
+            bg-[var(--color-primary)] rounded-full
+            pointer-events-none z-1
+            translate-y-1/2 -translate-x-1/3
+          "
+          variants={circleVariant}
+          custom={{ delay: 0.4, opacity: 0.2 }}
+          initial="hidden"
+          animate={controls}
+        />
+        <motion.div
+          className="
+            absolute top-1/2 left-1/2 w-60 h-60
+            bg-[var(--color-brand-blue)] rounded-full
+            pointer-events-none z-1
+            -translate-x-1/2 -translate-y-1/2
+          "
+          variants={circleVariant}
+          custom={{ delay: 0.6, opacity: 0.3 }}
+          initial="hidden"
+          animate={controls}
+        />
+
+        {/* overskrift */}
+        <div className="container mx-auto px-6 text-center relative z-5">
+          <motion.h2
+            initial="hidden"
+            variants={headingVariants}
+            animate={controls}
+            className="text-3xl sm:text-4xl font-bold text-[var(--color-primary)] mb-3"
+          >
+            Vores Cases & Løsninger
+          </motion.h2>
+          <motion.div
+            initial="hidden"
+            variants={dividerVariants}
+            animate={controls}
+            className="w-24 h-1 bg-[var(--color-brand-blue)] mx-auto mb-12 sm:mb-16"
+          />
+        </div>
+
+        {/* kort‐grid */}
+        <div className="container mx-auto px-6 relative z-5">
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10"
+            initial="hidden"
+            variants={gridContainerVariants}
+            animate={controls}
+          >
+            {projectCategoriesToShow.map((title) => {
+              const imgs = imagesByTitle[title] || [];
+              const details = projectsData.find((p) => p.title === title);
+              if (!details || !imgs.length) return null;
+
+              return (
+                <motion.div
+                  key={details.slug || title}
+                  className="
+                    bg-[var(--color-background)]
+                    p-6 rounded-2xl
+                    shadow-xl hover:shadow-2xl
+                    transition-shadow duration-300
+                    flex flex-col
+                  "
+                  variants={cardBoxVariants}
+                >
+                  <h3
+                    className="
+                       text-xl sm:text-2xl font-semibold
+                       text-[var(--color-brand-blue)]
+                       mb-3 text-center
+                     "
+                  >
+                    {details.title}
+                  </h3>
+
+                  <CategoryImageLoop
+                    images={imgs}
+                    onImageClick={setSelectedImage}
+                    categoryTitle={details.title}
+                  />
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Lightbox – ingen ændringer */}
+      <Lightbox
+        imageUrl={selectedImage}
+        onClose={() => setSelectedImage(null)}
+      />
+    </>
   );
 }
