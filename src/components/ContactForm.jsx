@@ -1,5 +1,6 @@
 // src/components/ContactForm.jsx
 "use client";
+
 import { useForm } from "react-hook-form";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
@@ -12,6 +13,7 @@ export default function ContactForm() {
     reset,
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm();
+
   const onSubmit = async (data) => {
     try {
       await addDoc(collection(db, "contacts"), {
@@ -27,7 +29,7 @@ export default function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="max-w-md mx-auto space-y-6"
+      className="relative max-w-md mx-auto space-y-6 bg-[var(--color-background)]/90 p-8 rounded-xl shadow-xl z-10"
     >
       {isSubmitSuccessful && (
         <div className="text-[var(--color-accent)] font-medium text-center">
@@ -43,24 +45,11 @@ export default function ContactForm() {
           type="text"
           placeholder=" "
           {...register("name", { required: "Navn er påkrævet" })}
-          className="
-            peer h-12 w-full pl-12 pr-4
-            bg-[var(--color-background)]
-            rounded-lg border border-[var(--color-secondary)]
-            shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]
-            transition
-          "
+          className="peer h-12 w-full pl-12 pr-4 bg-[var(--color-background)] rounded-lg border border-[var(--color-secondary-dark)]/30 shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-blue)] transition"
         />
         <label
           htmlFor="name"
-          className="
-          absolute left-12 top-0 -translate-y-1/2
-          text-[var(--color-foreground)] text-base
-          bg-[var(--color-background)] px-1 z-10
-          transition-all
-          peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:-translate-y-1/2
-          peer-focus:top-0 peer-focus:text-sm peer-focus:-translate-y-1/2 peer-focus:text-[var(--color-primary)]
-        "
+          className="absolute left-12 top-0 -translate-y-1/2 text-[var(--color-foreground)] text-base bg-[var(--color-background)] px-1 z-10 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:-translate-y-1/2 peer-focus:top-0 peer-focus:text-sm peer-focus:-translate-y-1/2 peer-focus:text-[var(--color-brand-blue)]"
         >
           Dit navn
         </label>
@@ -77,18 +66,11 @@ export default function ContactForm() {
           type="email"
           placeholder=" "
           {...register("email", { required: "Email er påkrævet" })}
-          className=" peer h-12 w-full pl-12 pr-4 bg-[var(--color-background)] rounded-lg border border-[var(--color-secondary)] shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition"
+          className="peer h-12 w-full pl-12 pr-4 bg-[var(--color-background)] rounded-lg border border-[var(--color-secondary-dark)]/30 shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-blue)] transition"
         />
         <label
           htmlFor="email"
-          className="
-          absolute left-12 top-0 -translate-y-1/2
-          text-[var(--color-foreground)] text-base
-          bg-[var(--color-background)] px-1 z-10
-          transition-all
-          peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:-translate-y-1/2
-          peer-focus:top-0 peer-focus:text-sm peer-focus:-translate-y-1/2 peer-focus:text-[var(--color-primary)]
-        "
+          className="absolute left-12 top-0 -translate-y-1/2 text-[var(--color-foreground)] text-base bg-[var(--color-background)] px-1 z-10 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:-translate-y-1/2 peer-focus:top-0 peer-focus:text-sm peer-focus:-translate-y-1/2 peer-focus:text-[var(--color-brand-blue)]"
         >
           Din email
         </label>
@@ -105,24 +87,11 @@ export default function ContactForm() {
           rows={4}
           placeholder=" "
           {...register("message", { required: "Besked er påkrævet" })}
-          className="
-            peer w-full pl-12 pr-4 pt-6 pb-3
-            bg-[var(--color-background)]
-            rounded-lg border border-[var(--color-secondary)]
-            shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]
-            transition resize-none
-          "
+          className="peer w-full pl-12 pr-4 pt-6 pb-3 bg-[var(--color-background)] rounded-lg border border-[var(--color-secondary-dark)]/30 shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-blue)] transition resize-none"
         />
         <label
           htmlFor="message"
-          className="
-          absolute left-12 top-0 -translate-y-1/2
-          text-[var(--color-foreground)] text-base
-          bg-[var(--color-background)] px-1 z-10
-          transition-all
-          peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:-translate-y-1/2
-          peer-focus:top-0 peer-focus:text-sm peer-focus:-translate-y-1/2 peer-focus:text-[var(--color-primary)]
-        "
+          className="absolute left-12 top-0 -translate-y-1/2 text-[var(--color-foreground)] text-base bg-[var(--color-background)] px-1 z-10 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:-translate-y-1/2 peer-focus:top-0 peer-focus:text-sm peer-focus:-translate-y-1/2 peer-focus:text-[var(--color-brand-blue)]"
         >
           Din besked
         </label>
@@ -135,12 +104,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="
-          w-full py-3
-          bg-[var(--color-primary)] text-[var(--color-background)]
-          rounded-lg font-semibold shadow
-          hover:bg-[var(--color-accent)] transition-transform hover:scale-105 disabled:opacity-50
-        "
+        className="w-full py-3 bg-[var(--color-brand-blue)] text-[var(--color-background)] rounded-lg font-semibold shadow hover:bg-[var(--color-brand-blue-darker)] transition-transform hover:scale-105 disabled:opacity-50"
       >
         {isSubmitting ? "Sender…" : "Send besked"}
       </button>

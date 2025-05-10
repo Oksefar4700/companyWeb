@@ -35,31 +35,26 @@ const CategoryImageLoop = ({ images, onImageClick, categoryTitle }) => {
     <div className="mt-4 h-56 sm:h-64 md:h-72 w-full overflow-hidden relative rounded-lg bg-black/5 shadow-inner">
       <motion.div
         ref={containerRef}
-        className="flex h-full"
+        className="flex h-full will-change-transform transform-gpu"
         animate={{ x: [0, -loopWidth] }}
         transition={{
           x: {
             repeat: Infinity,
             repeatType: "loop",
-            duration: images.length * 6, // samme hastighed som før
+            duration: images.length * 6,
             ease: "linear",
           },
         }}
       >
         {displayImages.map((image, i) => (
-          <div
+          <motion.div
             key={`${categoryTitle}-img-${i}`}
-            className="
-              flex-shrink-0
-              h-full w-auto
-              aspect-[16/10] sm:aspect-[16/9]
-              mr-4
-              cursor-pointer
-              overflow-hidden rounded-md
-              transition-all duration-300 ease-out
-              hover:opacity-100 hover:scale-105
-            "
+            className="flex-shrink-0 h-full w-auto aspect-[16/10] sm:aspect-[16/9] mr-4 cursor-pointer overflow-hidden rounded-md"
             onClick={() => onImageClick(image.src)}
+            initial={{ opacity: 0.9 }}
+            whileHover={{ scale: 1.05, opacity: 1 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            style={{ willChange: "transform, opacity" }}
           >
             <img
               src={image.src}
@@ -67,21 +62,21 @@ const CategoryImageLoop = ({ images, onImageClick, categoryTitle }) => {
               className="w-full h-full object-cover"
               loading="lazy"
             />
-          </div>
+          </motion.div>
         ))}
       </motion.div>
       {/* fade‐kanter */}
       <div
         className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r
-                      from-[var(--color-secondary-light)]
-                      via-[var(--color-secondary-light)]/80
-                      to-transparent pointer-events-none z-10"
+                    from-[var(--color-secondary-light)]
+                    via-[var(--color-secondary-light)]/80
+                    to-transparent pointer-events-none z-10"
       />
       <div
         className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l
-                      from-[var(--color-secondary-light)]
-                      via-[var(--color-secondary-light)]/80
-                      to-transparent pointer-events-none z-10"
+                    from-[var(--color-secondary-light)]
+                    via-[var(--color-secondary-light)]/80
+                    to-transparent pointer-events-none z-10"
       />
     </div>
   );

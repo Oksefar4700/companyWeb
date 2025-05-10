@@ -3,8 +3,8 @@
 
 import Hero from "../components/Hero";
 import Packages from "../components/Packages";
-import CasesList from "../components/CasesList";
 import ParallaxSection from "../components/ParallaxSection";
+import CasesList from "../components/CasesList";
 import AboutSection from "../components/AboutSection";
 import TeamSection from "../components/TeamSection";
 import ContactSection from "../components/ContactSection";
@@ -22,19 +22,19 @@ export default function HomePage() {
       {/* Parallax på lys baggrund */}
       <ParallaxSection src="/images/parallax/parallax3.png" height="70vh" />
 
-      {/* Cases på mørk baggrund */}
+      {/* Cases på lys baggrund */}
       <CasesList />
 
-      {/* Om os på mørk baggrund */}
-      <AboutSection id="about" />
+      {/* Om os på lys baggrund */}
+      <AboutSection />
 
       {/* Team på lys baggrund */}
-      <TeamSection id="team" />
+      <TeamSection />
 
       {/* Flydende chat-widget */}
       <ChatWidget />
 
-      {/* Kontakt på mørk baggrund */}
+      {/* Kontakt på lys baggrund med baggrundsbillede */}
       <ContactSection />
     </main>
   );

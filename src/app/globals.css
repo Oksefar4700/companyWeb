@@ -1,4 +1,3 @@
-/* src/app/globals.css */
 @import "tailwindcss";
 
 /* --- Farve-variabler --- */
@@ -30,17 +29,15 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: var(
-      --header-height
-    ); /* Undgå overlap med fast header */
+    scroll-padding-top: var(--header-height);
   }
   body {
     @apply bg-[var(--color-background)]
            text-[var(--color-foreground)]
            antialiased;
     font-family: var(--font-body);
-    padding-top: var(--header-height); /* Plads til fast header */
-    overflow-x: hidden; /* Forhindre horisontal scroll */
+    padding-top: var(--header-height);
+    overflow-x: hidden;
   }
   h1,
   h2,
@@ -52,7 +49,6 @@
   }
   img,
   video {
-    /* Responsive medier */
     max-width: 100%;
     height: auto;
   }
@@ -60,7 +56,7 @@
 
 /* --- Utilities --- */
 @layer utilities {
-  /* Partikel animation */
+  /* Partikel-animation */
   @keyframes drift {
     0% {
       transform: translate(0, 0) scale(1);
@@ -80,26 +76,47 @@
     animation: drift 12s ease-in-out infinite alternate;
   }
 
-  /* Evt. custom text-shadow her hvis Tailwind's ikke er nok */
+  /* Animeret gradient-baggrund */
+  @keyframes bgShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  .bg-animated-gradient {
+    background: linear-gradient(
+      120deg,
+      var(--color-brand-blue-lighter-bg),
+      var(--color-secondary-light),
+      var(--color-background)
+    );
+    background-size: 200% 200%;
+    animation: bgShift 20s ease infinite;
+  }
 }
 
-/* --- Komponenter (globale klasser for genbrug) --- */
+/* --- Komponenter (globale klasser) --- */
 @layer components {
-  /* Sektionsbaggrund (beige) */
+  /* Beige sektionsbaggrund */
   .section-beige {
     @apply bg-[var(--color-secondary-light)]
            text-[var(--color-foreground)]
            py-16 sm:py-20;
   }
 
-  /* Sektionsdivider (blå) */
+  /* Blå divider-streg */
   .section-divider {
     @apply mx-auto mb-10 sm:mb-12
            w-20 h-1 rounded-full
            bg-[var(--color-brand-blue)];
   }
 
-  /* Standard kort-styling (kan bruges til f.eks. cases, testimonials) */
+  /* Standard kort-styling */
   .custom-card {
     @apply bg-[var(--color-background)]
            border border-[var(--color-primary)]/15
@@ -107,13 +124,31 @@
            transition-all;
   }
 
-  /* Animér billed‐marquee (bruges i CasesList.jsx) */
+  /* Billed-marquee-animation */
   .animate-marquee {
     animation: marquee linear infinite;
   }
+
+  /* About-sektion tema */
+  .section-about-themed {
+    @apply bg-[var(--color-secondary-light)]
+           text-[var(--color-foreground)];
+  }
+
+  /* Primær knap */
+  .btn-primary {
+    @apply inline-block
+           bg-[var(--color-brand-blue)]
+           text-[var(--color-background)]
+           px-6 py-3
+           font-medium rounded-full
+           shadow-md
+           hover:bg-[var(--color-brand-blue-darker)]
+           transition-colors;
+  }
 }
 
-/* --- Keyframes til billed‐marquee --- */
+/* --- Keyframes til billed-marquee --- */
 @keyframes marquee {
   0% {
     transform: translateX(0);
