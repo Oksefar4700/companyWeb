@@ -20,7 +20,7 @@ export default function HomePage() {
       <Packages />
 
       {/* Parallax på lys baggrund */}
-      <ParallaxSection src="/images/parallax/parallax3.png" height="70vh" />
+      <ParallaxSection src="/images/contact/contactImage.png" height="70vh" />
 
       {/* Cases på lys baggrund */}
       <CasesList />

@@ -1,9 +1,11 @@
+/* src/app/globals.css */
 @import "tailwindcss";
 
 /* --- Farve-variabler --- */
 :root {
   /* Mørke farver */
   --color-primary: #2e2e38; /* Mørkegrå (kanter, div. tekst) */
+  --color-primary-darkest: #141414; /* Tilføjet: næsten sort for maksimal kontrast */
   --color-accent: #2e2e38; /* Accent (pt. samme som primary) */
   --color-foreground: #1f2328; /* Mørk tekst (primær), hero gradient base */
 
@@ -125,6 +127,14 @@
   }
 
   /* Billed-marquee-animation */
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
   .animate-marquee {
     animation: marquee linear infinite;
   }
@@ -145,15 +155,5 @@
            shadow-md
            hover:bg-[var(--color-brand-blue-darker)]
            transition-colors;
-  }
-}
-
-/* --- Keyframes til billed-marquee --- */
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
   }
 }
