@@ -1,5 +1,6 @@
 // src/components/Packages.jsx
 "use client";
+
 import { motion, useAnimation, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import PackageDetailDrawer from "./PackageDetailDrawer";
@@ -23,7 +24,7 @@ const iconMap = {
   "booking-enterprise": FaBuilding,
 };
 
-export default function Packages() {
+export default function Packages({ onOrder }) {
   const ref = useRef(null);
   const controls = useAnimation();
   const inView = useInView(ref, { amount: 0.3 });
@@ -52,7 +53,6 @@ export default function Packages() {
       id="packages"
       className="bg-[#f7f5f2] text-[#1f2328] scroll-mt-[var(--header-height)] py-20"
     >
-      {/* Overskrift */}
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         animate={controls}
@@ -63,7 +63,6 @@ export default function Packages() {
         Vælg din løsning
       </motion.h2>
 
-      {/* Accent-stripe */}
       <motion.div
         initial={{ scaleX: 0 }}
         animate={controls}
@@ -72,7 +71,6 @@ export default function Packages() {
         className="mx-auto mb-12 w-24 h-1 rounded-full bg-[#7eaedb]"
       />
 
-      {/* Kort-gitter */}
       <motion.div
         initial="hidden"
         animate={controls}
@@ -89,14 +87,12 @@ export default function Packages() {
               whileHover={{ scale: 1.02 }}
               className="relative group bg-white border-2 border-[#2e2e38] rounded-3xl shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer overflow-visible"
             >
-              {/* Ikon-badge */}
               <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
                 <div className="bg-[#7eaedb] p-3 rounded-full shadow-inner">
                   <Icon className="w-6 h-6 text-white" />
                 </div>
               </div>
 
-              {/* Indhold */}
               <div className="pt-10 pb-6 px-6 flex flex-col h-full">
                 <h3 className="mt-2 text-2xl font-semibold mb-2 text-[#2e2e38]">
                   {pkg.title}
@@ -107,7 +103,16 @@ export default function Packages() {
                 <p className="text-lg font-bold mb-4 text-[#7eaedb] group-hover:text-[#5a82a3] transition-colors">
                   {pkg.price.toLocaleString("da-DK")} kr.
                 </p>
-                <span className="inline-block underline text-[#7eaedb] hover:bg-[#e3f0fc] hover:text-[#5a82a3] transition-colors px-1 py-0.5 rounded">
+                {/* Opdateret: kun tekstfarve på hover */}
+                <span
+                  className="
+                    inline-block
+                    underline
+                    text-[#7eaedb]
+                    hover:text-[#5a82a3]
+                    transition-colors
+                  "
+                >
                   Se flere detaljer →
                 </span>
               </div>
@@ -116,11 +121,11 @@ export default function Packages() {
         })}
       </motion.div>
 
-      {/* Drawer */}
       <PackageDetailDrawer
         pkg={selectedPkg}
         isOpen={!!selectedPkg}
         onClose={() => setSelectedPkg(null)}
+        onOrder={onOrder}
       />
     </section>
   );

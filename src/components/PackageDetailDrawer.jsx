@@ -1,15 +1,18 @@
 // src/components/PackageDetailDrawer.jsx
 "use client";
+
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
-export default function PackageDetailDrawer({ pkg, isOpen, onClose }) {
+export default function PackageDetailDrawer({ pkg, isOpen, onClose, onOrder }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const examples = pkg?.examples || [];
+
   useEffect(() => {
     setCurrentIndex(0);
   }, [pkg]);
+
   const prev = () =>
     setCurrentIndex((i) => (i - 1 + examples.length) % examples.length);
   const next = () => setCurrentIndex((i) => (i + 1) % examples.length);
@@ -98,13 +101,13 @@ export default function PackageDetailDrawer({ pkg, isOpen, onClose }) {
                   key={i}
                   onClick={() => setCurrentIndex(i)}
                   className={`
-                  relative h-16 w-24 flex-shrink-0 rounded-lg overflow-hidden cursor-pointer border-2
-                  ${
-                    i === currentIndex
-                      ? "border-[var(--color-primary)]"
-                      : "border-transparent"
-                  } hover:border-[var(--color-accent)] transition
-                `}
+                    relative h-16 w-24 flex-shrink-0 rounded-lg overflow-hidden cursor-pointer border-2
+                    ${
+                      i === currentIndex
+                        ? "border-[var(--color-primary)]"
+                        : "border-transparent"
+                    } hover:border-[var(--color-accent)] transition
+                  `}
                 >
                   <Image
                     src={src}
@@ -116,12 +119,15 @@ export default function PackageDetailDrawer({ pkg, isOpen, onClose }) {
               ))}
             </div>
 
-            <a
-              href="#contact"
+            <button
+              onClick={() => {
+                onOrder(pkg);
+                onClose();
+              }}
               className="btn-primary mt-auto self-center inline-block"
             >
               Bestil denne pakke
-            </a>
+            </button>
           </motion.aside>
         </>
       )}

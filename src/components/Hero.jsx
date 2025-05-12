@@ -1,4 +1,3 @@
-// src/components/Hero.jsx
 "use client";
 
 import { motion } from "framer-motion";
@@ -81,6 +80,7 @@ export default function Hero() {
               loop: true,
               delay: 75,
               deleteSpeed: 50,
+              pauseFor: 5000,
               cursor: "_",
             }}
           />

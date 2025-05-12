@@ -6,13 +6,26 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { User, Mail, MessageSquare } from "lucide-react";
 
-export default function ContactForm() {
+export default function ContactForm({ selectedPkg }) {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting, isSubmitSuccessful },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      packageSlug: selectedPkg?.slug || "",
+      packageTitle: selectedPkg?.title || "",
+      packagePrice: selectedPkg?.price || "",
+      message: selectedPkg
+        ? `Hej! Jeg vil gerne bestille pakken: ${
+            selectedPkg.title
+          } (${selectedPkg.price.toLocaleString(
+            "da-DK"
+          )} kr.), som inkluderer: ${selectedPkg.details.join(", ")}.`
+        : "",
+    },
+  });
 
   const onSubmit = async (data) => {
     try {
@@ -27,15 +40,17 @@ export default function ContactForm() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="relative max-w-md mx-auto space-y-6 bg-[var(--color-background)]/90 p-8 rounded-xl shadow-xl z-10"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {isSubmitSuccessful && (
         <div className="text-[var(--color-accent)] font-medium text-center">
           🎉 Tak! Vi vender tilbage hurtigst muligt.
         </div>
       )}
+
+      {/* Skjulte felter */}
+      <input type="hidden" {...register("packageSlug")} />
+      <input type="hidden" {...register("packageTitle")} />
+      <input type="hidden" {...register("packagePrice")} />
 
       {/* Navn */}
       <div className="relative">
@@ -43,16 +58,10 @@ export default function ContactForm() {
         <input
           id="name"
           type="text"
-          placeholder=" "
+          placeholder="Dit navn"
           {...register("name", { required: "Navn er påkrævet" })}
-          className="peer h-12 w-full pl-12 pr-4 bg-[var(--color-background)] rounded-lg border border-[var(--color-secondary-dark)]/30 shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-blue)] transition"
+          className="h-12 w-full pl-12 pr-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-blue)] transition"
         />
-        <label
-          htmlFor="name"
-          className="absolute left-12 top-0 -translate-y-1/2 text-[var(--color-foreground)] text-base bg-[var(--color-background)] px-1 z-10 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:-translate-y-1/2 peer-focus:top-0 peer-focus:text-sm peer-focus:-translate-y-1/2 peer-focus:text-[var(--color-brand-blue)]"
-        >
-          Dit navn
-        </label>
         {errors.name && (
           <p className="mt-1 text-red-600 text-sm">{errors.name.message}</p>
         )}
@@ -64,16 +73,10 @@ export default function ContactForm() {
         <input
           id="email"
           type="email"
-          placeholder=" "
+          placeholder="Din email"
           {...register("email", { required: "Email er påkrævet" })}
-          className="peer h-12 w-full pl-12 pr-4 bg-[var(--color-background)] rounded-lg border border-[var(--color-secondary-dark)]/30 shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-blue)] transition"
+          className="h-12 w-full pl-12 pr-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-blue)] transition"
         />
-        <label
-          htmlFor="email"
-          className="absolute left-12 top-0 -translate-y-1/2 text-[var(--color-foreground)] text-base bg-[var(--color-background)] px-1 z-10 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:-translate-y-1/2 peer-focus:top-0 peer-focus:text-sm peer-focus:-translate-y-1/2 peer-focus:text-[var(--color-brand-blue)]"
-        >
-          Din email
-        </label>
         {errors.email && (
           <p className="mt-1 text-red-600 text-sm">{errors.email.message}</p>
         )}
@@ -85,26 +88,30 @@ export default function ContactForm() {
         <textarea
           id="message"
           rows={4}
-          placeholder=" "
+          placeholder="Din besked"
           {...register("message", { required: "Besked er påkrævet" })}
-          className="peer w-full pl-12 pr-4 pt-6 pb-3 bg-[var(--color-background)] rounded-lg border border-[var(--color-secondary-dark)]/30 shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-blue)] transition resize-none"
+          className="w-full pl-12 pr-4 pt-6 pb-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-blue)] transition resize-none"
         />
-        <label
-          htmlFor="message"
-          className="absolute left-12 top-0 -translate-y-1/2 text-[var(--color-foreground)] text-base bg-[var(--color-background)] px-1 z-10 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:-translate-y-1/2 peer-focus:top-0 peer-focus:text-sm peer-focus:-translate-y-1/2 peer-focus:text-[var(--color-brand-blue)]"
-        >
-          Din besked
-        </label>
         {errors.message && (
           <p className="mt-1 text-red-600 text-sm">{errors.message.message}</p>
         )}
       </div>
 
-      {/* Send-knap */}
+      {/* Opdateret knap */}
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full py-3 bg-[var(--color-brand-blue)] text-[var(--color-background)] rounded-lg font-semibold shadow hover:bg-[var(--color-brand-blue-darker)] transition-transform hover:scale-105 disabled:opacity-50"
+        className="
+          w-full py-3
+          bg-[var(--color-brand-blue)]
+          text-white
+          rounded-lg
+          font-semibold
+          shadow
+          hover:bg-[var(--color-brand-blue-darker)]
+          transition-colors
+          disabled:opacity-50
+        "
       >
         {isSubmitting ? "Sender…" : "Send besked"}
       </button>

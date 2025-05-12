@@ -1,9 +1,10 @@
 // src/components/CasesList.jsx
 "use client";
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { projects as projectsData } from "../data/projects";
 import Lightbox from "./Lightbox";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // Hjælper: grupér eksempler per projekt
 const groupImagesByProjectTitle = (projects) =>
@@ -16,68 +17,84 @@ const groupImagesByProjectTitle = (projects) =>
     return acc;
   }, {});
 
-// Pixel-baseret marquee-loop via Framer Motion
-const CategoryImageLoop = ({ images, onImageClick, categoryTitle }) => {
-  if (!images?.length) return null;
-  const displayImages = [...images, ...images]; // 2x for kontinuerlig loop
-  const containerRef = useRef(null);
-  const [loopWidth, setLoopWidth] = useState(0);
+// Automatisk carousel med pile og prikker
+const CategoryImageCarousel = ({ images, onImageClick, categoryTitle }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const intervalRef = useRef(null);
 
-  // Når billederne mountes, mål scrollWidth/2
+  // Auto-loop
   useEffect(() => {
-    if (containerRef.current) {
-      const total = containerRef.current.scrollWidth;
-      setLoopWidth(total / 2);
-    }
+    if (!images.length) return;
+    intervalRef.current = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 3000);
+    return () => clearInterval(intervalRef.current);
   }, [images]);
 
+  if (!images.length) return null;
+
+  const prev = () => {
+    clearInterval(intervalRef.current);
+    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+  const next = () => {
+    clearInterval(intervalRef.current);
+    setCurrentIndex((prev) => (prev + 1) % images.length);
+  };
+  const goTo = (i) => {
+    clearInterval(intervalRef.current);
+    setCurrentIndex(i);
+  };
+
   return (
-    <div className="mt-4 h-56 sm:h-64 md:h-72 w-full overflow-hidden relative rounded-lg bg-black/5 shadow-inner">
-      <motion.div
-        ref={containerRef}
-        className="flex h-full will-change-transform transform-gpu"
-        animate={{ x: [0, -loopWidth] }}
-        transition={{
-          x: {
-            repeat: Infinity,
-            repeatType: "loop",
-            duration: images.length * 6,
-            ease: "linear",
-          },
-        }}
-      >
-        {displayImages.map((image, i) => (
-          <motion.div
-            key={`${categoryTitle}-img-${i}`}
-            className="flex-shrink-0 h-full w-auto aspect-[16/10] sm:aspect-[16/9] mr-4 cursor-pointer overflow-hidden rounded-md"
+    <div className="mt-4 h-56 sm:h-64 md:h-72 w-full relative overflow-hidden rounded-lg">
+      {/* Billeder */}
+      {images.map((image, i) => (
+        <div
+          key={`${categoryTitle}-img-${i}`}
+          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+            i === currentIndex ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <img
+            src={image.src}
+            alt={image.alt}
+            className="w-full h-full object-cover cursor-pointer"
             onClick={() => onImageClick(image.src)}
-            initial={{ opacity: 0.9 }}
-            whileHover={{ scale: 1.05, opacity: 1 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            style={{ willChange: "transform, opacity" }}
-          >
-            <img
-              src={image.src}
-              alt={image.alt}
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-          </motion.div>
+            loading="lazy"
+          />
+        </div>
+      ))}
+
+      {/* Pile */}
+      <button
+        onClick={prev}
+        className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/50 hover:bg-white backdrop-blur-sm p-2 rounded-full z-20"
+        aria-label="Forrige"
+      >
+        <ChevronLeft size={24} />
+      </button>
+      <button
+        onClick={next}
+        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/50 hover:bg-white backdrop-blur-sm p-2 rounded-full z-20"
+        aria-label="Næste"
+      >
+        <ChevronRight size={24} />
+      </button>
+
+      {/* Prikker */}
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
+        {images.map((_, i) => (
+          <button
+            key={`dot-${i}`}
+            onClick={() => goTo(i)}
+            className={`h-2 w-2 rounded-full transition-opacity duration-300 ${
+              i === currentIndex ? "opacity-100" : "opacity-50"
+            } bg-[var(--color-brand-blue)]`}
+            aria-label={`Billede ${i + 1}`}
+          />
         ))}
-      </motion.div>
-      {/* fade‐kanter */}
-      <div
-        className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r
-                    from-[var(--color-secondary-light)]
-                    via-[var(--color-secondary-light)]/80
-                    to-transparent pointer-events-none z-10"
-      />
-      <div
-        className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l
-                    from-[var(--color-secondary-light)]
-                    via-[var(--color-secondary-light)]/80
-                    to-transparent pointer-events-none z-10"
-      />
+      </div>
     </div>
   );
 };
@@ -104,7 +121,7 @@ export default function CasesList() {
     "Mini-Webshop",
   ];
 
-  // --- Framer‐motion varianter ---
+  // Framer-motion varianter
   const circleVariant = {
     hidden: { scale: 0, opacity: 0 },
     visible: (custom) => ({
@@ -211,7 +228,7 @@ export default function CasesList() {
           />
         </div>
 
-        {/* kort‐grid */}
+        {/* kort-grid */}
         <div className="container mx-auto px-6 relative z-5">
           <motion.div
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10"
@@ -238,15 +255,15 @@ export default function CasesList() {
                 >
                   <h3
                     className="
-                       text-xl sm:text-2xl font-semibold
-                       text-[var(--color-brand-blue)]
-                       mb-3 text-center
-                     "
+                      text-xl sm:text-2xl font-semibold
+                      text-[var(--color-brand-blue)]
+                      mb-3 text-center
+                    "
                   >
                     {details.title}
                   </h3>
 
-                  <CategoryImageLoop
+                  <CategoryImageCarousel
                     images={imgs}
                     onImageClick={setSelectedImage}
                     categoryTitle={details.title}
@@ -258,7 +275,7 @@ export default function CasesList() {
         </div>
       </section>
 
-      {/* Lightbox – ingen ændringer */}
+      {/* Lightbox */}
       <Lightbox
         imageUrl={selectedImage}
         onClose={() => setSelectedImage(null)}

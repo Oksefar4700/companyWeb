@@ -1,41 +1,42 @@
 // src/app/page.js
 "use client";
 
+import { useState } from "react";
 import Hero from "../components/Hero";
 import Packages from "../components/Packages";
 import ParallaxSection from "../components/ParallaxSection";
 import CasesList from "../components/CasesList";
 import AboutSection from "../components/AboutSection";
 import TeamSection from "../components/TeamSection";
-import ContactSection from "../components/ContactSection";
 import ChatWidget from "../components/ChatWidget";
+import ContactSection from "../components/ContactSection";
 
 export default function HomePage() {
+  const [selectedPkg, setSelectedPkg] = useState(null);
+
+  const handleOrder = (pkg) => {
+    setSelectedPkg(pkg);
+    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleClear = () => {
+    setSelectedPkg(null);
+  };
+
   return (
     <main>
-      {/* Fuldskærms-hero */}
       <Hero />
 
-      {/* Løsninger på lys baggrund */}
-      <Packages />
+      <Packages onOrder={handleOrder} />
 
-      {/* Parallax på lys baggrund */}
-      <ParallaxSection src="/images/contact/contactImage.png" height="70vh" />
-
-      {/* Cases på lys baggrund */}
+      <ParallaxSection src="/images/contact/contactImage.png" />
       <CasesList />
-
-      {/* Om os på lys baggrund */}
       <AboutSection />
-
-      {/* Team på lys baggrund */}
       <TeamSection />
-
-      {/* Flydende chat-widget */}
       <ChatWidget />
 
-      {/* Kontakt på lys baggrund med baggrundsbillede */}
-      <ContactSection />
+      {/* ContactSection står selv for id="contact", padding og baggrund */}
+      <ContactSection selectedPkg={selectedPkg} onClear={handleClear} />
     </main>
   );
 }

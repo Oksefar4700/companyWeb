@@ -1,7 +1,7 @@
 // src/components/Header.jsx
 "use client";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Menu, X, Phone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -15,18 +15,29 @@ const navLinks = [
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Sæt initial state
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
-  // Framer Motion varianter
+  // Fast hvid baggrund, skygge og kant
+  const headerDynamicClasses =
+    "fixed top-0 left-0 right-0 z-50 bg-white shadow-md border-b border-gray-200";
+
+  // Ensartede farver til logo, links og ikoner
+  const logoColorClass =
+    "text-[var(--color-brand-blue)] hover:text-[var(--color-brand-blue-dark)]";
+  const navLinkColorClass =
+    "text-gray-800 hover:text-[var(--color-brand-blue)]";
+  const mobileIconColorClass =
+    "text-gray-800 hover:text-[var(--color-brand-blue)]";
+  const kontaktBtnClasses =
+    "bg-[var(--color-brand-blue)] text-white hover:bg-[var(--color-brand-blue-darker)] focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]";
+
+  const baseLinkClasses =
+    "text-base font-medium transition-all duration-300 ease-in-out relative group py-2";
+  const desktopLinkCombinedClasses = `${baseLinkClasses} ${navLinkColorClass}`;
+  const mobileMenuNavLinkClasses = `${baseLinkClasses} text-[var(--color-foreground)] hover:text-[var(--color-brand-blue)] py-3.5 text-lg w-full text-left block border-b border-transparent hover:border-[var(--color-brand-blue)]/30`;
+
+  // Framer Motion-varianter
   const menuVariants = {
     hidden: { opacity: 0, y: -20 },
     visible: {
@@ -54,42 +65,6 @@ export default function Header() {
     }),
   };
 
-  const baseLinkClasses =
-    "text-base font-medium transition-all duration-300 ease-in-out relative group py-2";
-  let headerDynamicClasses =
-    "fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out";
-  let logoColorClass,
-    navLinkColorClass,
-    mobileIconColorClass,
-    kontaktBtnClasses;
-
-  if (scrolled || isOpen) {
-    // Når scrolled/mobilmenu åben: Beige baggrund
-    headerDynamicClasses += ` shadow-xl bg-[var(--color-secondary-light)]/95 backdrop-blur-md border-b border-[var(--color-primary)]/10`;
-    logoColorClass = "text-[var(--color-brand-blue)]";
-    navLinkColorClass =
-      "text-[var(--color-foreground)] hover:text-[var(--color-brand-blue)]";
-    mobileIconColorClass =
-      "text-[var(--color-foreground)] hover:text-[var(--color-brand-blue)]";
-    kontaktBtnClasses =
-      "bg-[var(--color-brand-blue)] text-white hover:bg-[var(--color-brand-blue-darker)] focus-visible:ring-offset-[var(--color-secondary-light)]";
-  } else {
-    // Når øverst: Mørk gradient for kontrast, hvid tekst
-    headerDynamicClasses +=
-      " bg-gradient-to-b from-black/60 via-black/50 to-black/20 border-b border-transparent";
-    logoColorClass =
-      "text-[var(--color-background)] hover:text-[var(--color-brand-blue-lighter-bg)]";
-    navLinkColorClass =
-      "text-[var(--color-background)] hover:text-[var(--color-brand-blue-lighter-bg)]";
-    mobileIconColorClass =
-      "text-[var(--color-background)] hover:text-[var(--color-brand-blue-lighter-bg)]";
-    kontaktBtnClasses =
-      "bg-white/20 text-[var(--color-background)] border border-white/40 hover:bg-white/30 backdrop-blur-sm focus-visible:ring-offset-transparent focus-visible:ring-white/50";
-  }
-
-  const desktopLinkCombinedClasses = `${baseLinkClasses} ${navLinkColorClass}`;
-  const mobileMenuNavLinkClasses = `${baseLinkClasses} text-[var(--color-foreground)] hover:text-[var(--color-brand-blue)] py-3.5 text-lg w-full text-left block border-b border-transparent hover:border-[var(--color-brand-blue)]/30`;
-
   return (
     <header className={headerDynamicClasses}>
       <div className="container mx-auto px-6 h-[var(--header-height)] flex justify-between items-center">
@@ -108,14 +83,12 @@ export default function Header() {
               className={desktopLinkCombinedClasses}
             >
               {link.label}
-              <span
-                className={`absolute bottom-0 left-0 w-0 h-0.5 bg-[var(--color-brand-blue)] transition-all duration-300 ease-out group-hover:w-full`}
-              ></span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[var(--color-brand-blue)] transition-all duration-300 ease-out group-hover:w-full" />
             </Link>
           ))}
           <Link
             href="/kontakt"
-            className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ease-in-out shadow-sm hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)] ${kontaktBtnClasses} inline-flex items-center`}
+            className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ease-in-out shadow-sm hover:shadow-md focus:outline-none ${kontaktBtnClasses} inline-flex items-center`}
           >
             <Phone size={16} className="mr-2" />
             Kontakt
@@ -140,7 +113,7 @@ export default function Header() {
             animate="visible"
             exit="exit"
             variants={menuVariants}
-            className={`lg:hidden absolute top-[var(--header-height)] left-0 right-0 shadow-xl bg-[var(--color-secondary-light)] pb-4 border-t border-[var(--color-primary)]/10`} // Mobilmenu altid beige
+            className="lg:hidden absolute top-[var(--header-height)] left-0 right-0 shadow-xl bg-[var(--color-secondary-light)] pb-4 border-t border-[var(--color-primary)]/10"
           >
             <div className="container mx-auto px-6 flex flex-col space-y-2 pt-3">
               {navLinks.map((link, index) => (
