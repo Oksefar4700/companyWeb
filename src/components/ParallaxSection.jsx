@@ -34,7 +34,7 @@ export default function ParallaxSection({
   // F.eks. fra -10% til 10% af elementets (skalerede) højde.
   // Du kan justere -8 og 8 for at ændre parallax-effektens "dybde".
   // Mindre tal = mindre bevægelse. Større tal = mere bevægelse.
-  const imageYPercent = useTransform(scrollYProgress, [0, 1], [-50, 50]); // Giver numeriske værdier
+  const imageYPercent = useTransform(scrollYProgress, [0, 1], [-100, 100]); // Giver numeriske værdier
   const imageTranslateY = useMotionTemplate`${imageYPercent}%`; // Formaterer til "X%" streng
 
   // Varianter for sektionens ramme

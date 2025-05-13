@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import Hero from "../components/Hero";
+import WhyChooseUsSection from "../components/WhyChooseUsSection";
 import Packages from "../components/Packages";
 import ParallaxSection from "../components/ParallaxSection";
 import CasesList from "../components/CasesList";
@@ -26,6 +27,7 @@ export default function HomePage() {
   return (
     <main>
       <Hero />
+      <WhyChooseUsSection />
 
       <Packages onOrder={handleOrder} />
 
