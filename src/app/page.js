@@ -4,6 +4,7 @@
 import { useState } from "react";
 import Hero from "../components/Hero";
 import WhyChooseUsSection from "../components/WhyChooseUsSection";
+import CompareWithWordPress from "../components/CompareWithWordPress";
 import Packages from "../components/Packages";
 import ParallaxSection from "../components/ParallaxSection";
 import CasesList from "../components/CasesList";
@@ -27,17 +28,32 @@ export default function HomePage() {
   return (
     <main>
       <Hero />
+
+      {/* Hvorfor vælge os - kort teaser med video og bullets */}
       <WhyChooseUsSection />
 
+      {/* React vs. WordPress - non-teknisk sammenligning */}
+      <CompareWithWordPress />
+
+      {/* Pakke-oversigt */}
       <Packages onOrder={handleOrder} />
 
+      {/* Parallax-banner */}
       <ParallaxSection src="/images/contact/contactImage.png" />
+
+      {/* Cases */}
       <CasesList />
+
+      {/* Om os */}
       <AboutSection />
+
+      {/* Mød teamet */}
       <TeamSection />
+
+      {/* Chat-widget */}
       <ChatWidget />
 
-      {/* ContactSection står selv for id="contact", padding og baggrund */}
+      {/* Kontaktformular */}
       <ContactSection selectedPkg={selectedPkg} onClear={handleClear} />
     </main>
   );

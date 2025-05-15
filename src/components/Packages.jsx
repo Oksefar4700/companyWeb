@@ -27,23 +27,61 @@ const iconMap = {
 export default function Packages({ onOrder }) {
   const ref = useRef(null);
   const controls = useAnimation();
-  const inView = useInView(ref, { amount: 0.3 });
+  const inView = useInView(ref, { amount: 0.2 });
+
   const [selectedPkg, setSelectedPkg] = useState(null);
 
   useEffect(() => {
     controls.start(inView ? "visible" : "hidden");
   }, [controls, inView]);
 
-  const container = {
-    hidden: {},
-    visible: { transition: { staggerChildren: 0.1 } },
+  const gridContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeIn",
+        when: "beforeChildren",
+        staggerChildren: 0.1,
+      },
+    },
   };
+
   const cardAnim = {
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { type: "spring", stiffness: 100, damping: 20 },
+      transition: {
+        type: "spring",
+        damping: 35,
+        stiffness: 150,
+        restDelta: 0.001,
+      },
+    },
+  };
+
+  const titleVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "tween", ease: "easeInOut", duration: 0.6 },
+    },
+  };
+
+  const barVariants = {
+    hidden: { opacity: 0, scaleX: 0 },
+    visible: {
+      opacity: 1,
+      scaleX: 1,
+      transition: {
+        type: "tween",
+        ease: "easeInOut",
+        duration: 0.6,
+        delay: 0.1,
+      },
     },
   };
 
@@ -54,45 +92,42 @@ export default function Packages({ onOrder }) {
       className="bg-[#f7f5f2] text-[#1f2328] scroll-mt-[var(--header-height)] py-20"
     >
       <motion.h2
-        initial={{ opacity: 0, y: -20 }}
+        variants={titleVariants}
+        initial="hidden"
         animate={controls}
-        variants={{ hidden: {}, visible: { opacity: 1, y: 0 } }}
-        transition={{ duration: 0.6 }}
-        className="text-4xl font-bold text-center mb-2 text-[#2e2e38]"
+        className="text-4xl font-extrabold font-heading text-center mb-2 text-[#2e2e38]"
       >
         Vælg din løsning
       </motion.h2>
-
       <motion.div
-        initial={{ scaleX: 0 }}
-        animate={controls}
-        variants={{ hidden: {}, visible: { scaleX: 1 } }}
-        transition={{ duration: 0.6 }}
-        className="mx-auto mb-12 w-24 h-1 rounded-full bg-[#7eaedb]"
-      />
-
-      <motion.div
+        variants={barVariants}
         initial="hidden"
         animate={controls}
-        variants={container}
+        className="mx-auto mb-12 w-24 h-1 rounded-full bg-[#7eaedb]"
+      />
+      <motion.div
         className="container mx-auto px-6 grid gap-8 md:grid-cols-2 lg:grid-cols-3"
+        initial="hidden"
+        animate={controls}
+        variants={gridContainerVariants}
       >
         {packages.map((pkg) => {
-          const Icon = iconMap[pkg.slug];
+          const Icon = iconMap[pkg.slug] || FaBoxOpen;
           return (
             <motion.div
               key={pkg.slug}
               variants={cardAnim}
               onClick={() => setSelectedPkg(pkg)}
-              whileHover={{ scale: 1.02 }}
-              className="relative group bg-white border-2 border-[#2e2e38] rounded-3xl shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer overflow-visible"
+              whileHover={{ scale: 1.05, rotate: 3 }}
+              transition={{ type: "spring", stiffness: 200, damping: 20 }}
+              className="relative group bg-white border-2 border-[#2e2e38] rounded-3xl shadow-sm transition-shadow duration-300 cursor-pointer"
+              style={{ willChange: "transform" }}
             >
               <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
                 <div className="bg-[#7eaedb] p-3 rounded-full shadow-inner">
                   <Icon className="w-6 h-6 text-white" />
                 </div>
               </div>
-
               <div className="pt-10 pb-6 px-6 flex flex-col h-full">
                 <h3 className="mt-2 text-2xl font-semibold mb-2 text-[#2e2e38]">
                   {pkg.title}
@@ -100,19 +135,10 @@ export default function Packages({ onOrder }) {
                 <p className="text-sm mb-4 flex-grow leading-relaxed">
                   {pkg.description}
                 </p>
-                <p className="text-lg font-bold mb-4 text-[#7eaedb] group-hover:text-[#5a82a3] transition-colors">
+                <p className="text-lg font-bold mb-4 text-[#7eaedb] transition-colors duration-200">
                   {pkg.price.toLocaleString("da-DK")} kr.
                 </p>
-                {/* Opdateret: kun tekstfarve på hover */}
-                <span
-                  className="
-                    inline-block
-                    underline
-                    text-[#7eaedb]
-                    hover:text-[#5a82a3]
-                    transition-colors
-                  "
-                >
+                <span className="inline-block underline text-[#7eaedb] transition-colors duration-200">
                   Se flere detaljer →
                 </span>
               </div>
@@ -120,7 +146,6 @@ export default function Packages({ onOrder }) {
           );
         })}
       </motion.div>
-
       <PackageDetailDrawer
         pkg={selectedPkg}
         isOpen={!!selectedPkg}

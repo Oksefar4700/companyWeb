@@ -1,4 +1,3 @@
-// src/components/Header.jsx
 "use client";
 import Link from "next/link";
 import { useState } from "react";
@@ -32,8 +31,9 @@ export default function Header() {
   const kontaktBtnClasses =
     "bg-[var(--color-brand-blue)] text-white hover:bg-[var(--color-brand-blue-darker)] focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]";
 
+  // Opdaterede font-størrelser og vægte
   const baseLinkClasses =
-    "text-base font-medium transition-all duration-300 ease-in-out relative group py-2";
+    "text-lg font-semibold transition-all duration-300 ease-in-out relative group py-2";
   const desktopLinkCombinedClasses = `${baseLinkClasses} ${navLinkColorClass}`;
   const mobileMenuNavLinkClasses = `${baseLinkClasses} text-[var(--color-foreground)] hover:text-[var(--color-brand-blue)] py-3.5 text-lg w-full text-left block border-b border-transparent hover:border-[var(--color-brand-blue)]/30`;
 
@@ -68,33 +68,38 @@ export default function Header() {
   return (
     <header className={headerDynamicClasses}>
       <div className="container mx-auto px-6 h-[var(--header-height)] flex justify-between items-center">
+        {/* Logo */}
         <Link
           href="/"
-          className={`text-2xl font-bold font-heading transition-colors duration-300 ease-in-out ${logoColorClass}`}
+          className={`text-3xl font-extrabold uppercase tracking-wider font-heading transition-colors duration-300 ease-in-out ${logoColorClass}`}
         >
           CompanyWeb
         </Link>
 
+        {/* Desktop nav */}
         <nav className="hidden lg:flex items-center space-x-7">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={desktopLinkCombinedClasses}
+              className={`${desktopLinkCombinedClasses} hover:scale-105`}
             >
               {link.label}
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[var(--color-brand-blue)] transition-all duration-300 ease-out group-hover:w-full" />
+              <span className="absolute bottom-0 left-0 w-0 h-1 bg-[var(--color-brand-blue)] transition-all duration-300 ease-out group-hover:w-full" />
             </Link>
           ))}
+
+          {/* Kontakt-knap */}
           <Link
             href="/kontakt"
-            className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ease-in-out shadow-sm hover:shadow-md focus:outline-none ${kontaktBtnClasses} inline-flex items-center`}
+            className={`px-6 py-3 rounded-lg text-base font-bold transition-all duration-200 ease-in-out shadow-md hover:shadow-lg transform ${kontaktBtnClasses} inline-flex items-center`}
           >
             <Phone size={16} className="mr-2" />
             Kontakt
           </Link>
         </nav>
 
+        {/* Mobile menu button */}
         <div className="lg:hidden">
           <button
             onClick={toggleMenu}
@@ -106,6 +111,7 @@ export default function Header() {
         </div>
       </div>
 
+      {/* Mobile dropdown */}
       <AnimatePresence>
         {isOpen && (
           <motion.nav
@@ -145,7 +151,7 @@ export default function Header() {
                 <Link
                   href="/kontakt"
                   onClick={() => setIsOpen(false)}
-                  className="w-full px-5 py-3 rounded-lg text-base font-semibold text-center bg-[var(--color-brand-blue)] text-white hover:bg-[var(--color-brand-blue-darker)] transition-all duration-300 ease-in-out shadow-sm hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-secondary-light)] focus-visible:ring-[var(--color-brand-blue)] inline-flex items-center justify-center"
+                  className="w-full px-5 py-3 rounded-lg text-base font-semibold text-center bg-[var(--color-brand-blue)] text-white hover:bg-[var(--color-brand-blue-darker)] transition-all duration-300 ease-in-out shadow-sm hover:shadow-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-secondary-light)] focus-visible:ring-[var(--color-brand-blue)] inline-flex items-center justify-center"
                 >
                   <Phone size={18} className="mr-2" />
                   Kontakt os
