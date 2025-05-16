@@ -4,9 +4,9 @@
 import { useForm } from "react-hook-form";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { User, Mail, MessageSquare } from "lucide-react";
+import { User, Mail, Phone, MessageSquare } from "lucide-react";
 
-export default function ContactForm({ selectedPkg }) {
+export default function ContactForm({ selectedPkg, selectedBooking }) {
   const {
     register,
     handleSubmit,
@@ -14,26 +14,53 @@ export default function ContactForm({ selectedPkg }) {
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm({
     defaultValues: {
+      // Pakke-relaterede felter
       packageSlug: selectedPkg?.slug || "",
       packageTitle: selectedPkg?.title || "",
       packagePrice: selectedPkg?.price || "",
+
+      // Booking-relaterede felter
+      bookingDateTime: selectedBooking?.dateTime || null,
+      bookingFormattedDateTime: selectedBooking?.formattedDateTime || "",
+
+      // Besked
       message: selectedPkg
         ? `Hej! Jeg vil gerne bestille pakken: ${
             selectedPkg.title
           } (${selectedPkg.price.toLocaleString(
             "da-DK"
           )} kr.), som inkluderer: ${selectedPkg.details.join(", ")}.`
+        : selectedBooking
+        ? `Hej! Jeg vil gerne bekræfte min booking ${selectedBooking.formattedDateTime}.`
         : "",
     },
   });
 
   const onSubmit = async (data) => {
     try {
+      // Tilføj type-felt baseret på om det er en pakke, booking eller alm. henvendelse
+      const requestType = selectedPkg
+        ? "package"
+        : selectedBooking
+        ? "booking"
+        : "contact";
+
+      // Gem i Firebase
       await addDoc(collection(db, "contacts"), {
         ...data,
+        type: requestType,
         createdAt: serverTimestamp(),
+        status: selectedBooking ? "pending" : undefined, // For bookings tilføj status
       });
+
       reset();
+
+      // Vis bekræftelse
+      if (selectedBooking) {
+        alert(
+          `Din booking er bekræftet!\n\nTidspunkt: ${selectedBooking.formattedDateTime}\n\nVi har sendt en bekræftelse til din mail.`
+        );
+      }
     } catch (err) {
       console.error(err);
     }
@@ -47,10 +74,20 @@ export default function ContactForm({ selectedPkg }) {
         </div>
       )}
 
-      {/* Skjulte felter */}
+      {/* Skjulte felter for pakker */}
       <input type="hidden" {...register("packageSlug")} />
       <input type="hidden" {...register("packageTitle")} />
       <input type="hidden" {...register("packagePrice")} />
+
+      {/* Skjulte felter for bookings */}
+      <input type="hidden" {...register("bookingFormattedDateTime")} />
+      {selectedBooking && (
+        <input
+          type="hidden"
+          {...register("bookingDateTime")}
+          value={selectedBooking.dateTime.toISOString()}
+        />
+      )}
 
       {/* Navn */}
       <div className="relative">
@@ -79,6 +116,27 @@ export default function ContactForm({ selectedPkg }) {
         />
         {errors.email && (
           <p className="mt-1 text-red-600 text-sm">{errors.email.message}</p>
+        )}
+      </div>
+
+      {/* Telefon (kun obligatorisk for bookings) */}
+      <div className="relative">
+        <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-primary)]" />
+        <input
+          id="phone"
+          type="tel"
+          placeholder={`Dit telefonnummer${
+            selectedBooking ? "" : " (valgfri)"
+          }`}
+          {...register("phone", {
+            required: selectedBooking
+              ? "Telefonnummer er påkrævet for bookings"
+              : false,
+          })}
+          className="h-12 w-full pl-12 pr-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-blue)] transition"
+        />
+        {errors.phone && (
+          <p className="mt-1 text-red-600 text-sm">{errors.phone.message}</p>
         )}
       </div>
 
@@ -113,7 +171,13 @@ export default function ContactForm({ selectedPkg }) {
           disabled:opacity-50
         "
       >
-        {isSubmitting ? "Sender…" : "Send besked"}
+        {isSubmitting
+          ? "Sender…"
+          : selectedBooking
+          ? "Bekræft booking"
+          : selectedPkg
+          ? "Bestil pakke"
+          : "Send besked"}
       </button>
     </form>
   );

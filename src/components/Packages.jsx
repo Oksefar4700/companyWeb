@@ -1,3 +1,4 @@
+// src/components/Packages.jsx
 "use client";
 
 import { motion, useAnimation, useInView } from "framer-motion";
@@ -124,7 +125,7 @@ export default function Packages({ onOrder }) {
                 borderColor: "#7eaedb",
               }}
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              className="relative group bg-white border-2 border-[#2e2e38] rounded-3xl shadow-sm transition-all duration-300 cursor-pointer"
+              className="relative group bg-white border-2 border-[#2e2e38] rounded-3xl shadow-sm transition-shadow duration-300 cursor-pointer"
               style={{ willChange: "transform" }}
             >
               <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">

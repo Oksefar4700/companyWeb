@@ -1,4 +1,4 @@
-// src/components/Hero.jsx
+// src/components/Hero.jsx med korrekt video baggrund
 "use client";
 
 import { motion } from "framer-motion";
@@ -6,7 +6,8 @@ import BookingModal from "@/components/BookingModal";
 import Typewriter from "typewriter-effect";
 import { ChevronRight } from "lucide-react";
 
-export default function Hero() {
+// Tilføj onBooking som prop her
+export default function Hero({ onBooking }) {
   const contentVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -36,16 +37,19 @@ export default function Hero() {
         bg-animated-gradient
       "
     >
-      {/* Lottie-animation */}
+      {/* Video-baggrund (erstatter Lottie-animation) */}
       <div className="absolute inset-0 pointer-events-none">
-        <lottie-player
-          src="/videos/why_us_demo1.mp4"
-          background="transparent"
-          speed="1"
+        <video
+          autoPlay
           loop
-          autoplay
-          style={{ width: "100%", height: "100%" }}
-        />
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+        >
+          <source src="/videos/why_us_demo1.mp4" type="video/mp4" />
+          {/* Fallback tekst hvis video ikke kan afspilles */}
+          Din browser understøtter ikke HTML5 video.
+        </video>
       </div>
 
       {/* Mørkere overlay */}
@@ -104,8 +108,8 @@ export default function Hero() {
           variants={textVariants}
           className="flex flex-col sm:flex-row gap-4 sm:gap-6"
         >
-          {/* Her åbner vi modal i stedet for at navigere */}
-          <BookingModal />
+          {/* Send onBooking prop videre til BookingModal her */}
+          <BookingModal onBooking={onBooking} />
 
           <a
             href="#cases"

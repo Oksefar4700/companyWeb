@@ -3,10 +3,14 @@
 
 import { useRef, useEffect } from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
-import { X } from "lucide-react";
+import { X, Calendar } from "lucide-react";
 import ContactForm from "./ContactForm";
 
-export default function ContactSection({ selectedPkg, onClear }) {
+export default function ContactSection({
+  selectedPkg,
+  selectedBooking,
+  onClear,
+}) {
   const ref = useRef(null);
   const controls = useAnimation();
   const inView = useInView(ref, { once: true, amount: 0.3 });
@@ -14,6 +18,8 @@ export default function ContactSection({ selectedPkg, onClear }) {
   useEffect(() => {
     controls.start(inView ? "visible" : "hidden");
   }, [controls, inView]);
+
+  const hasSelection = selectedPkg || selectedBooking;
 
   return (
     <motion.section
@@ -68,7 +74,7 @@ export default function ContactSection({ selectedPkg, onClear }) {
         <motion.div
           initial={false}
           animate={{
-            width: selectedPkg ? "100%" : "28rem",
+            width: hasSelection ? "100%" : "28rem",
           }}
           transition={{
             type: "spring",
@@ -81,8 +87,9 @@ export default function ContactSection({ selectedPkg, onClear }) {
           "
         >
           {selectedPkg ? (
+            // Indhold for valgt pakke (uændret)
             <div className="grid grid-cols-1 md:grid-cols-3">
-              {/* Resume */}
+              {/* Pakke-resume */}
               <div className="md:col-span-1 p-6 border-b md:border-b-0 md:border-r border-gray-200 relative">
                 <button
                   onClick={onClear}
@@ -108,9 +115,45 @@ export default function ContactSection({ selectedPkg, onClear }) {
                 <ContactForm selectedPkg={selectedPkg} />
               </div>
             </div>
+          ) : selectedBooking ? (
+            // Indhold for valgt booking
+            <div className="grid grid-cols-1 md:grid-cols-3">
+              {/* Booking-resume */}
+              <div className="md:col-span-1 p-6 border-b md:border-b-0 md:border-r border-gray-200 relative">
+                <button
+                  onClick={onClear}
+                  className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+                  aria-label="Fjern valgt booking"
+                >
+                  <X size={20} strokeWidth={2} />
+                </button>
+                <div className="flex items-center mb-4">
+                  <Calendar className="w-6 h-6 text-[#7eaedb] mr-2" />
+                  <h3 className="text-2xl font-semibold text-[#1f2328]">
+                    Booking
+                  </h3>
+                </div>
+                <div className="p-4 border border-[#7eaedb]/20 rounded-lg bg-[#7eaedb]/5 mb-4">
+                  <p className="text-sm text-gray-500 mb-1">Valgt tidspunkt:</p>
+                  <p className="font-medium text-[#1f2328]">
+                    {selectedBooking.formattedDateTime}
+                  </p>
+                </div>
+                <p className="text-sm text-[#555] leading-relaxed">
+                  Udfyld dine kontaktoplysninger, så vi kan bekræfte din
+                  booking. Vi glæder os til at møde dig og høre mere om dine
+                  behov og ønsker.
+                </p>
+              </div>
+              {/* Formular */}
+              <div className="md:col-span-2 p-6">
+                <ContactForm selectedBooking={selectedBooking} />
+              </div>
+            </div>
           ) : (
+            // Standard kontaktformular (uændret)
             <div className="p-8">
-              <ContactForm selectedPkg={null} />
+              <ContactForm />
             </div>
           )}
         </motion.div>

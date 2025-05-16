@@ -1,4 +1,4 @@
-// src/app/page.js
+// src/app/page.js - Send handleBooking til Hero
 "use client";
 
 import { useState } from "react";
@@ -15,46 +15,51 @@ import ContactSection from "../components/ContactSection";
 
 export default function HomePage() {
   const [selectedPkg, setSelectedPkg] = useState(null);
+  const [selectedBooking, setSelectedBooking] = useState(null);
 
   const handleOrder = (pkg) => {
+    setSelectedBooking(null);
     setSelectedPkg(pkg);
     document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const handleBooking = (bookingData) => {
+    console.log("handleBooking called with data:", bookingData);
+    setSelectedPkg(null);
+    setSelectedBooking(bookingData);
+
+    // Scroll til kontakt-sektionen
+    setTimeout(() => {
+      document
+        .getElementById("contact")
+        ?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  };
+
   const handleClear = () => {
     setSelectedPkg(null);
+    setSelectedBooking(null);
   };
 
   return (
     <main>
-      <Hero />
+      {/* Send handleBooking til Hero */}
+      <Hero onBooking={handleBooking} />
 
-      {/* Hvorfor vælge os - kort teaser med video og bullets */}
       <WhyChooseUsSection />
-
-      {/* React vs. WordPress - non-teknisk sammenligning */}
       <CompareWithWordPress />
-
-      {/* Pakke-oversigt */}
       <Packages onOrder={handleOrder} />
-
-      {/* Parallax-banner */}
       <ParallaxSection src="/images/contact/contactImage.png" />
-
-      {/* Cases */}
       <CasesList />
-
-      {/* Om os */}
       <AboutSection />
-
-      {/* Mød teamet */}
       <TeamSection />
-
-      {/* Chat-widget */}
       <ChatWidget />
 
-      {/* Kontaktformular */}
-      <ContactSection selectedPkg={selectedPkg} onClear={handleClear} />
+      <ContactSection
+        selectedPkg={selectedPkg}
+        selectedBooking={selectedBooking}
+        onClear={handleClear}
+      />
     </main>
   );
 }
