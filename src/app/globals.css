@@ -1,33 +1,33 @@
 /* src/app/globals.css */
 @import "tailwindcss";
+@import "react-datepicker/dist/react-datepicker.css";
 
 /* --- Farve-variabler --- */
 :root {
   /* Mørke farver */
-  --color-primary: #2e2e38; /* Mørkegrå (kanter, div. tekst) */
-  --color-primary-darkest: #141414; /* Tilføjet: næsten sort for maksimal kontrast */
-  --color-accent: #2e2e38; /* Accent (pt. samme som primary) */
-  --color-foreground: #1f2328; /* Mørk tekst (primær), hero gradient base */
+  --color-primary: #2e2e38;
+  --color-primary-darkest: #141414;
+  --color-accent: #2e2e38;
+  --color-foreground: #1f2328;
 
   /* Lyse farver */
-  --color-background: #ffffff; /* Hvid (primær baggrund) */
-  --color-secondary-light: #f7f5f2; /* Lys beige (sektionsbaggrunde f.eks. Packages, header) */
-  --color-secondary-dark: #2c2f3b; /* Mørk gråblå (tidligere "Mørk beige") */
+  --color-background: #ffffff;
+  --color-secondary-light: #f7f5f2;
+  --color-secondary-dark: #2c2f3b;
 
   /* Blå accentfarver */
-  --color-brand-blue: #7eaedb; /* Lyseblå (CTA, links, ikoner) */
-  --color-brand-blue-darker: #5a82a3; /* Mørkere blå (hover) */
-  --color-brand-blue-lighter-bg: #e3f0fc; /* Meget lys blå (hover baggrund) */
+  --color-brand-blue: #7eaedb;
+  --color-brand-blue-darker: #5a82a3;
+  --color-brand-blue-lighter-bg: #e3f0fc;
 
   /* Typografi */
   --font-heading: "Poppins", sans-serif;
   --font-body: "Roboto", sans-serif;
 
   /* Layout */
-  --header-height: 4rem; /* Header højde */
+  --header-height: 4rem;
 }
 
-/* --- Base styles --- */
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -56,7 +56,6 @@
   }
 }
 
-/* --- Utilities --- */
 @layer utilities {
   /* Partikel-animation */
   @keyframes drift {
@@ -102,31 +101,23 @@
   }
 }
 
-/* --- Komponenter (globale klasser) --- */
 @layer components {
-  /* Beige sektionsbaggrund */
   .section-beige {
     @apply bg-[var(--color-secondary-light)]
            text-[var(--color-foreground)]
            py-16 sm:py-20;
   }
-
-  /* Blå divider-streg */
   .section-divider {
     @apply mx-auto mb-10 sm:mb-12
            w-20 h-1 rounded-full
            bg-[var(--color-brand-blue)];
   }
-
-  /* Standard kort-styling */
   .custom-card {
     @apply bg-[var(--color-background)]
            border border-[var(--color-primary)]/15
            rounded-xl shadow-lg hover:shadow-xl
            transition-all;
   }
-
-  /* Billed-marquee-animation */
   @keyframes marquee {
     0% {
       transform: translateX(0);
@@ -138,14 +129,10 @@
   .animate-marquee {
     animation: marquee linear infinite;
   }
-
-  /* About-sektion tema */
   .section-about-themed {
     @apply bg-[var(--color-secondary-light)]
            text-[var(--color-foreground)];
   }
-
-  /* Primær knap */
   .btn-primary {
     @apply inline-block
            bg-[var(--color-brand-blue)]
@@ -155,5 +142,294 @@
            shadow-md
            hover:bg-[var(--color-brand-blue-darker)]
            transition-colors;
+  }
+}
+
+/* —————— CUSTOM OVERRIDES EFTER TAILWIND & react-datepicker —————— */
+
+/* Grundlæggende styles til hele datepickeren - tilpasset til SPA designet */
+.custom-datepicker {
+  width: 100% !important;
+  font-size: 1rem !important;
+  transform: scale(1.05);
+  transform-origin: top center;
+  margin: 0 auto;
+  border-radius: 0 !important;
+  overflow: visible !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Særlig styling til container layout der matcher SPA designet */
+.react-datepicker {
+  border: none !important;
+  background-color: transparent !important;
+  display: flex !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Styling af månedspanel og forbedret udseende */
+.react-datepicker__month-container {
+  width: 100% !important;
+  background: #f8f8f8 !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Gør ugedagene tydeligere - mere lig med billedet */
+.react-datepicker__day-names {
+  margin-top: 1rem !important;
+  border-bottom: none !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  padding: 0 1.5rem !important;
+}
+
+.react-datepicker__day-name {
+  width: 2.5rem !important;
+  margin: 0 !important;
+  font-weight: 400 !important;
+  color: #666 !important;
+  font-size: 1rem !important;
+  text-transform: lowercase !important;
+}
+
+/* Month header styling */
+.react-datepicker__current-month {
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 1rem !important;
+  color: #333 !important;
+  text-transform: lowercase !important;
+}
+
+/* Weeks container - bedre spacing */
+.react-datepicker__month {
+  margin: 0.5rem 0 !important;
+  padding: 0 1.5rem !important;
+}
+
+.react-datepicker__week {
+  display: flex !important;
+  justify-content: space-between !important;
+  margin: 0.5rem 0 !important;
+}
+
+/* Gør alle datoer større */
+.react-datepicker__day {
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  line-height: 2.5rem !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+  font-size: 1rem !important;
+  color: #333 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Style for forudgående og næste måned's datoer */
+.react-datepicker__day--outside-month {
+  color: #ccc !important;
+}
+
+/* Hover effekt - med mørkeblå farve der matcher */
+.react-datepicker__day:hover:not(.react-datepicker__day--selected):not(
+    .react-datepicker__day--disabled
+  ) {
+  background-color: #5a82a3 !important; /* Mørkeblå hover farve */
+  color: white !important;
+}
+
+/* Valgt dag */
+.react-datepicker__day--selected {
+  background-color: #7eaedb !important; /* Lyseblå for valgt dato - matcher SPA */
+  color: white !important;
+  font-weight: normal !important;
+}
+
+/* Styling af inaktive dage (tidligere datoer) */
+.react-datepicker__day--disabled {
+  color: #ccc !important;
+  cursor: default !important;
+  background-color: transparent !important;
+}
+
+/* Styling af kalenderpile */
+.react-datepicker__navigation {
+  top: 1.25rem !important;
+}
+
+.react-datepicker__navigation--previous {
+  left: 0.5rem !important;
+}
+
+.react-datepicker__navigation--next {
+  right: 0.5rem !important;
+}
+
+/* Tilpasning af tidspanelet */
+.react-datepicker__time-container {
+  width: 7rem !important;
+  border-left: 1px solid #eee !important;
+  background: white !important;
+}
+
+.react-datepicker__header--time {
+  background-color: #f8f8f8 !important;
+  color: #333 !important;
+  padding: 1.5rem 0 0.75rem !important;
+  font-weight: 600 !important;
+  font-size: 1.2rem !important;
+  text-align: center !important;
+}
+
+.react-datepicker__time-list {
+  height: 318px !important; /* Specifik højde for at matche kalenderen */
+  padding: 0 !important;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+  scroll-behavior: smooth !important;
+}
+
+.react-datepicker__time-list-item {
+  height: auto !important;
+  padding: 0.75rem 0.5rem !important;
+  font-size: 1rem !important;
+  color: #333 !important;
+  border-radius: 0 !important;
+  text-align: center !important;
+}
+
+.react-datepicker__time-list-item--selected {
+  background-color: #7eaedb !important; /* Matcher SPA farve */
+  color: white !important;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Special styling for det valgte tidspunkt */
+.selected-time-item {
+  background-color: #7eaedb !important;
+  color: white !important;
+  border: 2px solid white !important;
+  box-shadow: 0 0 0 1px #7eaedb, 0 0 0 3px rgba(126, 174, 219, 0.2) !important;
+}
+
+/* Hover på tidspunkter */
+.react-datepicker__time-list-item:hover:not(
+    .react-datepicker__time-list-item--selected
+  ):not(.react-datepicker__time-list-item--disabled) {
+  background-color: #5a82a3 !important; /* Mørkeblå hover farve */
+  color: white !important;
+}
+
+/* Skjul gråede tider */
+.react-datepicker__time-list-item--disabled {
+  display: none !important;
+}
+
+/* Header styling */
+.react-datepicker__header {
+  background-color: #f8f8f8 !important;
+  border-bottom: none !important;
+  padding-top: 1rem !important;
+}
+
+/* Modal dialog styling - tilpasset til SPA */
+.booking-dialog-panel {
+  background-color: white !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+  max-width: 38rem !important; /* Større modal */
+  width: 100% !important;
+  padding: 2rem !important;
+  position: relative !important;
+  overflow: visible !important;
+}
+
+.dialog-title {
+  font-size: 2rem !important;
+  font-weight: 600 !important;
+  color: #333 !important;
+  margin-bottom: 2rem !important;
+  text-align: left !important;
+}
+
+.close-button {
+  background: none !important;
+  border: none !important;
+  color: #888 !important;
+  cursor: pointer !important;
+  padding: 0.5rem !important;
+  transition: color 0.2s !important;
+  position: absolute !important;
+  right: 2rem !important;
+  top: 1.75rem !important;
+}
+
+.close-button:hover {
+  color: #333 !important;
+}
+
+/* Styling for valgt tidspunkt og dato tekst */
+.selected-datetime {
+  font-size: 1.1rem !important;
+  margin: 1.75rem 0 1.25rem !important;
+  color: #555 !important;
+  font-weight: 400 !important;
+}
+
+.selected-datetime strong {
+  font-weight: 600 !important;
+  color: #333 !important;
+}
+
+/* Styling af bekræftknappen - matcher SPA design */
+.confirm-button {
+  background-color: #7eaedb !important;
+  color: white !important;
+  width: 100% !important;
+  padding: 1.25rem 0 !important;
+  border-radius: 0.5rem !important;
+  font-size: 1.2rem !important;
+  font-weight: 500 !important;
+  transition: background-color 0.2s !important;
+  border: none !important;
+  cursor: pointer !important;
+  text-align: center !important;
+  margin-top: 0.5rem !important;
+}
+
+.confirm-button:hover {
+  background-color: #5a82a3 !important;
+}
+
+/* Responsiv styling */
+@media (max-width: 640px) {
+  .custom-datepicker {
+    transform: scale(1);
+  }
+
+  .react-datepicker__day-name,
+  .react-datepicker__day {
+    width: 2.2rem !important;
+    height: 2.2rem !important;
+    line-height: 2.2rem !important;
+  }
+
+  .booking-dialog-panel {
+    padding: 1.5rem !important;
+  }
+
+  .dialog-title {
+    font-size: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .confirm-button {
+    padding: 1rem 0 !important;
   }
 }

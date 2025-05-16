@@ -1,4 +1,3 @@
-// src/components/Packages.jsx
 "use client";
 
 import { motion, useAnimation, useInView } from "framer-motion";
@@ -118,9 +117,14 @@ export default function Packages({ onOrder }) {
               key={pkg.slug}
               variants={cardAnim}
               onClick={() => setSelectedPkg(pkg)}
-              whileHover={{ scale: 1.05, rotate: 3 }}
-              transition={{ type: "spring", stiffness: 200, damping: 20 }}
-              className="relative group bg-white border-2 border-[#2e2e38] rounded-3xl shadow-sm transition-shadow duration-300 cursor-pointer"
+              whileHover={{
+                scale: 1.03,
+                boxShadow:
+                  "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
+                borderColor: "#7eaedb",
+              }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
+              className="relative group bg-white border-2 border-[#2e2e38] rounded-3xl shadow-sm transition-all duration-300 cursor-pointer"
               style={{ willChange: "transform" }}
             >
               <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">

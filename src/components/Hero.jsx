@@ -1,7 +1,8 @@
+// src/components/Hero.jsx
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
+import BookingModal from "@/components/BookingModal";
 import Typewriter from "typewriter-effect";
 import { ChevronRight } from "lucide-react";
 
@@ -38,7 +39,7 @@ export default function Hero() {
       {/* Lottie-animation */}
       <div className="absolute inset-0 pointer-events-none">
         <lottie-player
-          src="/animations/AnimationProgrammingBlue.json"
+          src="/videos/why_us_demo1.mp4"
           background="transparent"
           speed="1"
           loop
@@ -47,7 +48,7 @@ export default function Hero() {
         />
       </div>
 
-      {/* Endnu mørkere overlay for maksimal kontrast */}
+      {/* Mørkere overlay */}
       <div className="absolute inset-0 bg-[var(--color-background)]/70 pointer-events-none" />
 
       {/* Tekst & knapper */}
@@ -57,7 +58,6 @@ export default function Hero() {
         initial="hidden"
         animate="visible"
       >
-        {/* Overskrift */}
         <motion.h1
           variants={textVariants}
           className="
@@ -86,7 +86,6 @@ export default function Hero() {
           />
         </motion.h1>
 
-        {/* Undertekst */}
         <motion.p
           variants={textVariants}
           className="
@@ -101,29 +100,14 @@ export default function Hero() {
           avancerede webshops og bookingsystemer.
         </motion.p>
 
-        {/* Knapper */}
         <motion.div
           variants={textVariants}
           className="flex flex-col sm:flex-row gap-4 sm:gap-6"
         >
-          <Link
-            href="/booking"
-            className="
-              inline-flex items-center justify-center
-              px-8 py-3 text-lg font-semibold
-              rounded-lg bg-[var(--color-brand-blue)]
-              text-[var(--color-background)]
-              hover:bg-[var(--color-brand-blue-darker)]
-              transition transform hover:scale-105 shadow-lg
-            "
-          >
-            Book et gratis møde
-            <ChevronRight
-              size={20}
-              className="ml-2 transition-transform hover:translate-x-1"
-            />
-          </Link>
-          <Link
+          {/* Her åbner vi modal i stedet for at navigere */}
+          <BookingModal />
+
+          <a
             href="#cases"
             className="
               inline-flex items-center justify-center
@@ -140,7 +124,7 @@ export default function Hero() {
               size={20}
               className="ml-2 transition-transform hover:translate-x-1"
             />
-          </Link>
+          </a>
         </motion.div>
       </motion.div>
     </section>
