@@ -1,3 +1,4 @@
+// src/components/Header.jsx
 "use client";
 import Link from "next/link";
 import { useState } from "react";
@@ -68,12 +69,43 @@ export default function Header() {
   return (
     <header className={headerDynamicClasses}>
       <div className="container mx-auto px-6 h-[var(--header-height)] flex justify-between items-center">
-        {/* Logo */}
+        {/* Logo - NU MED SVG+TEKST */}
         <Link
           href="/"
-          className={`text-3xl font-extrabold uppercase tracking-wider font-heading transition-colors duration-300 ease-in-out ${logoColorClass}`}
+          className="flex items-center group transition-all duration-300 ease-in-out"
         >
-          CompanyWeb
+          {/* CW SVG Logo */}
+          <div className="mr-2 md:mr-3 relative">
+            <svg
+              width="38"
+              height="38"
+              viewBox="0 0 1000 1000"
+              xmlns="http://www.w3.org/2000/svg"
+              className="drop-shadow-sm transition-transform duration-300 group-hover:scale-105"
+            >
+              <path
+                d="M500 200C331.8 200 200 331.8 200 500C200 668.2 331.8 800 500 800"
+                stroke="#7eaedb"
+                strokeWidth="100"
+                fill="none"
+              />
+              <path
+                d="M480 330L600 740L700 450L800 740L910 330"
+                stroke="#7eaedb"
+                strokeWidth="100"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+
+          {/* CompanyWeb tekst */}
+          <span
+            className={`text-2xl sm:text-3xl font-extrabold uppercase tracking-wider font-heading transition-colors duration-300 ease-in-out ${logoColorClass}`}
+          >
+            CompanyWeb
+          </span>
         </Link>
 
         {/* Desktop nav */}

@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import Hero from "../components/Hero";
-import WhyChooseUsSection from "../components/WhyChooseUsSection";
+import WhyChooseUsSection from "../components/whyChooseUs/WhyChooseUsSection";
 import CompareWithWordPress from "../components/CompareWithWordPress";
 import Packages from "../components/Packages";
 import ParallaxSection from "../components/ParallaxSection";
@@ -12,6 +12,7 @@ import AboutSection from "../components/AboutSection";
 import TeamSection from "../components/TeamSection";
 import ChatWidget from "../components/ChatWidget";
 import ContactSection from "../components/ContactSection";
+import WhyChooseUsSectionText from "../components/whyChooseUsSectionText";
 
 export default function HomePage() {
   const [selectedPkg, setSelectedPkg] = useState(null);
@@ -47,6 +48,7 @@ export default function HomePage() {
       <Hero onBooking={handleBooking} />
 
       <WhyChooseUsSection />
+      <WhyChooseUsSectionText />
       <CompareWithWordPress />
       <Packages onOrder={handleOrder} />
       <ParallaxSection src="/images/contact/contactImage.png" />
