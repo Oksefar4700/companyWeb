@@ -1,0 +1,28 @@
+/* src/styles/base.css */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--header-height);
+  }
+  body {
+    @apply bg-[var(--color-background)]
+           text-[var(--color-foreground)]
+           antialiased;
+    font-family: var(--font-body);
+    padding-top: var(--header-height);
+    overflow-x: hidden;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+  }
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+}

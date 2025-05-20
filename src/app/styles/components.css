@@ -1,0 +1,33 @@
+/* src/styles/components.css */
+@layer components {
+  .section-beige {
+    @apply bg-[var(--color-secondary-light)]
+           text-[var(--color-foreground)]
+           py-16 sm:py-20;
+  }
+  .section-divider {
+    @apply mx-auto mb-10 sm:mb-12
+           w-20 h-1 rounded-full
+           bg-[var(--color-brand-blue)];
+  }
+  .custom-card {
+    @apply bg-[var(--color-background)]
+           border border-[var(--color-primary)]/15
+           rounded-xl shadow-lg hover:shadow-xl
+           transition-all;
+  }
+  .section-about-themed {
+    @apply bg-[var(--color-secondary-light)]
+           text-[var(--color-foreground)];
+  }
+  .btn-primary {
+    @apply inline-block
+           bg-[var(--color-brand-blue)]
+           text-[var(--color-background)]
+           px-6 py-3
+           font-medium rounded-full
+           shadow-md
+           hover:bg-[var(--color-brand-blue-darker)]
+           transition-colors;
+  }
+}

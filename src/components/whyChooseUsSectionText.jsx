@@ -2,6 +2,7 @@
 
 import { useRef, useEffect } from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
+import Image from "next/image";
 import {
   Zap,
   Clock,
@@ -14,12 +15,8 @@ import {
   Rocket,
 } from "lucide-react";
 
-// Statistikker til visning
-const stats = [
-  { value: "97%", label: "Kundetilfredshed" },
-  { value: "24/7", label: "Support" },
-  { value: "100%", label: "Skræddersyet" },
-];
+// Importér data fra datafilen
+import { stats, accordionItems } from "@/data/whyChooseUsData";
 
 export default function WhyChooseUsSection() {
   // Individual refs for each section
@@ -32,24 +29,24 @@ export default function WhyChooseUsSection() {
   const feature3Ref = useRef(null);
   const ctaRef = useRef(null);
 
-  // Individual inView states
+  // Individual inView states - fjernet once:true så elementerne kan reagere på scroll
   const sectionInView = useInView(sectionRef, { amount: 0.05 });
-  const headingInView = useInView(headingRef, { amount: 0.5 });
-  const statsInView = useInView(statsRef, { amount: 0.3 });
-  const videoInView = useInView(videoRef, { amount: 0.3 });
-  const feature1InView = useInView(feature1Ref, { amount: 0.3 });
-  const feature2InView = useInView(feature2Ref, { amount: 0.3 });
-  const feature3InView = useInView(feature3Ref, { amount: 0.3 });
+  const headingInView = useInView(headingRef, { amount: 0.8 });
+  const statsInView = useInView(statsRef, { amount: 0.6 });
+  const videoInView = useInView(videoRef, { amount: 0.5 });
+  const feature1InView = useInView(feature1Ref, { amount: 0.6 });
+  const feature2InView = useInView(feature2Ref, { amount: 0.6 });
+  const feature3InView = useInView(feature3Ref, { amount: 0.6 });
   const ctaInView = useInView(ctaRef, { amount: 0.8 });
 
-  // Animation controls for different sections
+  // Animation controls for different sections med opdaterede useEffect hooks
   const controls = useAnimation();
   const statsControls = useAnimation();
   const feature1Controls = useAnimation();
   const feature2Controls = useAnimation();
   const feature3Controls = useAnimation();
 
-  // Update animations for each section independently
+  // Update animations for each section when they enter/leave viewport
   useEffect(() => {
     if (statsInView) {
       statsControls.start("visible");
@@ -82,14 +79,14 @@ export default function WhyChooseUsSection() {
     }
   }, [feature3Controls, feature3InView]);
 
-  // Enhanced animation variants for text
+  // Enhanced animation variants for text with scroll trigger
   const textRevealVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0, y: 30 },
     visible: (i) => ({
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.8,
+        duration: 0.7,
         delay: 0.1 * i,
         ease: [0.215, 0.61, 0.355, 1],
       },
@@ -109,6 +106,7 @@ export default function WhyChooseUsSection() {
     }),
   };
 
+  // Statistik sektion - individuel animation med fade-out
   const statVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: (i) => ({
@@ -116,13 +114,13 @@ export default function WhyChooseUsSection() {
       y: 0,
       transition: {
         duration: 0.6,
-        delay: 0.2 + i * 0.1,
+        delay: 0.1 + i * 0.1,
         ease: [0.215, 0.61, 0.355, 1],
       },
     }),
   };
 
-  // New animated letter variants
+  // Animated letter variants
   const letterVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: (i) => ({
@@ -135,6 +133,39 @@ export default function WhyChooseUsSection() {
       },
     }),
   };
+
+  // Section heading with icon integration
+  const FeatureIcon = ({ icon, isVisible, iconRef }) => (
+    <div className="flex justify-center mb-6 relative z-10" ref={iconRef}>
+      <div className="relative">
+        <motion.div
+          className="w-28 h-28 rounded-full bg-[var(--color-brand-blue)]/10 flex items-center justify-center"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={
+            isVisible ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }
+          }
+          transition={{ duration: 0.7, type: "spring", stiffness: 100 }}
+        >
+          {icon === "computer" ? (
+            <div className="w-16 h-16 relative">
+              <Image
+                src="/images/compare/computer.png"
+                alt=""
+                width={64}
+                height={64}
+                className="object-contain"
+              />
+            </div>
+          ) : (
+            icon
+          )}
+        </motion.div>
+        <div className="absolute top-0 left-0 w-full h-full animate-pulse opacity-50">
+          <div className="w-28 h-28 rounded-full border-2 border-[var(--color-brand-blue)]/30"></div>
+        </div>
+      </div>
+    </div>
+  );
 
   // Animated title function
   const AnimatedText = ({ text, className, isVisible }) => {
@@ -162,14 +193,48 @@ export default function WhyChooseUsSection() {
       ref={sectionRef}
       className="relative scroll-mt-[var(--header-height)] bg-[var(--color-secondary-light)] py-24 lg:py-32 overflow-hidden"
     >
-      {/* Baggrundselementer og mønstre */}
+      {/* Computer illustration og stor sky i baggrunden */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Store cirkler i baggrunden */}
-        <div className="absolute -left-16 -bottom-16 w-64 h-64 rounded-full bg-[var(--color-brand-blue)]/5"></div>
-        <div className="absolute right-1/4 -top-32 w-96 h-96 rounded-full bg-[var(--color-brand-blue)]/5"></div>
+        {/* Stor computer i baggrunden - dækket delvist af indhold */}
+        <div className="absolute right-0 bottom-0 w-full h-full flex justify-end items-end">
+          <div className="relative w-[900px] h-[900px] opacity-15 transform translate-x-[15%] translate-y-[15%]">
+            <Image
+              src="/images/compare/computer.png"
+              alt=""
+              width={900}
+              height={900}
+              className="object-contain"
+              priority
+            />
+          </div>
+        </div>
+
+        {/* Elegant baggrundsgradient der sikrer læsbarhed */}
+        <div
+          className="absolute inset-0 opacity-40"
+          style={{
+            background:
+              "radial-gradient(circle at center, transparent 50%, var(--color-secondary-light) 120%)",
+          }}
+        ></div>
+
+        {/* Flyt skyen helt op til toppen med større afstand fra indholdet */}
+        <div className="absolute left-0 top-0 w-[600px] h-[400px] opacity-10 transform translate-y-[-15%]">
+          <Image
+            src="/images/whyChooseUs/cloud.png"
+            alt=""
+            width={600}
+            height={400}
+            className="object-contain"
+            style={{
+              filter: "drop-shadow(0 8px 12px rgba(126, 174, 219, 0.12))",
+            }}
+            priority
+          />
+        </div>
 
         {/* Subtile prikker i baggrunden */}
-        <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0 opacity-10">
           <div
             className="h-full w-full"
             style={{
@@ -187,34 +252,38 @@ export default function WhyChooseUsSection() {
           ref={headingRef}
           className="text-center mb-24"
           initial={{ opacity: 0, y: -20 }}
-          animate={
-            headingInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }
-          }
+          animate={{
+            opacity: headingInView ? 1 : 0,
+            y: headingInView ? 0 : -20,
+          }}
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
-          <AnimatedText
-            text="Hvorfor vælge os"
+          <motion.h2
             className="text-4xl md:text-5xl font-extrabold font-heading mb-5"
-            isVisible={headingInView}
-          />
+            initial={{ opacity: 0 }}
+            animate={{ opacity: headingInView ? 1 : 0 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+          >
+            Hvorfor vælge os
+          </motion.h2>
 
           <motion.div
             className="w-28 h-1.5 bg-[var(--color-brand-blue)] rounded-full mx-auto mb-10"
             initial={{ scaleX: 0, opacity: 0 }}
-            animate={
-              headingInView
-                ? { scaleX: 1, opacity: 1 }
-                : { scaleX: 0, opacity: 0 }
-            }
+            animate={{
+              scaleX: headingInView ? 1 : 0,
+              opacity: headingInView ? 1 : 0,
+            }}
             transition={{ duration: 0.7, delay: 0.5 }}
           />
 
           <motion.p
             className="text-lg md:text-xl max-w-3xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
-            animate={
-              headingInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
-            }
+            animate={{
+              opacity: headingInView ? 1 : 0,
+              y: headingInView ? 0 : 20,
+            }}
             transition={{ duration: 0.7, delay: 0.7 }}
           >
             Hos os handler det ikke bare om at lave hjemmesider. Det handler om
@@ -222,10 +291,10 @@ export default function WhyChooseUsSection() {
           </motion.p>
         </motion.div>
 
-        {/* Statistik sektion - individuel animation */}
+        {/* Statistik sektion - individuel animation uden baggrundselementer */}
         <motion.div
           ref={statsRef}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-24"
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-24 relative"
           initial="hidden"
           animate={statsControls}
           variants={{
@@ -237,6 +306,7 @@ export default function WhyChooseUsSection() {
             },
           }}
         >
+          {/* Stats cards uden baggrundsfigurer */}
           {stats.map((stat, i) => (
             <motion.div
               key={i}
@@ -254,7 +324,7 @@ export default function WhyChooseUsSection() {
           ))}
         </motion.div>
 
-        {/* Video og sektion-inddeling med individuel animation */}
+        {/* Video og sektion-inddeling med individuel animation - uden baggrundsgrafik */}
         <div
           ref={videoRef}
           className="max-w-6xl mx-auto mb-20 overflow-hidden rounded-2xl shadow-2xl relative"
@@ -270,7 +340,7 @@ export default function WhyChooseUsSection() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent pointer-events-none" />
             <motion.div
-              className="absolute bottom-0 left-0 right-0 p-10 text-white"
+              className="absolute bottom-0 left-0 right-0 p-10 text-white text-center"
               initial={{ opacity: 0, y: 20 }}
               animate={
                 videoInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
@@ -280,7 +350,7 @@ export default function WhyChooseUsSection() {
               <h3 className="text-3xl font-bold mb-3">
                 En partner, ikke bare en leverandør
               </h3>
-              <p className="text-xl max-w-3xl">
+              <p className="text-xl max-w-3xl mx-auto">
                 Vi samarbejder tæt med vores kunder for at forstå deres behov og
                 skabe løsninger, der virkelig gør en forskel.
               </p>
@@ -288,64 +358,67 @@ export default function WhyChooseUsSection() {
           </div>
         </div>
 
-        {/* Feature blocks med individuel animation */}
-        <div className="max-w-6xl mx-auto space-y-24">
-          {/* Feature 1: React teknologi */}
+        {/* Feature blocks med individuel animation - CENTRERET LAYOUT */}
+        <div className="max-w-6xl mx-auto space-y-8">
+          {/* Feature 1: React teknologi - uden baggrundsgrafik */}
           <motion.div
             ref={feature1Ref}
-            className="grid grid-cols-1 lg:grid-cols-12 items-center gap-10"
+            className="flex flex-col items-center text-center relative py-4 px-4 rounded-lg"
             custom={0}
             variants={fadeInUpVariants}
             initial="hidden"
             animate={feature1Controls}
           >
-            {/* Ikon-side */}
-            <div className="lg:col-span-4 flex justify-center">
+            {/* Scroll-aktiveret highlight-effekt */}
+            <div
+              className="absolute inset-0 bg-gradient-to-b from-[var(--color-brand-blue)]/0 via-[var(--color-brand-blue)]/3 to-[var(--color-brand-blue)]/0 rounded-lg opacity-0 transition-opacity duration-1000"
+              style={{
+                opacity: feature1InView ? 0.5 : 0,
+                transitionDelay: "0.3s",
+              }}
+            ></div>
+
+            {/* Ikon centreret - med once-triggered animation */}
+            <div className="flex justify-center mb-6 relative z-10">
               <div className="relative">
                 <motion.div
-                  className="w-32 h-32 lg:w-44 lg:h-44 rounded-full bg-[var(--color-brand-blue)]/10 flex items-center justify-center"
+                  className="w-24 h-24 lg:w-32 lg:h-32 rounded-full bg-[var(--color-brand-blue)]/10 flex items-center justify-center"
                   initial={{ scale: 0, opacity: 0 }}
-                  animate={
-                    feature1InView
-                      ? { scale: 1, opacity: 1 }
-                      : { scale: 0, opacity: 0 }
-                  }
+                  animate={{
+                    scale: feature1InView ? 1 : 0,
+                    opacity: feature1InView ? 1 : 0,
+                  }}
                   transition={{ duration: 0.7, type: "spring", stiffness: 100 }}
                 >
-                  <Zap size={72} className="text-[var(--color-brand-blue)]" />
+                  <Zap size={48} className="text-[var(--color-brand-blue)]" />
                 </motion.div>
                 <div className="absolute top-0 left-0 w-full h-full animate-pulse opacity-50">
-                  <div className="w-32 h-32 lg:w-44 lg:h-44 rounded-full border-2 border-[var(--color-brand-blue)]/30"></div>
+                  <div className="w-24 h-24 lg:w-32 lg:h-32 rounded-full border-2 border-[var(--color-brand-blue)]/30"></div>
                 </div>
               </div>
             </div>
 
-            {/* Tekstside med forbedret animation */}
-            <div className="lg:col-span-8">
+            {/* Tekst centreret - kortere spacing */}
+            <div className="max-w-3xl mx-auto">
               <motion.h3
-                className="text-2xl lg:text-3xl font-bold text-[var(--color-foreground)] mb-5"
+                className="text-xl lg:text-2xl font-bold text-[var(--color-foreground)] mb-3"
                 variants={textRevealVariants}
                 custom={0}
               >
-                React-baseret platform: Lynhurtig, fleksibel, fremtidssikret
+                {accordionItems[0].title}
               </motion.h3>
 
               <motion.p
-                className="text-lg leading-relaxed mb-6"
+                className="text-base leading-relaxed mb-5"
                 variants={textRevealVariants}
                 custom={1}
               >
-                Vi arbejder i React, et af verdens mest moderne
-                frontend-teknologier, som sikrer dig en hurtig, fleksibel og
-                fremtidssikret platform. Det betyder lynhurtig indlæsning, høj
-                stabilitet og en brugeroplevelse, dine kunder vil elske – uanset
-                om du er en nystartet iværksætter, en etableret virksomhed eller
-                en offentlig aktør.
+                {accordionItems[0].content.paragraph}
               </motion.p>
 
-              {/* Fordele grid med staggered animation */}
+              {/* Fordele grid med staggered animation - mindre spacing */}
               <motion.div
-                className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-8"
+                className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 max-w-4xl mx-auto"
                 variants={{
                   hidden: { opacity: 0 },
                   visible: {
@@ -355,14 +428,26 @@ export default function WhyChooseUsSection() {
                 }}
               >
                 {[
-                  { icon: <Rocket size={20} />, text: "Lynhurtig indlæsning" },
-                  { icon: <MessageCircle size={20} />, text: "Høj stabilitet" },
-                  { icon: <PenTool size={20} />, text: "Moderne UX/UI" },
-                  { icon: <CheckCircle2 size={20} />, text: "Fremtidssikret" },
+                  {
+                    icon: <Rocket size={18} />,
+                    text: accordionItems[0].content.benefits[0],
+                  },
+                  {
+                    icon: <MessageCircle size={18} />,
+                    text: accordionItems[0].content.benefits[1],
+                  },
+                  {
+                    icon: <PenTool size={18} />,
+                    text: accordionItems[0].content.benefits[2],
+                  },
+                  {
+                    icon: <CheckCircle2 size={18} />,
+                    text: accordionItems[0].content.benefits[3],
+                  },
                 ].map((benefit, i) => (
                   <motion.div
                     key={i}
-                    className="flex items-center p-4 bg-white rounded-lg shadow-sm"
+                    className="flex items-center p-3 bg-white rounded-lg shadow-sm"
                     variants={{
                       hidden: { opacity: 0, x: -20 },
                       visible: {
@@ -375,177 +460,183 @@ export default function WhyChooseUsSection() {
                       },
                     }}
                   >
-                    <div className="w-10 h-10 rounded-full bg-[var(--color-brand-blue)]/10 flex items-center justify-center mr-4">
+                    <div className="w-8 h-8 rounded-full bg-[var(--color-brand-blue)]/10 flex items-center justify-center mr-3">
                       <span className="text-[var(--color-brand-blue)]">
                         {benefit.icon}
                       </span>
                     </div>
-                    <span className="text-base font-medium">
-                      {benefit.text}
-                    </span>
+                    <span className="text-sm font-medium">{benefit.text}</span>
                   </motion.div>
                 ))}
               </motion.div>
             </div>
           </motion.div>
 
-          {/* Feature 2: 24/7 Support */}
+          {/* Feature 2: 24/7 Support - uden baggrundsgrafik */}
           <motion.div
             ref={feature2Ref}
-            className="grid grid-cols-1 lg:grid-cols-12 items-center gap-10"
+            className="flex flex-col items-center text-center relative py-4 px-4 rounded-lg mt-4"
             custom={1}
             variants={fadeInUpVariants}
             initial="hidden"
             animate={feature2Controls}
           >
-            {/* Tekstside - omvendt rækkefølge på desktop */}
-            <div className="lg:col-span-8 lg:order-2">
+            {/* Scroll-aktiveret highlight-effekt */}
+            <div
+              className="absolute inset-0 bg-gradient-to-b from-[var(--color-brand-blue)]/0 via-[var(--color-brand-blue)]/3 to-[var(--color-brand-blue)]/0 rounded-lg opacity-0 transition-opacity duration-1000"
+              style={{
+                opacity: feature2InView ? 0.5 : 0,
+                transitionDelay: "0.3s",
+              }}
+            ></div>
+
+            {/* Ikon centreret - med once-triggered animation */}
+            <div className="flex justify-center mb-6 relative z-10">
+              <div className="relative">
+                <motion.div
+                  className="w-24 h-24 lg:w-32 lg:h-32 rounded-full bg-[var(--color-brand-blue)]/10 flex items-center justify-center"
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{
+                    scale: feature2InView ? 1 : 0,
+                    opacity: feature2InView ? 1 : 0,
+                  }}
+                  transition={{ duration: 0.7, type: "spring", stiffness: 100 }}
+                >
+                  <Clock size={48} className="text-[var(--color-brand-blue)]" />
+                </motion.div>
+                <div className="absolute top-0 left-0 w-full h-full animate-pulse opacity-50">
+                  <div className="w-24 h-24 lg:w-32 lg:h-32 rounded-full border-2 border-[var(--color-brand-blue)]/30"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Tekst centreret - kortere spacing */}
+            <div className="max-w-3xl mx-auto">
               <motion.h3
-                className="text-2xl lg:text-3xl font-bold text-[var(--color-foreground)] mb-5"
+                className="text-xl lg:text-2xl font-bold text-[var(--color-foreground)] mb-3"
                 variants={textRevealVariants}
                 custom={0}
               >
-                24/7 support: Klar sparring og hjælp, når du behøver det
+                {accordionItems[1].title}
               </motion.h3>
 
               <motion.p
-                className="text-lg leading-relaxed mb-6"
+                className="text-base leading-relaxed mb-5"
                 variants={textRevealVariants}
                 custom={1}
               >
-                Vi er altid tilgængelige – 24/7. Har du brug for sparring,
-                teknisk hjælp eller bare et hurtigt svar, så er vi klar. Vi ved,
-                hvor vigtigt det er at få hjælp, når behovet opstår – ikke i
-                morgen.
+                {accordionItems[1].content.paragraph}
               </motion.p>
 
-              {/* Support-statistik med animation */}
+              {/* Support-statistik med animation - kompakt */}
               <motion.div
-                className="bg-white rounded-xl p-6 shadow-md mb-5 border-l-4 border-[var(--color-brand-blue)]"
+                className="bg-white rounded-lg p-4 shadow-md mb-3 border-l-4 border-[var(--color-brand-blue)] max-w-lg mx-auto"
                 variants={textRevealVariants}
                 custom={2}
               >
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
                   <div>
-                    <h4 className="text-lg font-semibold mb-1">
+                    <h4 className="text-base font-semibold mb-1">
                       Gennemsnitlig responstid
                     </h4>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-xs text-gray-600">
                       Baseret på de seneste 1000 henvendelser
                     </p>
                   </div>
-                  <div className="text-3xl font-bold text-[var(--color-brand-blue)]">
-                    Under 30 minutter
+                  <div className="text-2xl font-bold text-[var(--color-brand-blue)]">
+                    {accordionItems[1].content.responseTime}
                   </div>
                 </div>
               </motion.div>
 
-              {/* Kundeudtalelse med animation */}
+              {/* Kundeudtalelse med animation - kompakt */}
               <motion.blockquote
-                className="italic text-[var(--color-foreground)]/80 pl-4 border-l-2 border-[var(--color-brand-blue)]/40"
+                className="italic text-[var(--color-foreground)]/80 pl-4 border-l-2 border-[var(--color-brand-blue)]/40 max-w-md mx-auto text-sm"
                 variants={textRevealVariants}
                 custom={3}
               >
                 "Vores hjemmeside gik ned fredag aften. Jeg sendte en mail, og
                 15 minutter senere var problemet løst. Det kalder jeg service!"
-                <footer className="mt-2 text-sm font-medium not-italic">
+                <footer className="mt-1 text-xs font-medium not-italic">
                   — Morten, CEO hos BrandCo
                 </footer>
               </motion.blockquote>
             </div>
-
-            {/* Ikon-side */}
-            <div className="lg:col-span-4 lg:order-1 flex justify-center">
-              <div className="relative">
-                <motion.div
-                  className="w-32 h-32 lg:w-44 lg:h-44 rounded-full bg-[var(--color-brand-blue)]/10 flex items-center justify-center"
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={
-                    feature2InView
-                      ? { scale: 1, opacity: 1 }
-                      : { scale: 0, opacity: 0 }
-                  }
-                  transition={{ duration: 0.7, type: "spring", stiffness: 100 }}
-                >
-                  <Clock size={72} className="text-[var(--color-brand-blue)]" />
-                </motion.div>
-                <div className="absolute top-0 left-0 w-full h-full animate-pulse opacity-50">
-                  <div className="w-32 h-32 lg:w-44 lg:h-44 rounded-full border-2 border-[var(--color-brand-blue)]/30"></div>
-                </div>
-              </div>
-            </div>
           </motion.div>
 
-          {/* Feature 3: Skræddersyet løsning */}
+          {/* Feature 3: Skræddersyet løsning - uden baggrundsgrafik */}
           <motion.div
             ref={feature3Ref}
-            className="grid grid-cols-1 lg:grid-cols-12 items-center gap-10"
+            className="flex flex-col items-center text-center relative py-4 px-4 rounded-lg mt-4"
             custom={2}
             variants={fadeInUpVariants}
             initial="hidden"
             animate={feature3Controls}
           >
-            {/* Ikon-side */}
-            <div className="lg:col-span-4 flex justify-center">
+            {/* Scroll-aktiveret highlight-effekt */}
+            <div
+              className="absolute inset-0 bg-gradient-to-b from-[var(--color-brand-blue)]/0 via-[var(--color-brand-blue)]/3 to-[var(--color-brand-blue)]/0 rounded-lg opacity-0 transition-opacity duration-1000"
+              style={{
+                opacity: feature3InView ? 0.5 : 0,
+                transitionDelay: "0.3s",
+              }}
+            ></div>
+
+            {/* Ikon centreret - med once-triggered animation */}
+            <div className="flex justify-center mb-6 relative z-10">
               <div className="relative">
                 <motion.div
-                  className="w-32 h-32 lg:w-44 lg:h-44 rounded-full bg-[var(--color-brand-blue)]/10 flex items-center justify-center"
+                  className="w-24 h-24 lg:w-32 lg:h-32 rounded-full bg-[var(--color-brand-blue)]/10 flex items-center justify-center"
                   initial={{ scale: 0, opacity: 0 }}
-                  animate={
-                    feature3InView
-                      ? { scale: 1, opacity: 1 }
-                      : { scale: 0, opacity: 0 }
-                  }
+                  animate={{
+                    scale: feature3InView ? 1 : 0,
+                    opacity: feature3InView ? 1 : 0,
+                  }}
                   transition={{ duration: 0.7, type: "spring", stiffness: 100 }}
                 >
-                  <Code size={72} className="text-[var(--color-brand-blue)]" />
+                  <Code size={48} className="text-[var(--color-brand-blue)]" />
                 </motion.div>
                 <div className="absolute top-0 left-0 w-full h-full animate-pulse opacity-50">
-                  <div className="w-32 h-32 lg:w-44 lg:h-44 rounded-full border-2 border-[var(--color-brand-blue)]/30"></div>
+                  <div className="w-24 h-24 lg:w-32 lg:h-32 rounded-full border-2 border-[var(--color-brand-blue)]/30"></div>
                 </div>
               </div>
             </div>
 
-            {/* Tekstside med forbedret animation */}
-            <div className="lg:col-span-8">
+            {/* Tekst centreret - kortere spacing */}
+            <div className="max-w-3xl mx-auto">
               <motion.h3
-                className="text-2xl lg:text-3xl font-bold text-[var(--color-foreground)] mb-5"
+                className="text-xl lg:text-2xl font-bold text-[var(--color-foreground)] mb-3"
                 variants={textRevealVariants}
                 custom={0}
               >
-                Skræddersyet løsning: Ingen skabeloner – kun kode fra bunden
+                {accordionItems[2].title}
               </motion.h3>
 
               <motion.p
-                className="text-lg leading-relaxed mb-6"
+                className="text-base leading-relaxed mb-5"
                 variants={textRevealVariants}
                 custom={1}
               >
-                Det, der gør os anderledes? Vi kombinerer teknisk ekspertise med
-                en dyb forståelse for din hverdag. Vi lytter, spørger og
-                udvikler løsninger, der matcher præcis dine behov – ikke bare
-                noget generisk, men noget der skiller dig ud og giver værdi fra
-                dag ét. Hvor andre tilbyder skabeloner, bygger vi fra bunden.
-                Hvor andre siger nej, finder vi en løsning.
+                {accordionItems[2].content.paragraph}
               </motion.p>
 
-              {/* Garanti-segl med forbedret animation */}
+              {/* Garanti-segl med forbedret animation - kompakt */}
               <motion.div
                 className="flex justify-center"
                 variants={textRevealVariants}
                 custom={2}
               >
                 <motion.div
-                  className="inline-flex items-center bg-white py-5 px-8 rounded-full border-2 border-[var(--color-brand-blue)] shadow-md mt-4"
-                  whileHover={{ scale: 1.05, y: -5 }}
+                  className="inline-flex items-center bg-white py-3 px-5 rounded-full border-2 border-[var(--color-brand-blue)] shadow-md mt-3"
+                  whileHover={{ scale: 1.05, y: -3 }}
                   transition={{ type: "spring", stiffness: 300, damping: 10 }}
                 >
                   <Award
-                    size={28}
-                    className="text-[var(--color-brand-blue)] mr-4"
+                    size={22}
+                    className="text-[var(--color-brand-blue)] mr-3"
                   />
-                  <span className="text-xl font-bold text-[var(--color-foreground)]">
-                    100% Skræddersyet garanti
+                  <span className="text-base font-bold text-[var(--color-foreground)]">
+                    {accordionItems[2].content.guarantee}
                   </span>
                 </motion.div>
               </motion.div>
@@ -553,24 +644,24 @@ export default function WhyChooseUsSection() {
           </motion.div>
         </div>
 
-        {/* CTA sektion med forbedret animation */}
-        <div ref={ctaRef} className="mt-24 text-center">
+        {/* CTA sektion med forbedret animation - uden baggrundsgrafik */}
+        <div ref={ctaRef} className="mt-14 text-center relative">
           <motion.a
             href="#contact"
-            className="inline-flex items-center justify-center px-8 py-5 text-xl font-semibold bg-[var(--color-brand-blue)] text-white rounded-xl shadow-lg hover:bg-[var(--color-brand-blue-darker)] transition-all duration-300 transform hover:scale-105 group"
+            className="inline-flex items-center justify-center px-6 py-3 text-base font-semibold bg-[var(--color-brand-blue)] text-white rounded-lg shadow-md hover:bg-[var(--color-brand-blue-darker)] transition-all duration-300 transform hover:scale-105 group relative z-10"
             initial={{ opacity: 0, y: 20 }}
             animate={ctaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.7, delay: 0.5 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
             whileHover={{
-              scale: 1.05,
-              boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.2)",
+              scale: 1.03,
+              boxShadow: "0 5px 15px -3px rgba(0, 0, 0, 0.2)",
             }}
             whileTap={{ scale: 0.98 }}
           >
             Lad os tage skridtet sammen
             <ArrowRight
-              size={22}
-              className="ml-3 transform transition-transform duration-300 group-hover:translate-x-2"
+              size={18}
+              className="ml-2 transform transition-transform duration-300 group-hover:translate-x-1"
             />
           </motion.a>
         </div>

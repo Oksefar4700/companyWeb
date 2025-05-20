@@ -13,6 +13,8 @@ import {
   FaCalendarCheck,
 } from "react-icons/fa";
 import { packages } from "../data/packages";
+// Import only what we need from variants
+import { fadeIn } from "../animations/variants";
 
 const iconMap = {
   portfolio: FaLaptopCode,
@@ -35,10 +37,11 @@ export default function Packages({ onOrder }) {
     controls.start(inView ? "visible" : "hidden");
   }, [controls, inView]);
 
+  // Using fadeIn from variants as the basic structure is the same
   const gridContainerVariants = {
-    hidden: { opacity: 0 },
+    ...fadeIn,
     visible: {
-      opacity: 1,
+      ...fadeIn.visible,
       transition: {
         duration: 0.5,
         ease: "easeIn",

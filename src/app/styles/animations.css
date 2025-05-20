@@ -1,0 +1,57 @@
+/* src/styles/animations.css */
+@layer utilities {
+  /* Partikel-animation */
+  @keyframes drift {
+    0% {
+      transform: translate(0, 0) scale(1);
+      opacity: 0.2;
+    }
+    50% {
+      transform: translate(10px, -10px) scale(1.2);
+      opacity: 0.4;
+    }
+    100% {
+      transform: translate(-10px, 10px) scale(1);
+      opacity: 0.2;
+    }
+  }
+  .particle {
+    @apply absolute rounded-full;
+    animation: drift 12s ease-in-out infinite alternate;
+  }
+
+  /* Animeret gradient-baggrund */
+  @keyframes bgShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  .bg-animated-gradient {
+    background: linear-gradient(
+      120deg,
+      var(--color-brand-blue-lighter-bg),
+      var(--color-secondary-light),
+      var(--color-background)
+    );
+    background-size: 200% 200%;
+    animation: bgShift 20s ease infinite;
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+  .animate-marquee {
+    animation: marquee linear infinite;
+  }
+}

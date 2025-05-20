@@ -1,0 +1,25 @@
+/* src/styles/theme.css */
+:root {
+  /* Mørke farver */
+  --color-primary: #2e2e38;
+  --color-primary-darkest: #141414;
+  --color-accent: #2e2e38;
+  --color-foreground: #1f2328;
+
+  /* Lyse farver */
+  --color-background: #ffffff;
+  --color-secondary-light: #f7f5f2;
+  --color-secondary-dark: #2c2f3b;
+
+  /* Blå accentfarver */
+  --color-brand-blue: #7eaedb;
+  --color-brand-blue-darker: #5a82a3;
+  --color-brand-blue-lighter-bg: #e3f0fc;
+
+  /* Typografi */
+  --font-heading: "Poppins", sans-serif;
+  --font-body: "Roboto", sans-serif;
+
+  /* Layout */
+  --header-height: 4rem;
+}

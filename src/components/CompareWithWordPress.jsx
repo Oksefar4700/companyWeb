@@ -15,6 +15,8 @@ import {
   FiCode,
   FiUsers,
 } from "react-icons/fi";
+// Import animation variants
+import { fadeIn } from "../animations/variants";
 
 export default function CompareWithWordPress() {
   const ref = useRef(null);
@@ -25,10 +27,11 @@ export default function CompareWithWordPress() {
     controls.start(inView ? "visible" : "hidden");
   }, [controls, inView]);
 
+  // Using fadeIn from variants as the basic structure is the same
   const gridContainerVariants = {
-    hidden: { opacity: 0 },
+    ...fadeIn,
     visible: {
-      opacity: 1,
+      ...fadeIn.visible,
       transition: {
         duration: 0.5,
         ease: "easeIn",

@@ -3,6 +3,7 @@
 
 import { motion } from "framer-motion";
 import { Globe, Users, TrendingUp } from "lucide-react";
+import { fadeIn, fadeInUp, staggerContainer } from "@/animations/variants";
 
 export default function AboutSection() {
   const features = [
@@ -15,6 +16,31 @@ export default function AboutSection() {
     },
   ];
 
+  // Behold disse specifikke animationer i komponenten, da de er unikke for baggrundscirklerne
+  const backgroundCircleAnimation = {
+    initial: { x: -100, y: -50, scale: 0.8, opacity: 0 },
+    animate: { x: 0, y: 0, scale: 1.2, opacity: 0.2 },
+    exit: { x: -100, y: -50, scale: 0.8, opacity: 0 },
+    transition: {
+      duration: 10,
+      repeat: Infinity,
+      repeatType: "reverse",
+      ease: "easeInOut",
+    },
+  };
+
+  const backgroundCircleAnimation2 = {
+    initial: { x: 100, y: 50, scale: 1.1, opacity: 0 },
+    animate: { x: 0, y: 0, scale: 0.9, opacity: 0.25 },
+    exit: { x: 100, y: 50, scale: 1.1, opacity: 0 },
+    transition: {
+      duration: 12,
+      repeat: Infinity,
+      repeatType: "reverse",
+      ease: "easeInOut",
+    },
+  };
+
   return (
     <section
       id="about"
@@ -25,9 +51,7 @@ export default function AboutSection() {
         bg-animated-gradient
       "
     >
-      {/** ——————————————————————————————————————
-       *  Baggrundscirkler (uendelig loop)
-       *—————————————————————————————————————— */}
+      {/* Baggrundscirkler (beholder specifik animation) */}
       <motion.div
         className="
           absolute -top-16 -left-16
@@ -37,15 +61,10 @@ export default function AboutSection() {
           mix-blend-overlay opacity-20
           pointer-events-none
         "
-        initial={{ x: -100, y: -50, scale: 0.8, opacity: 0 }}
-        whileInView={{ x: 0, y: 0, scale: 1.2, opacity: 0.2 }}
-        exit={{ x: -100, y: -50, scale: 0.8, opacity: 0 }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          repeatType: "reverse",
-          ease: "easeInOut",
-        }}
+        initial={backgroundCircleAnimation.initial}
+        whileInView={backgroundCircleAnimation.animate}
+        exit={backgroundCircleAnimation.exit}
+        transition={backgroundCircleAnimation.transition}
         viewport={{ once: false }}
       />
       <motion.div
@@ -57,40 +76,33 @@ export default function AboutSection() {
           mix-blend-screen opacity-30
           pointer-events-none
         "
-        initial={{ x: 100, y: 50, scale: 1.1, opacity: 0 }}
-        whileInView={{ x: 0, y: 0, scale: 0.9, opacity: 0.25 }}
-        exit={{ x: 100, y: 50, scale: 1.1, opacity: 0 }}
-        transition={{
-          duration: 12,
-          repeat: Infinity,
-          repeatType: "reverse",
-          ease: "easeInOut",
-        }}
+        initial={backgroundCircleAnimation2.initial}
+        whileInView={backgroundCircleAnimation2.animate}
+        exit={backgroundCircleAnimation2.exit}
+        transition={backgroundCircleAnimation2.transition}
         viewport={{ once: false }}
       />
 
       <div className="container mx-auto px-6 lg:px-20 text-center relative z-10">
-        {/** — Overskrift — */}
+        {/* Overskrift - nu med fælles fadeInUp animation */}
         <motion.h2
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          variants={fadeInUp()}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: false, amount: 0.3 }}
           className="text-4xl font-bold mb-3 font-heading"
         >
           Om os
         </motion.h2>
 
-        {/** — Divider — */}
+        {/* Divider - beholder original */}
         <div className="section-divider mx-auto mb-8" />
 
-        {/** — Intro-tekst — */}
+        {/* Intro-tekst - nu med fælles fadeIn animation */}
         <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ delay: 0.2, duration: 0.8 }}
+          variants={fadeIn}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: false, amount: 0.3 }}
           className="max-w-2xl mx-auto text-lg mb-12 text-opacity-80"
         >
@@ -101,21 +113,20 @@ export default function AboutSection() {
           lever vi...
         </motion.p>
 
-        {/** — Features grid — */}
+        {/* Features grid - bruger stadig custom variant for hver feature */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {features.map(({ icon: Icon, title, text }, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 40 }}
+              viewport={{ once: false, amount: 0.3 }}
               transition={{
                 delay: i * 0.2 + 0.4,
                 type: "spring",
                 stiffness: 100,
                 damping: 20,
               }}
-              viewport={{ once: false, amount: 0.3 }}
               className="
                 flex flex-col items-center
                 p-6
@@ -134,12 +145,11 @@ export default function AboutSection() {
           ))}
         </div>
 
-        {/** — Call-to-action — */}
+        {/* Call-to-action - nu med fælles fadeIn animation */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
-          transition={{ delay: 1, duration: 0.6, ease: "easeOut" }}
+          variants={fadeInUp(1)}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: false, amount: 0.3 }}
           className="mt-12"
         >

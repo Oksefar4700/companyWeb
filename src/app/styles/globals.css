@@ -1,0 +1,10 @@
+/* src/styles/globals.css */
+@import "tailwindcss";
+@import "react-datepicker/dist/react-datepicker.css";
+
+/* Importer vores egne CSS-filer */
+@import "./theme.css";
+@import "./base.css";
+@import "./animations.css";
+@import "./components.css";
+@import "./datepicker.css";
