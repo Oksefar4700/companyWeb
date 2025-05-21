@@ -1,16 +1,11 @@
-/* src/app/styles/globals.css */
-@tailwind base;
+/* src/app/styles/globals.css - More Minimal Experiment */
 
-/* Custom base styles and theme variables */
+/* Custom component styles that use @apply */
+@import "./components.css"; 
+
+/* Other custom styles */
 @import "./theme.css";
 @import "./base.css";
-
-@tailwind components;
-
-/* Custom component classes using @apply */
-@import "./components.css"; 
-@import "./animations.css"; /* If it contains component-like classes */
-@import "react-datepicker/dist/react-datepicker.css"; /* Datepicker styles */
-@import "./datepicker.css"; /* Custom overrides for datepicker */
-
-@tailwind utilities;
+@import "./animations.css";
+@import "react-datepicker/dist/react-datepicker.css";
+@import "./datepicker.css";
