@@ -4,11 +4,11 @@
 import { motion } from "framer-motion";
 import BookingModal from "@/components/BookingModal";
 import { ChevronRight } from "lucide-react";
-import { useRef, useState, useEffect } from "react";
-import { buttonHover } from "@/animations/variants"; // Import af delt animation
+import { useRef, useEffect } from "react"; // Removed useState
+import { buttonHover, fadeInUp, customStagger } from "@/animations/variants"; // Import af delt animation
 
 export default function Hero({ onBooking }) {
-  const [showParticles, setShowParticles] = useState(false);
+  // const [showParticles, setShowParticles] = useState(false); // Removed unused state
   const videoRef = useRef(null);
   const sectionRef = useRef(null);
 
@@ -65,15 +65,6 @@ export default function Hero({ onBooking }) {
     },
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
-    },
-  };
-
   const logoVariants = {
     hidden: {
       opacity: 0,
@@ -85,17 +76,6 @@ export default function Hero({ onBooking }) {
       transition: {
         duration: 1.0,
         ease: [0.17, 0.67, 0.83, 0.97],
-      },
-    },
-  };
-
-  const textVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.06,
-        delayChildren: 0.1,
       },
     },
   };
@@ -198,7 +178,7 @@ export default function Hero({ onBooking }) {
         </motion.div>
 
         {/* VI ER tekst - bogstav for bogstav animation */}
-        <motion.div className="mb-2" variants={textVariants}>
+        <motion.div className="mb-2" variants={customStagger(0.06, 0.1)}>
           <div className="flex justify-center">
             {["V", "I", " ", "E", "R"].map((letter, i) => (
               <motion.span
@@ -217,7 +197,7 @@ export default function Hero({ onBooking }) {
         </motion.div>
 
         {/* CompanyWeb tekst - bogstav for bogstav med glow */}
-        <motion.div className="mb-10" variants={textVariants}>
+        <motion.div className="mb-10" variants={customStagger(0.06, 0.1)}>
           <div
             className="flex justify-center flex-wrap"
             role="heading"
@@ -245,7 +225,7 @@ export default function Hero({ onBooking }) {
 
         {/* Beskrivelse med dynamisk glow og forbedret kontrast */}
         <motion.p
-          variants={itemVariants}
+          variants={fadeInUp()}
           className="
             max-w-xl
             mb-10 md:mb-12
@@ -262,7 +242,7 @@ export default function Hero({ onBooking }) {
 
         {/* CTA knapper med forbedret tilgængelighed */}
         <motion.div
-          variants={itemVariants}
+          variants={fadeInUp()}
           className="flex flex-col sm:flex-row gap-4 sm:gap-6"
         >
           {/* BookingModal komponent */}

@@ -4,7 +4,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { fadeIn, scaleIn } from "@/animations/variants";
+import { fadeIn, slideInRight } from "@/animations/variants";
 import {
   FaChevronLeft,
   FaChevronRight,
@@ -23,13 +23,6 @@ export default function PackageDetailDrawer({ pkg, isOpen, onClose, onOrder }) {
   const prev = () =>
     setCurrentIndex((i) => (i - 1 + examples.length) % examples.length);
   const next = () => setCurrentIndex((i) => (i + 1) % examples.length);
-
-  // Drawer-specifikke animationer
-  const drawerVariants = {
-    hidden: { x: "100%" },
-    visible: { x: 0, transition: { type: "tween", duration: 0.4 } },
-    exit: { x: "100%", transition: { type: "tween", duration: 0.4 } },
-  };
 
   // Billede-slide animationer
   const imageVariants = {
@@ -54,7 +47,7 @@ export default function PackageDetailDrawer({ pkg, isOpen, onClose, onOrder }) {
           <motion.aside
             key="drawer"
             className="fixed right-0 top-0 h-full w-full md:w-1/3 bg-white z-50 flex flex-col overflow-auto shadow-xl border-l border-[var(--color-brand-blue)]"
-            variants={drawerVariants}
+            variants={slideInRight}
             initial="hidden"
             animate="visible"
             exit="exit"

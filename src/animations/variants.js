@@ -132,3 +132,10 @@ export const cardHover = {
 export const getStaggerDelay = (index, baseDelay = 0.2, itemDelay = 0.1) => {
   return baseDelay + index * itemDelay;
 };
+
+// Drawer-specifikke animationer
+export const slideInRight = {
+  hidden: { x: "100%" },
+  visible: { x: 0, transition: { type: "tween", duration: 0.4 } },
+  exit: { x: "100%", transition: { type: "tween", duration: 0.4 } },
+};
