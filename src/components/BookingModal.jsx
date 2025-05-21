@@ -7,6 +7,7 @@ import { Dialog } from "@headlessui/react";
 import { FiX as X } from "react-icons/fi";
 import { setHours, setMinutes } from "date-fns";
 import { da } from "date-fns/locale";
+import { formatDateTime } from "@/utils/dateTimeUtils";
 
 export default function BookingModal({ onBooking }) {
   const [open, setOpen] = useState(false);
@@ -49,32 +50,6 @@ export default function BookingModal({ onBooking }) {
       newDateTime.setMinutes(time.getMinutes());
       setDateTime(newDateTime);
     }
-  };
-
-  // Format dato og tid i dansk format
-  const formatDateTime = (date) => {
-    if (!date) return "";
-
-    // Få ugedag
-    const weekday = date.toLocaleString("da-DK", { weekday: "long" });
-
-    // Få dag
-    const day = date.getDate();
-
-    // Få måned
-    const month = date.toLocaleString("da-DK", { month: "long" });
-
-    // Få år
-    const year = date.getFullYear();
-
-    // Få tid (HH:mm)
-    const time = date.toLocaleString("da-DK", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-
-    // Formatér som "søndag den 1. juni 2025 kl. 09.30"
-    return `${weekday} den ${day}. ${month} ${year} kl. ${time}`;
   };
 
   // Robuste tjek og fejlsikring
@@ -135,8 +110,8 @@ export default function BookingModal({ onBooking }) {
         onClose={closeModal}
         className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
       >
-        <Dialog.Panel className="booking-dialog-panel max-w-[42rem]">
-          <Dialog.Title className="dialog-title text-[1.8rem]">
+        <Dialog.Panel className="booking-dialog-panel">
+          <Dialog.Title className="dialog-title">
             Vælg dato & tid
           </Dialog.Title>
           <button onClick={closeModal} className="close-button">
@@ -147,10 +122,8 @@ export default function BookingModal({ onBooking }) {
           <div className="flex flex-col md:flex-row items-start gap-6">
             {/* Venstre kolonne - Dato */}
             <div className="w-full md:w-auto">
-              <h3 className="flex items-center mb-3 text-lg font-medium text-gray-700">
-                <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[#7eaedb] text-white mr-2 text-sm font-bold">
-                  1
-                </span>
+              <h3 className="booking-step-title">
+                <span className="booking-step-number">1</span>
                 Vælg dato
               </h3>
               <div className="flex justify-center">
@@ -173,10 +146,8 @@ export default function BookingModal({ onBooking }) {
 
             {/* Højre kolonne - Tidspunkter */}
             <div className="w-full md:w-[40%] mt-4 md:mt-0">
-              <h3 className="flex items-center mb-4 text-lg font-medium text-gray-700">
-                <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[#7eaedb] text-white mr-2 text-sm font-bold">
-                  2
-                </span>
+              <h3 className="booking-step-title mb-4"> {/* Adjusted mb from booking-step-title which has mb-3 */}
+                <span className="booking-step-number">2</span>
                 Vælg tidspunkt
               </h3>
 
@@ -190,17 +161,13 @@ export default function BookingModal({ onBooking }) {
                     <button
                       key={index}
                       onClick={() => handleTimeChange(time)}
-                      className={`
-                        p-3 rounded-lg border text-center
-                        ${
-                          selectedTime &&
-                          selectedTime.getHours() === time.getHours() &&
-                          selectedTime.getMinutes() === time.getMinutes()
-                            ? "bg-[#7eaedb] text-white border-[#7eaedb] shadow-md"
-                            : "border-gray-300 hover:bg-[#5a82a3] hover:text-white hover:border-[#5a82a3]"
-                        }
-                        transition-all h-12 flex items-center justify-center
-                      `}
+                      className={`btn-time-slot ${
+                        selectedTime &&
+                        selectedTime.getHours() === time.getHours() &&
+                        selectedTime.getMinutes() === time.getMinutes()
+                          ? "btn-time-slot-selected"
+                          : "btn-time-slot-default"
+                      }`}
                     >
                       {formatTime(time)}
                     </button>

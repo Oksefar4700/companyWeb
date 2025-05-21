@@ -12,7 +12,7 @@ import AboutSection from "../components/AboutSection";
 import TeamSection from "../components/TeamSection";
 import ChatWidget from "../components/ChatWidget";
 import ContactSection from "../components/ContactSection";
-import WhyChooseUsSectionText from "../components/whyChooseUsSectionText";
+import WhyUsSectionNew from "../components/WhyUsSectionNew"; // Updated import
 
 export default function HomePage() {
   const [selectedPkg, setSelectedPkg] = useState(null);
@@ -48,7 +48,7 @@ export default function HomePage() {
       <Hero onBooking={handleBooking} />
 
       <WhyChooseUsSection />
-      <WhyChooseUsSectionText />
+      <WhyUsSectionNew /> {/* Updated component name */}
       <CompareWithWordPress />
       <Packages onOrder={handleOrder} />
       <ParallaxSection src="/images/contact/contactImage.png" />
