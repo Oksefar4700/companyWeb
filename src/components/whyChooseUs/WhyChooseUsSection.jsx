@@ -23,6 +23,7 @@ export default function WhyChooseUsSection() {
     custom: false,
   });
 
+
   const toggleExpand = (key) =>
     setExpanded((prev) => ({ ...prev, [key]: !prev[key] }));
 

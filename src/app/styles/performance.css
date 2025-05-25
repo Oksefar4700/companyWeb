@@ -1,0 +1,74 @@
+/* src/styles/performance.css */
+/* 
+  Performance-optimerede styles
+  Disse styles fokuserer på GPU-acceleration og reduceret CPU-brug
+*/
+
+@layer utilities {
+  /* GPU-accelererede transforms */
+  .gpu-accelerate {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  /* Reduced motion for tilgængelighed */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-subtle-float,
+    .animate-subtle-float-delayed,
+    .bg-animated-gradient,
+    .animate-marquee {
+      animation: none !important;
+    }
+  }
+
+  /* Performance-venlige shadows */
+  .shadow-soft {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Optimeret backdrop blur */
+  .backdrop-blur-performance {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  /* CSS containment for bedre performance */
+  .contain-layout {
+    contain: layout;
+  }
+
+  .contain-paint {
+    contain: paint;
+  }
+
+  .contain-strict {
+    contain: strict;
+  }
+}
+
+/* Carousel-specifikke performance styles */
+.carousel-container {
+  @apply relative overflow-hidden;
+  contain: layout style paint;
+}
+
+.carousel-image {
+  @apply absolute inset-0 w-full h-full object-cover;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Lazy loading placeholder */
+.lazy-image-placeholder {
+  @apply bg-gray-100 animate-pulse;
+}
+
+/* Optimerede hover states */
+@media (hover: hover) {
+  .hover-scale-sm {
+    @apply transition-transform duration-200 ease-out;
+  }
+  .hover-scale-sm:hover {
+    @apply scale-105;
+  }
+}

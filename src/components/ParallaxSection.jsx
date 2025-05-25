@@ -50,7 +50,7 @@ export default function ParallaxSection({
   // Varianter for indholdets container
   const contentParentVariants = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
+    visible: { opacity: 1, transition: { staggerChildren: 0.12 } },
   };
 
   // Varianter for indholdets børn
@@ -63,14 +63,26 @@ export default function ParallaxSection({
     },
   };
 
-  // Varianter for knappen
+  // Livlige varianter for knappen - med bounce og energi!
   const buttonSpecificVariants = {
-    hidden: { opacity: 0, x: -40, scale: 0.9 },
+    hidden: {
+      opacity: 0,
+      y: 30,
+      scale: 0.8,
+      rotateY: -15,
+    },
     visible: {
       opacity: 1,
-      x: 0,
+      y: 0,
       scale: 1,
-      transition: { duration: 0.5, ease: "easeOut" },
+      rotateY: 0,
+      transition: {
+        type: "spring",
+        stiffness: 200,
+        damping: 15,
+        delay: 0.3,
+        opacity: { duration: 0.4, ease: "easeOut" },
+      },
     },
   };
 
@@ -127,12 +139,29 @@ export default function ParallaxSection({
         <motion.a
           href="#contact"
           variants={buttonSpecificVariants}
+          whileHover={{
+            scale: 1.08,
+            rotateY: 5,
+            boxShadow:
+              "0 20px 25px -5px rgba(126, 174, 219, 0.4), 0 10px 10px -5px rgba(126, 174, 219, 0.1)",
+            transition: {
+              type: "spring",
+              stiffness: 400,
+              damping: 25,
+            },
+          }}
+          whileTap={{
+            scale: 0.95,
+            rotateY: -2,
+            transition: { duration: 0.1 },
+          }}
           className="
             px-8 py-3 rounded-lg text-lg font-semibold
             bg-[var(--color-brand-blue)] text-white
             hover:bg-[var(--color-brand-blue-darker)]
-            transition-all duration-300 ease-in-out shadow-xl hover:shadow-2xl transform hover:scale-105
+            transition-colors duration-200 ease-out shadow-xl 
             focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black/60 focus-visible:ring-[var(--color-brand-blue)]
+            transform-gpu
           "
         >
           Kontakt os

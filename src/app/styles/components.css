@@ -30,4 +30,95 @@
            hover:bg-[var(--color-brand-blue-darker)]
            transition-colors;
   }
+
+  /* NYE PERFORMANCE KOMPONENTER */
+
+  /* Cases section med statisk gradient baggrund */
+  .cases-section::before,
+  .cases-section::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.1;
+    pointer-events: none;
+    animation: subtle-float 8s ease-in-out infinite;
+  }
+
+  .cases-section::before {
+    top: -100px;
+    right: -100px;
+    width: 300px;
+    height: 300px;
+    background: var(--color-primary);
+    animation-delay: 0s;
+  }
+
+  .cases-section::after {
+    bottom: -150px;
+    left: -150px;
+    width: 400px;
+    height: 400px;
+    background: var(--color-brand-blue);
+    animation-delay: 4s;
+  }
+
+  /* About section baggrund */
+  .about-section-bg {
+    position: relative;
+    background: radial-gradient(
+        ellipse at top left,
+        rgba(126, 174, 219, 0.1) 0%,
+        transparent 40%
+      ),
+      radial-gradient(
+        ellipse at bottom right,
+        rgba(46, 46, 56, 0.08) 0%,
+        transparent 40%
+      );
+  }
+
+  /* Mesh gradient baggrund (alternativ) */
+  .mesh-gradient {
+    background-image: radial-gradient(
+        at 40% 20%,
+        hsla(210, 100%, 56%, 0.3) 0px,
+        transparent 50%
+      ),
+      radial-gradient(at 80% 0%, hsla(189, 100%, 56%, 0.2) 0px, transparent 50%),
+      radial-gradient(at 0% 50%, hsla(355, 100%, 93%, 0.2) 0px, transparent 50%);
+  }
+
+  /* CSS-only parallax effekt */
+  .parallax-bg {
+    position: absolute;
+    inset: -50%;
+    background-image: radial-gradient(
+        circle at 20% 50%,
+        rgba(120, 200, 255, 0.1) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 80%,
+        rgba(255, 120, 200, 0.1) 0%,
+        transparent 50%
+      );
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  /* Skjul scrollbar utility */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Performance optimerede blur baggrunde */
+  .blur-circle {
+    @apply absolute rounded-full pointer-events-none;
+    filter: blur(clamp(40px, 5vw, 80px));
+  }
 }

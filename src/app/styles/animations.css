@@ -54,4 +54,55 @@
   .animate-marquee {
     animation: marquee linear infinite;
   }
+
+  /* NYE PERFORMANCE ANIMATIONER */
+
+  /* Subtil float animation for baggrundselementer */
+  @keyframes subtle-float {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    33% {
+      transform: translate(30px, -30px) scale(1.05);
+    }
+    66% {
+      transform: translate(-20px, 20px) scale(0.95);
+    }
+  }
+
+  .animate-subtle-float {
+    animation: subtle-float 15s ease-in-out infinite;
+  }
+
+  .animate-subtle-float-delayed {
+    animation: subtle-float 15s ease-in-out infinite;
+    animation-delay: 7.5s;
+  }
+
+  /* Loading animation for billeder */
+  @keyframes loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  .image-loading {
+    @apply bg-gray-100;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s ease-in-out infinite;
+  }
+
+  /* Gradient radial utility */
+  .bg-gradient-radial {
+    background: radial-gradient(
+      ellipse at center,
+      var(--tw-gradient-from) 0%,
+      transparent 70%
+    );
+  }
 }

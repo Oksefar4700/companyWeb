@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import BookingModal from "@/components/BookingModal";
 import { ChevronRight } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
-import { buttonHover } from "@/animations/variants"; // Import af delt animation
+import { buttonHover } from "@/animations/variants"; 
 
 export default function Hero({ onBooking }) {
   const [showParticles, setShowParticles] = useState(false);

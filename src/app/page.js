@@ -7,12 +7,13 @@ import WhyChooseUsSection from "../components/whyChooseUs/WhyChooseUsSection";
 import CompareWithWordPress from "../components/CompareWithWordPress";
 import Packages from "../components/Packages";
 import ParallaxSection from "../components/ParallaxSection";
-import CasesList from "../components/CasesList";
+import CasesList from "../components/casesList/CasesList";
 import AboutSection from "../components/AboutSection";
 import TeamSection from "../components/TeamSection";
-import ChatWidget from "../components/ChatWidget";
-import ContactSection from "../components/ContactSection";
-import WhyChooseUsSectionText from "../components/whyChooseUsSectionText";
+import ContactSection from "../components/contactForm/ContactSection";
+import WhyChooseUsSectionText from "../components/whyChooeseUsSection/whyChooseUsSection";
+import AIIntegrationSection from "@/components/AIIntegrationSection";
+import GDPRSection from "@/components/GDPRSection";
 
 export default function HomePage() {
   const [selectedPkg, setSelectedPkg] = useState(null);
@@ -55,7 +56,8 @@ export default function HomePage() {
       <CasesList />
       <AboutSection />
       <TeamSection />
-      <ChatWidget />
+      <AIIntegrationSection />
+      <GDPRSection />
 
       <ContactSection
         selectedPkg={selectedPkg}

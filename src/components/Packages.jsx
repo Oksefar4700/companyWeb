@@ -1,8 +1,8 @@
-// src/components/Packages.jsx
 "use client";
 
-import { motion, useAnimation, useInView } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { motion, useInView } from "framer-motion"; // 🔥 FJERNET: useAnimation
+import { useRef, useState } from "react"; // 🔥 FJERNET: useEffect
+import AnimatedHeading from "./AnimatedHeading"; // 🔥 TILFØJET: AnimatedHeading
 import PackageDetailDrawer from "./PackageDetailDrawer";
 import {
   FaLaptopCode,
@@ -13,8 +13,6 @@ import {
   FaCalendarCheck,
 } from "react-icons/fa";
 import { packages } from "../data/packages";
-// Import only what we need from variants
-import { fadeIn } from "../animations/variants";
 
 const iconMap = {
   portfolio: FaLaptopCode,
@@ -27,91 +25,63 @@ const iconMap = {
 };
 
 export default function Packages({ onOrder }) {
-  const ref = useRef(null);
-  const controls = useAnimation();
-  const inView = useInView(ref, { amount: 0.2 });
+  const gridRef = useRef(null);
+
+  // 🔥 OPTIMERING: once: true - animationer kører kun én gang
+  const gridInView = useInView(gridRef, { once: true, amount: 0.2 });
+
+  // 🔥 FJERNET: useEffect hook og animation controls
+  // Ikke længere nødvendige!
 
   const [selectedPkg, setSelectedPkg] = useState(null);
 
-  useEffect(() => {
-    controls.start(inView ? "visible" : "hidden");
-  }, [controls, inView]);
-
-  // Using fadeIn from variants as the basic structure is the same
+  // Simplificerede animation varianter
   const gridContainerVariants = {
-    ...fadeIn,
+    hidden: { opacity: 0 },
     visible: {
-      ...fadeIn.visible,
+      opacity: 1,
       transition: {
         duration: 0.5,
-        ease: "easeIn",
-        when: "beforeChildren",
+        ease: "easeOut",
         staggerChildren: 0.1,
+        delayChildren: 0.2,
       },
     },
   };
 
-  const cardAnim = {
+  const cardVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         type: "spring",
-        damping: 35,
-        stiffness: 150,
-        restDelta: 0.001,
-      },
-    },
-  };
-
-  const titleVariants = {
-    hidden: { opacity: 0, y: -20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { type: "tween", ease: "easeInOut", duration: 0.6 },
-    },
-  };
-
-  const barVariants = {
-    hidden: { opacity: 0, scaleX: 0 },
-    visible: {
-      opacity: 1,
-      scaleX: 1,
-      transition: {
-        type: "tween",
-        ease: "easeInOut",
-        duration: 0.6,
-        delay: 0.1,
+        damping: 25,
+        stiffness: 120,
       },
     },
   };
 
   return (
     <section
-      ref={ref}
       id="packages"
-      className="bg-[#f7f5f2] text-[#1f2328] scroll-mt-[var(--header-height)] py-20"
+      className="bg-[var(--color-secondary-light)] text-[var(--color-foreground)] scroll-mt-[var(--header-height)] py-20"
     >
-      <motion.h2
-        variants={titleVariants}
-        initial="hidden"
-        animate={controls}
-        className="text-4xl font-extrabold font-heading text-center mb-2 text-[#2e2e38]"
-      >
-        Vælg din løsning
-      </motion.h2>
+      {/* Header */}
+      <div className="text-center">
+        <AnimatedHeading
+          title="Vælg din løsning"
+          direction="right"
+          className="text-[var(--color-primary)]"
+        />
+      </div>
+
+      {/* Packages Grid */}
       <motion.div
-        variants={barVariants}
-        initial="hidden"
-        animate={controls}
-        className="mx-auto mb-12 w-24 h-1 rounded-full bg-[#7eaedb]"
-      />
-      <motion.div
+        ref={gridRef}
         className="container mx-auto px-6 grid gap-8 md:grid-cols-2 lg:grid-cols-3"
         initial="hidden"
-        animate={controls}
+        animate={gridInView ? "visible" : {}} // 🔥 OPTIMERING: Ingen exit
         variants={gridContainerVariants}
       >
         {packages.map((pkg) => {
@@ -119,34 +89,36 @@ export default function Packages({ onOrder }) {
           return (
             <motion.div
               key={pkg.slug}
-              variants={cardAnim}
+              variants={cardVariants}
               onClick={() => setSelectedPkg(pkg)}
               whileHover={{
                 scale: 1.03,
                 boxShadow:
                   "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
-                borderColor: "#7eaedb",
               }}
+              whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              className="relative group bg-white border-2 border-[#2e2e38] rounded-3xl shadow-sm transition-shadow duration-300 cursor-pointer"
-              style={{ willChange: "transform" }}
+              className="relative group bg-[var(--color-background)] border-2 border-[var(--color-primary)]/20 hover:border-[var(--color-brand-blue)] rounded-3xl shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer"
             >
+              {/* Package Icon */}
               <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
-                <div className="bg-[#7eaedb] p-3 rounded-full shadow-inner">
-                  <Icon className="w-6 h-6 text-white" />
+                <div className="bg-[var(--color-brand-blue)] p-3 rounded-full shadow-lg">
+                  <Icon className="w-6 h-6 text-[var(--color-background)]" />
                 </div>
               </div>
+
+              {/* Package Content */}
               <div className="pt-10 pb-6 px-6 flex flex-col h-full">
-                <h3 className="mt-2 text-2xl font-semibold mb-2 text-[#2e2e38]">
+                <h3 className="mt-2 text-2xl font-semibold mb-2 text-[var(--color-primary)] font-[var(--font-heading)]">
                   {pkg.title}
                 </h3>
-                <p className="text-sm mb-4 flex-grow leading-relaxed">
+                <p className="text-sm mb-4 flex-grow leading-relaxed text-[var(--color-foreground)]/80 font-[var(--font-body)]">
                   {pkg.description}
                 </p>
-                <p className="text-lg font-bold mb-4 text-[#7eaedb] transition-colors duration-200">
+                <p className="text-lg font-bold mb-4 text-[var(--color-brand-blue)] transition-colors duration-200 font-[var(--font-heading)]">
                   {pkg.price.toLocaleString("da-DK")} kr.
                 </p>
-                <span className="inline-block underline text-[#7eaedb] transition-colors duration-200">
+                <span className="inline-block underline text-[var(--color-brand-blue)] hover:text-[var(--color-brand-blue-darker)] transition-colors duration-200 font-[var(--font-body)]">
                   Se flere detaljer →
                 </span>
               </div>
@@ -154,6 +126,8 @@ export default function Packages({ onOrder }) {
           );
         })}
       </motion.div>
+
+      {/* Package Detail Drawer */}
       <PackageDetailDrawer
         pkg={selectedPkg}
         isOpen={!!selectedPkg}

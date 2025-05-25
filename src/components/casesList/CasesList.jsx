@@ -1,8 +1,9 @@
-// src/components/CasesList.jsx
+// 🔥 OPTIMERET VERSION AF: src/components/CasesList.jsx
+
 "use client";
-import { useEffect, useState, useRef } from "react";
-import { motion, useAnimation, useInView } from "framer-motion";
-import { projects as projectsData } from "../data/projects";
+import { useState, useRef, useEffect } from "react";
+import { motion, useInView } from "framer-motion";
+import { projects as projectsData } from "../../data/projects";
 import Lightbox from "./Lightbox";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -101,8 +102,16 @@ const CategoryImageCarousel = ({ images, onImageClick, categoryTitle }) => {
 
 export default function CasesList() {
   const sectionRef = useRef(null);
-  const controls = useAnimation();
-  const inView = useInView(sectionRef, { amount: 0.2 });
+  const headingRef = useRef(null);
+  const gridRef = useRef(null);
+
+  // 🔥 OPTIMERING: once: true - animationer kører kun én gang
+  const sectionInView = useInView(sectionRef, { once: true, amount: 0.1 });
+  const headingInView = useInView(headingRef, { once: true, amount: 0.8 });
+  const gridInView = useInView(gridRef, { once: true, amount: 0.3 });
+
+  // 🔥 FJERNET: Alle useAnimation, useEffect og controls
+  // Ikke længere nødvendige!
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagesByTitle, setImagesByTitle] = useState({});
@@ -111,29 +120,22 @@ export default function CasesList() {
     setImagesByTitle(groupImagesByProjectTitle(projectsData));
   }, []);
 
-  useEffect(() => {
-    controls.start(inView ? "visible" : "hidden");
-  }, [inView, controls]);
-
   const projectCategoriesToShow = [
     "Frisør-Booking",
     "Håndværker-Portfolio",
     "Mini-Webshop",
   ];
 
-  // Framer-motion varianter
-  const circleVariant = {
-    hidden: { scale: 0, opacity: 0 },
-    visible: (custom) => ({
-      scale: 1,
-      opacity: custom.opacity,
-      transition: { duration: 1, delay: custom.delay, ease: "easeOut" },
-    }),
-  };
+  // Simplificerede animation varianter
   const headingVariants = {
     hidden: { opacity: 0, y: -20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.1 } },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, delay: 0.1 },
+    },
   };
+
   const dividerVariants = {
     hidden: { scaleX: 0 },
     visible: {
@@ -141,20 +143,29 @@ export default function CasesList() {
       transition: { duration: 0.6, delay: 0.2, ease: [0.6, 0.05, -0.01, 0.9] },
     },
   };
+
   const gridContainerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.3 },
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.3,
+      },
     },
   };
+
   const cardBoxVariants = {
     hidden: { opacity: 0, y: 30, scale: 0.95 },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: { type: "spring", stiffness: 100, damping: 20 },
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 20,
+      },
     },
   };
 
@@ -163,78 +174,43 @@ export default function CasesList() {
       <section
         ref={sectionRef}
         id="cases"
-        className="
-          relative
-          bg-[var(--color-secondary-light)]
-          text-[var(--color-foreground)]
-          scroll-mt-[var(--header-height)]
-          py-20 sm:py-24
-          overflow-x-visible overflow-y-hidden
-        "
+        className="relative bg-[var(--color-secondary-light)] text-[var(--color-foreground)] scroll-mt-[var(--header-height)] py-20 sm:py-24 overflow-hidden"
       >
-        {/* baggrundscirkler */}
-        <motion.div
-          className="
-            absolute top-0 right-0 w-72 h-72
-            bg-[var(--color-primary)] rounded-full
-            pointer-events-none z-1
-            -translate-y-1/2 translate-x-1/3
-          "
-          variants={circleVariant}
-          custom={{ delay: 0.2, opacity: 0.3 }}
-          initial="hidden"
-          animate={controls}
-        />
-        <motion.div
-          className="
-            absolute bottom-0 left-0 w-96 h-96
-            bg-[var(--color-primary)] rounded-full
-            pointer-events-none z-1
-            translate-y-1/2 -translate-x-1/3
-          "
-          variants={circleVariant}
-          custom={{ delay: 0.4, opacity: 0.2 }}
-          initial="hidden"
-          animate={controls}
-        />
-        <motion.div
-          className="
-            absolute top-1/2 left-1/2 w-60 h-60
-            bg-[var(--color-brand-blue)] rounded-full
-            pointer-events-none z-1
-            -translate-x-1/2 -translate-y-1/2
-          "
-          variants={circleVariant}
-          custom={{ delay: 0.6, opacity: 0.3 }}
-          initial="hidden"
-          animate={controls}
-        />
+        {/* 🔥 OPTIMERING: Statiske baggrundscirkler uden animationer */}
+        <div className="absolute inset-0 opacity-30 pointer-events-none">
+          <div className="absolute top-0 right-0 w-72 h-72 bg-gradient-radial from-[var(--color-primary)] to-transparent rounded-full -translate-y-1/2 translate-x-1/3 blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-radial from-[var(--color-primary)] to-transparent rounded-full translate-y-1/2 -translate-x-1/3 blur-3xl" />
+          <div className="absolute top-1/2 left-1/2 w-60 h-60 bg-gradient-radial from-[var(--color-brand-blue)] to-transparent rounded-full -translate-x-1/2 -translate-y-1/2 blur-2xl" />
+        </div>
 
-        {/* overskrift */}
-        <div className="container mx-auto px-6 text-center relative z-5">
+        {/* Overskrift */}
+        <div className="container mx-auto px-6 text-center relative z-10">
           <motion.h2
+            ref={headingRef}
+            className="text-3xl sm:text-4xl font-bold text-[var(--color-primary)] mb-3 font-[var(--font-heading)]"
             initial="hidden"
+            animate={headingInView ? "visible" : {}} // 🔥 OPTIMERING: Ingen exit
             variants={headingVariants}
-            animate={controls}
-            className="text-3xl sm:text-4xl font-bold text-[var(--color-primary)] mb-3"
           >
             Vores Cases & Løsninger
           </motion.h2>
+
           <motion.div
-            initial="hidden"
-            variants={dividerVariants}
-            animate={controls}
             className="w-24 h-1 bg-[var(--color-brand-blue)] mx-auto mb-12 sm:mb-16"
+            initial="hidden"
+            animate={headingInView ? "visible" : {}} // 🔥 OPTIMERING: Ingen exit
+            variants={dividerVariants}
           />
         </div>
 
-        {/* kort-grid */}
-        <div className="container mx-auto px-6 relative z-5">
+        {/* Kort-grid */}
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div
+            ref={gridRef}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10"
             initial="hidden"
+            animate={gridInView ? "visible" : {}} // 🔥 OPTIMERING: Ingen exit
             variants={gridContainerVariants}
-            animate={controls}
           >
             {projectCategoriesToShow.map((title) => {
               const imgs = imagesByTitle[title] || [];
@@ -244,22 +220,10 @@ export default function CasesList() {
               return (
                 <motion.div
                   key={details.slug || title}
-                  className="
-                    bg-[var(--color-background)]
-                    p-6 rounded-2xl
-                    shadow-xl hover:shadow-2xl
-                    transition-shadow duration-300
-                    flex flex-col
-                  "
+                  className="bg-[var(--color-background)] p-6 rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-300 flex flex-col"
                   variants={cardBoxVariants}
                 >
-                  <h3
-                    className="
-                      text-xl sm:text-2xl font-semibold
-                      text-[var(--color-brand-blue)]
-                      mb-3 text-center
-                    "
-                  >
+                  <h3 className="text-xl sm:text-2xl font-semibold text-[var(--color-brand-blue)] mb-3 text-center font-[var(--font-heading)]">
                     {details.title}
                   </h3>
 
