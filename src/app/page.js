@@ -3,7 +3,6 @@
 
 import { useState } from "react";
 import Hero from "../components/Hero";
-import WhyChooseUsSection from "../components/whyChooseUs/WhyChooseUsSection";
 import CompareWithWordPress from "../components/CompareWithWordPress";
 import Packages from "../components/Packages";
 import ParallaxSection from "../components/ParallaxSection";
@@ -48,7 +47,6 @@ export default function HomePage() {
       {/* Send handleBooking til Hero */}
       <Hero onBooking={handleBooking} />
 
-      <WhyChooseUsSection />
       <WhyChooseUsSectionText />
       <CompareWithWordPress />
       <Packages onOrder={handleOrder} />

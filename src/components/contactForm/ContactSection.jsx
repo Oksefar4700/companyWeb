@@ -2,7 +2,7 @@
 "use client";
 
 import { useRef, useEffect, forwardRef } from "react";
-import { motion, useAnimation, useInView } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { X, Calendar, Package, Phone } from "lucide-react";
 import ContactForm from "./ContactForm";
 
@@ -61,7 +61,7 @@ const SectionHeader = forwardRef(function SectionHeader({ headerInView }, ref) {
 
 // 🔥 MODULÄR KOMPONENT: PackageResume med forwardRef
 const PackageResume = forwardRef(function PackageResume(
-  { selectedPkg, onClear, resumeInView },
+  { selectedPkg, onClear },
   ref
 ) {
   return (
@@ -69,11 +69,11 @@ const PackageResume = forwardRef(function PackageResume(
       ref={ref}
       className="md:col-span-1 p-6 border-b md:border-b-0 md:border-r border-gray-200 relative bg-[var(--color-secondary-light)]"
       initial={{ opacity: 0, x: -30 }}
-      animate={resumeInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -30 }}
       transition={{
         duration: 0.5,
         ease: SMOOTH_EASE,
-        delay: 0.1,
       }}
       style={{ willChange: "transform, opacity" }} // 🔥 GPU HINT
     >
@@ -93,13 +93,11 @@ const PackageResume = forwardRef(function PackageResume(
       <motion.div
         className="flex items-center mb-4"
         initial={{ opacity: 0, scale: 0.8 }}
-        animate={
-          resumeInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }
-        }
+        animate={{ opacity: 1, scale: 1 }}
         transition={{
           duration: 0.5,
           ease: SMOOTH_EASE,
-          delay: 0.2,
+          delay: 0.1,
         }}
       >
         <div className="w-10 h-10 bg-[var(--color-brand-blue)] rounded-full flex items-center justify-center mr-3">
@@ -114,11 +112,11 @@ const PackageResume = forwardRef(function PackageResume(
       <motion.p
         className="text-lg font-bold text-[var(--color-brand-blue)] mb-4 font-[var(--font-heading)]"
         initial={{ opacity: 0, y: 10 }}
-        animate={resumeInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{
           duration: 0.5,
           ease: SMOOTH_EASE,
-          delay: 0.3,
+          delay: 0.2,
         }}
       >
         Pris: {selectedPkg.price.toLocaleString("da-DK")} kr.
@@ -128,11 +126,11 @@ const PackageResume = forwardRef(function PackageResume(
       <motion.ul
         className="list-disc list-inside space-y-1 text-sm text-[var(--color-foreground)]/70 font-[var(--font-body)]"
         initial={{ opacity: 0 }}
-        animate={resumeInView ? { opacity: 1 } : { opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{
           duration: 0.5,
           ease: SMOOTH_EASE,
-          delay: 0.4,
+          delay: 0.3,
           staggerChildren: 0.05,
         }}
       >
@@ -140,13 +138,11 @@ const PackageResume = forwardRef(function PackageResume(
           <motion.li
             key={i}
             initial={{ opacity: 0, x: -10 }}
-            animate={
-              resumeInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }
-            }
+            animate={{ opacity: 1, x: 0 }}
             transition={{
               duration: 0.4,
               ease: SMOOTH_EASE,
-              delay: 0.5 + i * 0.05,
+              delay: 0.4 + i * 0.05,
             }}
           >
             {detail}
@@ -159,7 +155,7 @@ const PackageResume = forwardRef(function PackageResume(
 
 // 🔥 MODULÄR KOMPONENT: BookingResume med forwardRef
 const BookingResume = forwardRef(function BookingResume(
-  { selectedBooking, onClear, resumeInView },
+  { selectedBooking, onClear },
   ref
 ) {
   return (
@@ -167,11 +163,11 @@ const BookingResume = forwardRef(function BookingResume(
       ref={ref}
       className="md:col-span-1 p-6 border-b md:border-b-0 md:border-r border-gray-200 relative bg-[var(--color-secondary-light)]"
       initial={{ opacity: 0, x: -30 }}
-      animate={resumeInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -30 }}
       transition={{
         duration: 0.5,
         ease: SMOOTH_EASE,
-        delay: 0.1,
       }}
       style={{ willChange: "transform, opacity" }} // 🔥 GPU HINT
     >
@@ -191,13 +187,11 @@ const BookingResume = forwardRef(function BookingResume(
       <motion.div
         className="flex items-center mb-4"
         initial={{ opacity: 0, scale: 0.8 }}
-        animate={
-          resumeInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }
-        }
+        animate={{ opacity: 1, scale: 1 }}
         transition={{
           duration: 0.5,
           ease: SMOOTH_EASE,
-          delay: 0.2,
+          delay: 0.1,
         }}
       >
         <div className="w-10 h-10 bg-[var(--color-brand-blue)] rounded-full flex items-center justify-center mr-3">
@@ -212,11 +206,11 @@ const BookingResume = forwardRef(function BookingResume(
       <motion.div
         className="p-4 border border-[var(--color-brand-blue)]/20 rounded-lg bg-[var(--color-brand-blue)]/5 mb-4"
         initial={{ opacity: 0, y: 10 }}
-        animate={resumeInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{
           duration: 0.5,
           ease: SMOOTH_EASE,
-          delay: 0.3,
+          delay: 0.2,
         }}
       >
         <p className="text-sm text-gray-500 mb-1 font-[var(--font-body)]">
@@ -231,11 +225,11 @@ const BookingResume = forwardRef(function BookingResume(
       <motion.p
         className="text-sm text-[var(--color-foreground)]/70 leading-relaxed font-[var(--font-body)]"
         initial={{ opacity: 0 }}
-        animate={resumeInView ? { opacity: 1 } : { opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{
           duration: 0.5,
           ease: SMOOTH_EASE,
-          delay: 0.4,
+          delay: 0.3,
         }}
       >
         Udfyld dine kontaktoplysninger, så vi kan bekræfte din booking. Vi
@@ -247,7 +241,7 @@ const BookingResume = forwardRef(function BookingResume(
 
 // 🔥 MODULÄR KOMPONENT: ContactFormContainer med forwardRef
 const ContactFormContainer = forwardRef(function ContactFormContainer(
-  { selectedPkg, selectedBooking, formInView },
+  { selectedPkg, selectedBooking },
   ref
 ) {
   return (
@@ -255,11 +249,12 @@ const ContactFormContainer = forwardRef(function ContactFormContainer(
       ref={ref}
       className="md:col-span-2 p-6"
       initial={{ opacity: 0, x: 30 }}
-      animate={formInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 30 }}
       transition={{
         duration: 0.5,
         ease: SMOOTH_EASE,
-        delay: 0.2,
+        delay: 0.1,
       }}
       style={{ willChange: "transform, opacity" }} // 🔥 GPU HINT
     >
@@ -277,29 +272,28 @@ export default function ContactSection({
   selectedBooking,
   onClear,
 }) {
+  console.log("ContactSection render:", { selectedPkg, selectedBooking }); // Debug log
+
   // 🔥 REFS FOR HVER SEKTION (modulær tilgang)
   const sectionRef = useRef(null);
   const backgroundRef = useRef(null);
   const headerRef = useRef(null);
   const containerRef = useRef(null);
-  const resumeRef = useRef(null);
-  const formRef = useRef(null);
 
-  // 🔥 OPTIMERET useInView - once: true + hardware acceleration
-  const sectionInView = useInView(sectionRef, { once: true, amount: 0.1 });
-  const headerInView = useInView(headerRef, { once: true, amount: 0.8 });
-  const containerInView = useInView(containerRef, { once: true, amount: 0.3 });
-  const resumeInView = useInView(resumeRef, { once: true, amount: 0.5 });
-  const formInView = useInView(formRef, { once: true, amount: 0.5 });
-
-  // Animation controls
-  const controls = useAnimation();
-
-  useEffect(() => {
-    controls.start(containerInView ? "visible" : "hidden");
-  }, [controls, containerInView]);
+  // 🔥 SIMPLIFICERET useInView - mindre aggressiv detection
+  const sectionInView = useInView(sectionRef, { once: true, amount: 0.05 });
+  const headerInView = useInView(headerRef, { once: true, amount: 0.5 });
 
   const hasSelection = selectedPkg || selectedBooking;
+
+  // Debug effect
+  useEffect(() => {
+    console.log("ContactSection state change:", {
+      hasSelection,
+      selectedPkg: selectedPkg?.title,
+      selectedBooking: selectedBooking?.formattedDateTime,
+    });
+  }, [hasSelection, selectedPkg, selectedBooking]);
 
   return (
     <motion.section
@@ -307,7 +301,7 @@ export default function ContactSection({
       id="contact"
       className="relative overflow-hidden py-32 min-h-[600px]"
       initial={{ opacity: 0 }}
-      animate={sectionInView ? { opacity: 1 } : { opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{
         duration: 0.6,
         ease: SMOOTH_EASE,
@@ -321,66 +315,63 @@ export default function ContactSection({
         {/* Header - modulär komponent */}
         <SectionHeader ref={headerRef} headerInView={headerInView} />
 
-        {/* Main Container med smooth width animation */}
+        {/* Main Container - STABIL LAYOUT */}
         <motion.div
           ref={containerRef}
-          className="bg-white rounded-3xl shadow-lg overflow-hidden mx-auto"
-          initial={false}
-          animate={{
-            width: hasSelection ? "100%" : "28rem",
-            maxWidth: hasSelection ? "none" : "28rem",
-          }}
+          className={`bg-white rounded-3xl shadow-lg overflow-hidden mx-auto ${
+            hasSelection ? "max-w-none" : "max-w-md"
+          }`}
+          layout // Automatisk smooth layout transitions
           transition={{
-            duration: 0.6,
-            ease: SMOOTH_EASE,
+            layout: { duration: 0.6, ease: SMOOTH_EASE },
           }}
           style={{
             transform: "translate3d(0,0,0)", // 🔥 GPU LAYER
-            willChange: "width",
           }}
         >
           {selectedPkg ? (
             // Package Selection Layout
-            <div className="grid grid-cols-1 md:grid-cols-3">
-              <PackageResume
-                ref={resumeRef}
-                selectedPkg={selectedPkg}
-                onClear={onClear}
-                resumeInView={resumeInView}
-              />
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-3"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <PackageResume selectedPkg={selectedPkg} onClear={onClear} />
               <ContactFormContainer
-                ref={formRef}
                 selectedPkg={selectedPkg}
                 selectedBooking={null}
-                formInView={formInView}
               />
-            </div>
+            </motion.div>
           ) : selectedBooking ? (
             // Booking Selection Layout
-            <div className="grid grid-cols-1 md:grid-cols-3">
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-3"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
               <BookingResume
-                ref={resumeRef}
                 selectedBooking={selectedBooking}
                 onClear={onClear}
-                resumeInView={resumeInView}
               />
               <ContactFormContainer
-                ref={formRef}
                 selectedPkg={null}
                 selectedBooking={selectedBooking}
-                formInView={formInView}
               />
-            </div>
+            </motion.div>
           ) : (
             // Standard Contact Form
             <motion.div
               className="p-8"
               initial={{ opacity: 0 }}
-              animate={containerInView ? { opacity: 1 } : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{
                 duration: 0.5,
                 ease: SMOOTH_EASE,
-                delay: 0.2,
               }}
             >
               <ContactForm />

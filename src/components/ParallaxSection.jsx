@@ -1,43 +1,81 @@
 // src/components/ParallaxSection.jsx
 "use client";
 
-import React, { useRef, forwardRef } from "react";
+import React, { useRef, useEffect, useState, forwardRef } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 
 // 🚀 SMOOTH EASING CURVES (hardware-accelerated)
 const SMOOTH_EASE = [0.25, 0.1, 0.25, 1];
 
-// 🔥 MODULÆR KOMPONENT: ParallaxBackground med forwardRef
-const ParallaxBackground = forwardRef(function ParallaxBackground(
-  { src, scrollYProgress },
-  ref
-) {
-  // 🔥 GPU-OPTIMERET PARALLAX TRANSFORM
-  const imageY = useTransform(scrollYProgress, [0, 1], [-100, 100]);
+// 🔥 MODULÆR KOMPONENT: OptimizedParallaxBackground med forwardRef
+const OptimizedParallaxBackground = forwardRef(
+  function OptimizedParallaxBackground({ src, scrollYProgress }, ref) {
+    const [imageLoaded, setImageLoaded] = useState(false);
+    const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
-  return (
-    <motion.div
-      ref={ref}
-      className="absolute inset-0"
-      style={{
-        backgroundImage: `url('${src}')`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed", // 🔥 CSS PARALLAX ACCELERATION
-        scale: 1.2, // Undgå kanter ved parallax
-        y: imageY,
-        willChange: "transform", // 🔥 GPU HINT
-        transform: "translate3d(0,0,0)", // 🔥 FORCE GPU LAYER
-      }}
-    />
-  );
-});
+    // 🔥 ACCESSIBILITY: Respect prefers-reduced-motion
+    useEffect(() => {
+      const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+      setPrefersReducedMotion(mediaQuery.matches);
+
+      const handleChange = (e) => setPrefersReducedMotion(e.matches);
+      mediaQuery.addEventListener("change", handleChange);
+
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    }, []);
+
+    // 🔥 OPTIMERET PARALLAX TRANSFORM - kun hvis motion er tilladt
+    const imageY = useTransform(
+      scrollYProgress,
+      [0, 1],
+      prefersReducedMotion ? [0, 0] : [-50, 50] // 🔥 REDUCE MOTION SUPPORT
+    );
+
+    // 🔥 PRELOAD BILLEDE FOR SMOOTH EXPERIENCE
+    useEffect(() => {
+      const img = new Image();
+      img.onload = () => setImageLoaded(true);
+      img.src = src;
+    }, [src]);
+
+    return (
+      <motion.div
+        ref={ref}
+        className="absolute inset-0"
+        style={{
+          y: imageY,
+          scale: prefersReducedMotion ? 1 : 1.1, // 🔥 UNDGÅ KANTER VED PARALLAX
+          willChange: prefersReducedMotion ? "auto" : "transform", // 🔥 CONDITIONAL GPU HINT
+          transform: "translate3d(0,0,0)", // 🔥 FORCE GPU LAYER
+          backfaceVisibility: "hidden", // 🔥 3D OPTIMIZATION
+        }}
+      >
+        {/* Loading placeholder */}
+        {!imageLoaded && (
+          <div
+            className="absolute inset-0 bg-[var(--color-secondary-light)] animate-pulse"
+            style={{ transform: "translate3d(0,0,0)" }}
+          />
+        )}
+
+        {/* Optimeret baggrundsbillede */}
+        <div
+          className={`absolute inset-0 bg-cover bg-center bg-fixed transition-opacity duration-500 ${
+            imageLoaded ? "opacity-100" : "opacity-0"
+          }`}
+          style={{
+            backgroundImage: `url('${src}')`,
+            transform: "translate3d(0,0,0)", // 🔥 GPU LAYER
+            willChange: prefersReducedMotion ? "auto" : "transform",
+          }}
+        />
+      </motion.div>
+    );
+  }
+);
 
 // 🔥 MODULÆR KOMPONENT: ContentOverlay med forwardRef
-const ContentOverlay = forwardRef(function ContentOverlay(
-  { contentInView },
-  ref
-) {
+const ContentOverlay = forwardRef(function ContentOverlay({}, ref) {
   return (
     <div
       ref={ref}
@@ -67,7 +105,10 @@ const ParallaxContent = forwardRef(function ParallaxContent(
         staggerChildren: 0.1,
         delayChildren: 0.2,
       }}
-      style={{ willChange: "opacity" }} // 🔥 GPU HINT
+      style={{
+        transform: "translate3d(0,0,0)", // 🔥 GPU LAYER
+        willChange: "opacity",
+      }}
     >
       {/* Heading */}
       <motion.h2
@@ -79,6 +120,7 @@ const ParallaxContent = forwardRef(function ParallaxContent(
           ease: SMOOTH_EASE,
           delay: 0.1,
         }}
+        style={{ willChange: "transform, opacity" }} // 🔥 GPU HINT
       >
         Er du i tvivl om, hvilke pakker der passer til dig?
       </motion.h2>
@@ -93,6 +135,7 @@ const ParallaxContent = forwardRef(function ParallaxContent(
           ease: SMOOTH_EASE,
           delay: 0.2,
         }}
+        style={{ willChange: "transform, opacity" }} // 🔥 GPU HINT
       >
         Kontakt os, og vi hjælper dig med at vælge den perfekte løsning.
       </motion.p>
@@ -144,7 +187,7 @@ const ParallaxContent = forwardRef(function ParallaxContent(
 
 // 🔥 HOVEDKOMPONENT
 export default function ParallaxSection({
-  src = "/images/contact/contactImage.png", // 🎯 Bruger det rigtige billede
+  src = "/images/contact/contactImage.png",
   height = "70vh",
 }) {
   // 🔥 REFS FOR HVER SEKTION (modulær tilgang)
@@ -157,10 +200,11 @@ export default function ParallaxSection({
   const sectionInView = useInView(sectionRef, { once: true, amount: 0.1 });
   const contentInView = useInView(sectionRef, { amount: 0.3 });
 
-  // 🔥 OPTIMERET PARALLAX SCROLL TRACKING
+  // 🔥 THROTTLED SCROLL TRACKING FOR PERFORMANCE
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
+    layoutEffect: false, // 🔥 PERFORMANCE: Avoid layout thrashing
   });
 
   return (
@@ -171,6 +215,7 @@ export default function ParallaxSection({
         height,
         willChange: "opacity", // 🔥 GPU HINT
         transform: "translate3d(0,0,0)", // 🔥 FORCE GPU LAYER
+        contain: "layout style paint", // 🔥 CSS CONTAINMENT FOR PERFORMANCE
       }}
       initial={{ opacity: 0 }}
       animate={sectionInView ? { opacity: 1 } : { opacity: 0 }}
@@ -180,14 +225,14 @@ export default function ParallaxSection({
       }}
     >
       {/* 🔥 OPTIMERET PARALLAX BACKGROUND */}
-      <ParallaxBackground
+      <OptimizedParallaxBackground
         ref={backgroundRef}
         src={src}
         scrollYProgress={scrollYProgress}
       />
 
       {/* 🔥 CONTENT OVERLAY */}
-      <ContentOverlay ref={overlayRef} contentInView={contentInView} />
+      <ContentOverlay ref={overlayRef} />
 
       {/* 🔥 PARALLAX CONTENT */}
       <ParallaxContent ref={contentRef} contentInView={contentInView} />
