@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 // Importér data fra datafilen
 import { stats, accordionItems } from "@/data/whyChooseUsData";
@@ -23,6 +23,16 @@ export default function WhyChooseUsSection() {
   const feature2Ref = useRef(null);
   const feature3Ref = useRef(null);
   const ctaRef = useRef(null);
+
+  // Parallax scroll tracking
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  // Parallax transforms for baggrundsbilleder
+  const cloudY = useTransform(scrollYProgress, [0, 1], [0, -20]);
+  const computerY = useTransform(scrollYProgress, [0, 1], [0, 15]);
 
   // Custom hook til scroll animationer
   const {
@@ -54,10 +64,13 @@ export default function WhyChooseUsSection() {
       ref={sectionRef}
       className="relative scroll-mt-[var(--header-height)] bg-[var(--color-secondary-light)] py-24 lg:py-32 overflow-hidden"
     >
-      {/* Computer illustration og stor sky i baggrunden */}
+      {/* Computer illustration og stor sky i baggrunden med parallax */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Stor computer i baggrunden - dækket delvist af indhold */}
-        <div className="absolute right-0 bottom-0 w-full h-full flex justify-end items-end">
+        {/* Stor computer i baggrunden med parallax */}
+        <motion.div
+          style={{ y: computerY }}
+          className="absolute right-0 bottom-0 w-full h-full flex justify-end items-end"
+        >
           <div className="relative w-[900px] h-[900px] opacity-15 transform translate-x-[15%] translate-y-[15%]">
             <Image
               src="/images/compare/computer.png"
@@ -68,7 +81,7 @@ export default function WhyChooseUsSection() {
               priority
             />
           </div>
-        </div>
+        </motion.div>
 
         {/* Elegant baggrundsgradient der sikrer læsbarhed */}
         <div
@@ -77,10 +90,13 @@ export default function WhyChooseUsSection() {
             background:
               "radial-gradient(circle at center, transparent 50%, var(--color-secondary-light) 120%)",
           }}
-        ></div>
+        />
 
-        {/* Flyt skyen helt op til toppen med større afstand fra indholdet */}
-        <div className="absolute left-0 top-0 w-[600px] h-[400px] opacity-10 transform translate-y-[-15%]">
+        {/* Sky med parallax */}
+        <motion.div
+          style={{ y: cloudY }}
+          className="absolute left-0 top-0 w-[600px] h-[400px] opacity-10 transform translate-y-[-15%]"
+        >
           <Image
             src="/images/whyChooseUs/cloud.png"
             alt=""
@@ -92,7 +108,7 @@ export default function WhyChooseUsSection() {
             }}
             priority
           />
-        </div>
+        </motion.div>
 
         {/* Subtile prikker i baggrunden */}
         <div className="absolute inset-0 opacity-10">
@@ -103,7 +119,7 @@ export default function WhyChooseUsSection() {
                 "radial-gradient(var(--color-brand-blue) 1px, transparent 1px)",
               backgroundSize: "40px 40px",
             }}
-          ></div>
+          />
         </div>
       </div>
 
@@ -120,26 +136,39 @@ export default function WhyChooseUsSection() {
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
           <motion.h2
-            className="text-4xl md:text-5xl font-extrabold font-heading mb-5"
+            className="text-4xl md:text-5xl font-extrabold font-[var(--font-heading)] mb-5 text-[var(--color-foreground)] relative"
             initial={{ opacity: 0 }}
             animate={{ opacity: headingInView ? 1 : 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
           >
             Hvorfor vælge os
+            {/* Subtle glow effect */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-[var(--color-brand-blue)]/0 via-[var(--color-brand-blue)]/5 to-[var(--color-brand-blue)]/0 rounded-lg opacity-0"
+              animate={{ opacity: [0, 0.3, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            />
           </motion.h2>
 
           <motion.div
-            className="w-28 h-1.5 bg-[var(--color-brand-blue)] rounded-full mx-auto mb-10"
+            className="w-28 h-1.5 bg-[var(--color-brand-blue)] rounded-full mx-auto mb-10 relative overflow-hidden"
             initial={{ scaleX: 0, opacity: 0 }}
             animate={{
               scaleX: headingInView ? 1 : 0,
               opacity: headingInView ? 1 : 0,
             }}
             transition={{ duration: 0.7, delay: 0.5 }}
-          />
+          >
+            {/* Shine effect */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-[var(--color-background)]/40 to-transparent"
+              animate={{ x: ["-100%", "100%"] }}
+              transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+            />
+          </motion.div>
 
           <motion.p
-            className="text-lg md:text-xl max-w-3xl mx-auto"
+            className="text-lg md:text-xl max-w-3xl mx-auto font-[var(--font-body)] text-[var(--color-foreground)]/80"
             initial={{ opacity: 0, y: 20 }}
             animate={{
               opacity: headingInView ? 1 : 0,

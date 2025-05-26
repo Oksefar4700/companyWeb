@@ -11,6 +11,9 @@ import {
   Rocket,
   MessageCircle,
   PenTool,
+  Shield,
+  Users,
+  TrendingUp,
 } from "lucide-react";
 
 const FeatureBlock = forwardRef(
@@ -42,7 +45,7 @@ const FeatureBlock = forwardRef(
       }),
     };
 
-    // Get icon based on feature type
+    // Get icon based on feature type - using Lucide React
     const getIcon = () => {
       switch (featureType) {
         case "react":
@@ -56,20 +59,14 @@ const FeatureBlock = forwardRef(
       }
     };
 
-    // Get benefits based on feature type
+    // Get benefits with appropriate Lucide icons
     const getBenefits = () => {
       if (featureType === "react") {
         return [
           { icon: <Rocket size={18} />, text: feature.content.benefits[0] },
-          {
-            icon: <MessageCircle size={18} />,
-            text: feature.content.benefits[1],
-          },
+          { icon: <Shield size={18} />, text: feature.content.benefits[1] },
           { icon: <PenTool size={18} />, text: feature.content.benefits[2] },
-          {
-            icon: <CheckCircle2 size={18} />,
-            text: feature.content.benefits[3],
-          },
+          { icon: <TrendingUp size={18} />, text: feature.content.benefits[3] },
         ];
       }
       return [];
@@ -78,23 +75,26 @@ const FeatureBlock = forwardRef(
     return (
       <motion.div
         ref={ref}
-        className="flex flex-col items-center text-center relative py-4 px-4 rounded-lg"
+        className="flex flex-col items-center text-center relative py-6 md:py-8 px-4 md:px-6 rounded-2xl"
         custom={0}
         variants={fadeInUpVariants}
         initial="hidden"
         animate={featureControls}
+        style={{
+          transform: "translate3d(0,0,0)", // GPU acceleration
+          willChange: "transform, opacity",
+        }}
       >
-        {/* Scroll-aktiveret highlight-effekt */}
-        <div
-          className="absolute inset-0 bg-gradient-to-b from-[var(--color-brand-blue)]/0 via-[var(--color-brand-blue)]/3 to-[var(--color-brand-blue)]/0 rounded-lg opacity-0 transition-opacity duration-1000"
-          style={{
-            opacity: featureInView ? 0.5 : 0,
-            transitionDelay: "0.3s",
-          }}
-        ></div>
+        {/* Scroll-activated highlight effect - no hover since not clickable */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-b from-[var(--color-brand-blue)]/0 via-[var(--color-brand-blue)]/3 to-[var(--color-brand-blue)]/0 rounded-2xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: featureInView ? 0.5 : 0 }}
+          transition={{ duration: 1, delay: 0.3 }}
+        />
 
-        {/* Ikon centreret */}
-        <div className="flex justify-center mb-6 relative z-10">
+        {/* Icon section with pulse ring - no hover since not clickable */}
+        <div className="flex justify-center mb-8 relative z-10">
           <div className="relative">
             <motion.div
               className="w-24 h-24 lg:w-32 lg:h-32 rounded-full bg-[var(--color-brand-blue)]/10 flex items-center justify-center"
@@ -103,20 +103,36 @@ const FeatureBlock = forwardRef(
                 scale: featureInView ? 1 : 0,
                 opacity: featureInView ? 1 : 0,
               }}
-              transition={{ duration: 0.7, type: "spring", stiffness: 100 }}
+              transition={{
+                duration: 0.7,
+                type: "spring",
+                stiffness: 100,
+                delay: 0.2,
+              }}
             >
               {getIcon()}
             </motion.div>
-            <div className="absolute top-0 left-0 w-full h-full animate-pulse opacity-50">
-              <div className="w-24 h-24 lg:w-32 lg:h-32 rounded-full border-2 border-[var(--color-brand-blue)]/30"></div>
-            </div>
+
+            {/* Pulse ring animation */}
+            <motion.div
+              className="absolute top-0 left-0 w-24 h-24 lg:w-32 lg:h-32 rounded-full border-2 border-[var(--color-brand-blue)]/20"
+              animate={{
+                scale: [1, 1.1, 1],
+                opacity: [0.3, 0.1, 0.3],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
           </div>
         </div>
 
-        {/* Tekst centreret */}
+        {/* Text content - no hover since not clickable */}
         <div className="max-w-3xl mx-auto">
           <motion.h3
-            className="text-xl lg:text-2xl font-bold text-[var(--color-foreground)] mb-3"
+            className="text-xl lg:text-2xl font-bold text-[var(--color-foreground)] mb-4 font-[var(--font-heading)]"
             variants={textRevealVariants}
             custom={0}
           >
@@ -124,7 +140,7 @@ const FeatureBlock = forwardRef(
           </motion.h3>
 
           <motion.p
-            className="text-base leading-relaxed mb-5"
+            className="text-base leading-relaxed mb-6 text-[var(--color-foreground)]/80 font-[var(--font-body)]"
             variants={textRevealVariants}
             custom={1}
           >
@@ -134,7 +150,7 @@ const FeatureBlock = forwardRef(
           {/* Feature-specific content */}
           {featureType === "react" && (
             <motion.div
-              className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 max-w-4xl mx-auto"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 max-w-4xl mx-auto"
               variants={{
                 hidden: { opacity: 0 },
                 visible: {
@@ -146,7 +162,7 @@ const FeatureBlock = forwardRef(
               {getBenefits().map((benefit, i) => (
                 <motion.div
                   key={i}
-                  className="flex items-center p-3 bg-white rounded-lg shadow-sm"
+                  className="flex items-center p-4 bg-[var(--color-background)] rounded-xl shadow-sm border border-[var(--color-brand-blue)]/10"
                   variants={{
                     hidden: { opacity: 0, x: -20 },
                     visible: {
@@ -159,12 +175,14 @@ const FeatureBlock = forwardRef(
                     },
                   }}
                 >
-                  <div className="w-8 h-8 rounded-full bg-[var(--color-brand-blue)]/10 flex items-center justify-center mr-3">
+                  <div className="w-10 h-10 rounded-full bg-[var(--color-brand-blue)]/10 flex items-center justify-center mr-3 flex-shrink-0">
                     <span className="text-[var(--color-brand-blue)]">
                       {benefit.icon}
                     </span>
                   </div>
-                  <span className="text-sm font-medium">{benefit.text}</span>
+                  <span className="text-sm font-medium text-[var(--color-foreground)] font-[var(--font-body)]">
+                    {benefit.text}
+                  </span>
                 </motion.div>
               ))}
             </motion.div>
@@ -173,33 +191,44 @@ const FeatureBlock = forwardRef(
           {featureType === "support" && (
             <>
               <motion.div
-                className="bg-white rounded-lg p-4 shadow-md mb-3 border-l-4 border-[var(--color-brand-blue)] max-w-lg mx-auto"
+                className="bg-[var(--color-background)] rounded-xl p-6 shadow-md mb-4 border-l-4 border-[var(--color-brand-blue)] max-w-lg mx-auto relative overflow-hidden"
                 variants={textRevealVariants}
                 custom={2}
               >
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                {/* Subtle glow effect */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-[var(--color-brand-blue)]/0 via-[var(--color-brand-blue)]/5 to-[var(--color-brand-blue)]/0 opacity-0"
+                  animate={{ opacity: [0, 0.5, 0] }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                />
+
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 relative z-10">
                   <div>
-                    <h4 className="text-base font-semibold mb-1">
+                    <h4 className="text-base font-semibold mb-1 text-[var(--color-foreground)] font-[var(--font-heading)]">
                       Gennemsnitlig responstid
                     </h4>
-                    <p className="text-xs text-gray-600">
+                    <p className="text-xs text-[var(--color-foreground)]/60 font-[var(--font-body)]">
                       Baseret på de seneste 1000 henvendelser
                     </p>
                   </div>
-                  <div className="text-2xl font-bold text-[var(--color-brand-blue)]">
+                  <div className="text-2xl font-bold text-[var(--color-brand-blue)] font-[var(--font-heading)]">
                     {feature.content.responseTime}
                   </div>
                 </div>
               </motion.div>
 
               <motion.blockquote
-                className="italic text-[var(--color-foreground)]/80 pl-4 border-l-2 border-[var(--color-brand-blue)]/40 max-w-md mx-auto text-sm"
+                className="italic text-[var(--color-foreground)]/80 pl-4 border-l-2 border-[var(--color-brand-blue)]/40 max-w-md mx-auto text-sm font-[var(--font-body)]"
                 variants={textRevealVariants}
                 custom={3}
               >
                 "Vores hjemmeside gik ned fredag aften. Jeg sendte en mail, og
                 15 minutter senere var problemet løst. Det kalder jeg service!"
-                <footer className="mt-1 text-xs font-medium not-italic">
+                <footer className="mt-2 text-xs font-medium not-italic text-[var(--color-foreground)]/60">
                   — Morten, CEO hos BrandCo
                 </footer>
               </motion.blockquote>
@@ -213,15 +242,27 @@ const FeatureBlock = forwardRef(
               custom={2}
             >
               <motion.div
-                className="inline-flex items-center bg-white py-3 px-5 rounded-full border-2 border-[var(--color-brand-blue)] shadow-md mt-3"
-                whileHover={{ scale: 1.05, y: -3 }}
-                transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                className="inline-flex items-center bg-[var(--color-background)] py-4 px-6 rounded-full border-2 border-[var(--color-brand-blue)] shadow-md mt-4"
+                whileInView={{
+                  scale: [1, 1.05, 1],
+                  boxShadow: [
+                    "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                    "0 10px 15px -3px rgba(126, 174, 219, 0.3)",
+                    "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                  ],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  repeatDelay: 3,
+                  ease: "easeInOut",
+                }}
               >
                 <Award
                   size={22}
                   className="text-[var(--color-brand-blue)] mr-3"
                 />
-                <span className="text-base font-bold text-[var(--color-foreground)]">
+                <span className="text-base font-bold text-[var(--color-foreground)] font-[var(--font-heading)]">
                   {feature.content.guarantee}
                 </span>
               </motion.div>

@@ -1,7 +1,8 @@
+// src/components/whyChooseUsSection/animations.js
 import { useRef, useEffect } from "react";
 import { useAnimation, useInView } from "framer-motion";
 
-// Custom hook til scroll animationer
+// Custom hook til scroll animationer med optimeret performance
 export const useScrollAnimations = (refs) => {
   const {
     sectionRef,
@@ -14,15 +15,15 @@ export const useScrollAnimations = (refs) => {
     ctaRef,
   } = refs;
 
-  // Individual inView states - fjernet once:true så elementerne kan reagere på scroll
-  const sectionInView = useInView(sectionRef, { amount: 0.05 });
-  const headingInView = useInView(headingRef, { amount: 0.8 });
-  const statsInView = useInView(statsRef, { amount: 0.6 });
-  const videoInView = useInView(videoRef, { amount: 0.5 });
-  const feature1InView = useInView(feature1Ref, { amount: 0.6 });
-  const feature2InView = useInView(feature2Ref, { amount: 0.6 });
-  const feature3InView = useInView(feature3Ref, { amount: 0.6 });
-  const ctaInView = useInView(ctaRef, { amount: 0.8 });
+  // Individual inView states med optimeret threshold og once: true for bedre performance
+  const sectionInView = useInView(sectionRef, { amount: 0.05, once: true });
+  const headingInView = useInView(headingRef, { amount: 0.6, once: true });
+  const statsInView = useInView(statsRef, { amount: 0.4, once: true });
+  const videoInView = useInView(videoRef, { amount: 0.3, once: true });
+  const feature1InView = useInView(feature1Ref, { amount: 0.4, once: true });
+  const feature2InView = useInView(feature2Ref, { amount: 0.4, once: true });
+  const feature3InView = useInView(feature3Ref, { amount: 0.4, once: true });
+  const ctaInView = useInView(ctaRef, { amount: 0.6, once: true });
 
   // Animation controls for different sections
   const controls = useAnimation();
@@ -31,36 +32,28 @@ export const useScrollAnimations = (refs) => {
   const feature2Controls = useAnimation();
   const feature3Controls = useAnimation();
 
-  // Update animations for each section when they enter/leave viewport
+  // Update animations for each section when they enter viewport
   useEffect(() => {
     if (statsInView) {
       statsControls.start("visible");
-    } else {
-      statsControls.start("hidden");
     }
   }, [statsControls, statsInView]);
 
   useEffect(() => {
     if (feature1InView) {
       feature1Controls.start("visible");
-    } else {
-      feature1Controls.start("hidden");
     }
   }, [feature1Controls, feature1InView]);
 
   useEffect(() => {
     if (feature2InView) {
       feature2Controls.start("visible");
-    } else {
-      feature2Controls.start("hidden");
     }
   }, [feature2Controls, feature2InView]);
 
   useEffect(() => {
     if (feature3InView) {
       feature3Controls.start("visible");
-    } else {
-      feature3Controls.start("hidden");
     }
   }, [feature3Controls, feature3InView]);
 
@@ -81,7 +74,7 @@ export const useScrollAnimations = (refs) => {
   };
 };
 
-// Animation variants som kan genbruges
+// Animation variants som kan genbruges - optimeret med hardware acceleration
 export const textRevealVariants = {
   hidden: { opacity: 0, y: 30 },
   visible: (i) => ({
@@ -90,7 +83,7 @@ export const textRevealVariants = {
     transition: {
       duration: 0.7,
       delay: 0.1 * i,
-      ease: [0.215, 0.61, 0.355, 1],
+      ease: [0.215, 0.61, 0.355, 1], // Smooth hardware-accelerated easing
     },
   }),
 };
@@ -119,4 +112,70 @@ export const letterVariants = {
       ease: [0.215, 0.61, 0.355, 1],
     },
   }),
+};
+
+// Nye optimerede variants med GPU acceleration hints
+export const scaleInVariants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.6,
+      ease: [0.215, 0.61, 0.355, 1],
+    },
+  },
+};
+
+export const slideInVariants = {
+  hidden: { opacity: 0, x: -30 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.215, 0.61, 0.355, 1],
+    },
+  },
+};
+
+// Container variant for staggered children
+export const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+// Shine effect variant for decorative animations
+export const shineVariants = {
+  initial: { x: "-100%", opacity: 0 },
+  animate: {
+    x: "100%",
+    opacity: [0, 1, 0],
+    transition: {
+      duration: 2,
+      repeat: Infinity,
+      repeatDelay: 3,
+      ease: "easeInOut",
+    },
+  },
+};
+
+// Pulse variants for icons and decorative elements
+export const pulseVariants = {
+  initial: { scale: 1, opacity: 0.3 },
+  animate: {
+    scale: [1, 1.1, 1],
+    opacity: [0.3, 0.1, 0.3],
+    transition: {
+      duration: 3,
+      repeat: Infinity,
+      ease: "easeInOut",
+    },
+  },
 };
