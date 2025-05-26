@@ -1,8 +1,9 @@
+// src/components/Packages.jsx
 "use client";
 
-import { motion, useInView } from "framer-motion"; // 🔥 FJERNET: useAnimation
-import { useRef, useState } from "react"; // 🔥 FJERNET: useEffect
-import AnimatedHeading from "./AnimatedHeading"; // 🔥 TILFØJET: AnimatedHeading
+import { motion, useInView } from "framer-motion";
+import { useRef, useState, forwardRef } from "react";
+import AnimatedHeading from "./AnimatedHeading";
 import PackageDetailDrawer from "./PackageDetailDrawer";
 import {
   FaLaptopCode,
@@ -14,53 +15,91 @@ import {
 } from "react-icons/fa";
 import { packages } from "../data/packages";
 
-const iconMap = {
-  portfolio: FaLaptopCode,
-  "webshop-basic": FaShoppingCart,
-  "webshop-standard": FaBoxOpen,
-  "webshop-premium": FaBuilding,
-  "booking-basis": FaCalendarAlt,
-  "booking-pro": FaCalendarCheck,
-  "booking-enterprise": FaBuilding,
+// 🎯 IKON FUNKTION UDENFOR KOMPONENTEN
+const getPackageIcon = (slug) => {
+  switch (slug) {
+    case "portfolio":
+      return <FaLaptopCode className="w-6 h-6" />;
+    case "webshop-basic":
+      return <FaShoppingCart className="w-6 h-6" />;
+    case "webshop-standard":
+      return <FaBoxOpen className="w-6 h-6" />;
+    case "webshop-premium":
+      return <FaBuilding className="w-6 h-6" />;
+    case "booking-basis":
+      return <FaCalendarAlt className="w-6 h-6" />;
+    case "booking-pro":
+      return <FaCalendarCheck className="w-6 h-6" />;
+    case "booking-enterprise":
+      return <FaBuilding className="w-6 h-6" />;
+    default:
+      return <FaBoxOpen className="w-6 h-6" />;
+  }
 };
+
+// 🔥 ENKEL, PROFESSIONEL PackageCard
+const PackageCard = forwardRef(function PackageCard(
+  { pkg, index, cardInView, onSelect },
+  ref
+) {
+  return (
+    <motion.div
+      ref={ref}
+      onClick={() => onSelect(pkg)}
+      className="relative group bg-[var(--color-background)] border-2 border-[var(--color-primary)]/20 hover:border-[var(--color-brand-blue)] rounded-3xl shadow-sm hover:shadow-lg cursor-pointer"
+      initial={{ opacity: 0, y: 30 }}
+      animate={cardInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      transition={{
+        delay: cardInView ? index * 0.1 : 0, // 🎯 Delay kun for entry
+        duration: cardInView ? 0.6 : 0.2, // 🎯 Hurtig exit, langsom entry
+        ease: [0.215, 0.61, 0.355, 1],
+      }}
+      whileHover={{
+        scale: 1.03,
+        y: -5,
+        transition: {
+          duration: 0.2,
+          ease: [0.25, 0.1, 0.25, 1], // 🎯 SMOOTH cubic-bezier
+        },
+      }}
+      whileTap={{ scale: 0.98 }}
+      style={{
+        transition: "transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1)", // 🎯 CSS transition fallback
+      }}
+    >
+      {/* Package Icon - floating above card */}
+      <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-20">
+        <div className="bg-[var(--color-brand-blue)] p-3 rounded-full shadow-lg text-white">
+          {getPackageIcon(pkg.slug)}
+        </div>
+      </div>
+
+      {/* Package Content */}
+      <div className="pt-12 pb-6 px-6 flex flex-col h-full">
+        <h3 className="mt-2 text-2xl font-semibold mb-2 text-[var(--color-foreground)] font-[var(--font-heading)]">
+          {pkg.title}
+        </h3>
+
+        <p className="text-sm mb-4 flex-grow leading-relaxed text-[var(--color-foreground)]/80 font-[var(--font-body)]">
+          {pkg.description}
+        </p>
+
+        <p className="text-lg font-bold mb-4 text-[var(--color-brand-blue)] font-[var(--font-heading)]">
+          {pkg.price.toLocaleString("da-DK")} kr.
+        </p>
+
+        <span className="inline-block underline text-[var(--color-brand-blue)] hover:text-[var(--color-brand-blue-darker)] transition-colors duration-200 font-[var(--font-body)]">
+          Se flere detaljer →
+        </span>
+      </div>
+    </motion.div>
+  );
+});
 
 export default function Packages({ onOrder }) {
   const gridRef = useRef(null);
-
-  // 🔥 OPTIMERING: once: true - animationer kører kun én gang
   const gridInView = useInView(gridRef, { once: true, amount: 0.2 });
-
-  // 🔥 FJERNET: useEffect hook og animation controls
-  // Ikke længere nødvendige!
-
   const [selectedPkg, setSelectedPkg] = useState(null);
-
-  // Simplificerede animation varianter
-  const gridContainerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        damping: 25,
-        stiffness: 120,
-      },
-    },
-  };
 
   return (
     <section
@@ -72,60 +111,25 @@ export default function Packages({ onOrder }) {
         <AnimatedHeading
           title="Vælg din løsning"
           direction="right"
-          className="text-[var(--color-primary)]"
+          className="text-[var(--color-foreground)]"
         />
       </div>
 
-      {/* Packages Grid */}
-      <motion.div
+      {/* Packages Grid - med plads til ikoner */}
+      <div
         ref={gridRef}
-        className="container mx-auto px-6 grid gap-8 md:grid-cols-2 lg:grid-cols-3"
-        initial="hidden"
-        animate={gridInView ? "visible" : {}} // 🔥 OPTIMERING: Ingen exit
-        variants={gridContainerVariants}
+        className="container mx-auto px-6 grid gap-8 md:grid-cols-2 lg:grid-cols-3 mt-12"
       >
-        {packages.map((pkg) => {
-          const Icon = iconMap[pkg.slug] || FaBoxOpen;
-          return (
-            <motion.div
-              key={pkg.slug}
-              variants={cardVariants}
-              onClick={() => setSelectedPkg(pkg)}
-              whileHover={{
-                scale: 1.03,
-                boxShadow:
-                  "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
-              }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              className="relative group bg-[var(--color-background)] border-2 border-[var(--color-primary)]/20 hover:border-[var(--color-brand-blue)] rounded-3xl shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer"
-            >
-              {/* Package Icon */}
-              <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
-                <div className="bg-[var(--color-brand-blue)] p-3 rounded-full shadow-lg">
-                  <Icon className="w-6 h-6 text-[var(--color-background)]" />
-                </div>
-              </div>
-
-              {/* Package Content */}
-              <div className="pt-10 pb-6 px-6 flex flex-col h-full">
-                <h3 className="mt-2 text-2xl font-semibold mb-2 text-[var(--color-primary)] font-[var(--font-heading)]">
-                  {pkg.title}
-                </h3>
-                <p className="text-sm mb-4 flex-grow leading-relaxed text-[var(--color-foreground)]/80 font-[var(--font-body)]">
-                  {pkg.description}
-                </p>
-                <p className="text-lg font-bold mb-4 text-[var(--color-brand-blue)] transition-colors duration-200 font-[var(--font-heading)]">
-                  {pkg.price.toLocaleString("da-DK")} kr.
-                </p>
-                <span className="inline-block underline text-[var(--color-brand-blue)] hover:text-[var(--color-brand-blue-darker)] transition-colors duration-200 font-[var(--font-body)]">
-                  Se flere detaljer →
-                </span>
-              </div>
-            </motion.div>
-          );
-        })}
-      </motion.div>
+        {packages.map((pkg, index) => (
+          <PackageCard
+            key={pkg.slug}
+            pkg={pkg}
+            index={index}
+            cardInView={gridInView}
+            onSelect={setSelectedPkg}
+          />
+        ))}
+      </div>
 
       {/* Package Detail Drawer */}
       <PackageDetailDrawer
