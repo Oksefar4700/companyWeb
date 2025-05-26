@@ -10,7 +10,7 @@ import CasesList from "../components/casesList/CasesList";
 import AboutSection from "../components/AboutSection";
 import TeamSection from "../components/TeamSection";
 import ContactSection from "../components/contactForm/ContactSection";
-import WhyChooseUsSectionText from "../components/whyChooeseUsSection/whyChooseUsSection";
+import WhyChooseUsSection from "../components/whyChooeseUsSection/whyChooseUsSection";
 import AIIntegrationSection from "@/components/AIIntegrationSection";
 import GDPRSection from "@/components/GDPRSection";
 
@@ -47,7 +47,7 @@ export default function HomePage() {
       {/* Send handleBooking til Hero */}
       <Hero onBooking={handleBooking} />
 
-      <WhyChooseUsSectionText />
+      <WhyChooseUsSection />
       <CompareWithWordPress />
       <Packages onOrder={handleOrder} />
       <ParallaxSection src="/images/contact/contactImage.png" />

@@ -272,8 +272,6 @@ export default function ContactSection({
   selectedBooking,
   onClear,
 }) {
-  console.log("ContactSection render:", { selectedPkg, selectedBooking }); // Debug log
-
   // 🔥 REFS FOR HVER SEKTION (modulær tilgang)
   const sectionRef = useRef(null);
   const backgroundRef = useRef(null);
