@@ -1,4 +1,4 @@
-// src/components/WhyChooseUsModern.jsx
+// src/components/WhychooseUsSection1.jsx
 "use client";
 
 import React, { useRef } from "react";
