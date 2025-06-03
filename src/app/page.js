@@ -1,18 +1,20 @@
-// src/app/page.js - Send handleBooking til Hero
+// src/app/page.js
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import Hero from "../components/Hero";
+import WhyChooseUsSection1 from "../components/WhychooseUsSection1";
+import SEOOverview from "../components/SEOOverview";
+import LogoGallery from "../components/LogoGallery";
 import CompareWithWordPress from "../components/CompareWithWordPress";
 import Packages from "../components/Packages";
 import ParallaxSection from "../components/ParallaxSection";
 import CasesList from "../components/casesList/CasesList";
 import AboutSection from "../components/AboutSection";
 import TeamSection from "../components/TeamSection";
-import ContactSection from "../components/contactForm/ContactSection";
-import WhyChooseUsSection from "../components/whyChooeseUsSection/whyChooseUsSection";
 import AIIntegrationSection from "@/components/AIIntegrationSection";
 import GDPRSection from "@/components/GDPRSection";
+import ContactSection from "../components/contactForm/ContactSection";
 
 export default function HomePage() {
   const [selectedPkg, setSelectedPkg] = useState(null);
@@ -25,11 +27,8 @@ export default function HomePage() {
   };
 
   const handleBooking = (bookingData) => {
-    console.log("handleBooking called with data:", bookingData);
     setSelectedPkg(null);
     setSelectedBooking(bookingData);
-
-    // Scroll til kontakt-sektionen
     setTimeout(() => {
       document
         .getElementById("contact")
@@ -44,10 +43,10 @@ export default function HomePage() {
 
   return (
     <main>
-      {/* Send handleBooking til Hero */}
       <Hero onBooking={handleBooking} />
-
-      <WhyChooseUsSection />
+      <WhyChooseUsSection1 />
+      <SEOOverview />
+      <LogoGallery />
       <CompareWithWordPress />
       <Packages onOrder={handleOrder} />
       <ParallaxSection src="/images/contact/contactImage.png" />
@@ -56,7 +55,6 @@ export default function HomePage() {
       <TeamSection />
       <AIIntegrationSection />
       <GDPRSection />
-
       <ContactSection
         selectedPkg={selectedPkg}
         selectedBooking={selectedBooking}

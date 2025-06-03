@@ -1,4 +1,4 @@
-// src/components/ContactForm.jsx
+// src/components/contactForm/ContactForm.jsx
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -14,15 +14,13 @@ export default function ContactForm({ selectedPkg, selectedBooking }) {
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm({
     defaultValues: {
-      // Pakke-relaterede felter
+      // Pakke-felter
       packageSlug: selectedPkg?.slug || "",
       packageTitle: selectedPkg?.title || "",
       packagePrice: selectedPkg?.price || "",
-
-      // Booking-relaterede felter
+      // Booking-felter
       bookingDateTime: selectedBooking?.dateTime || null,
       bookingFormattedDateTime: selectedBooking?.formattedDateTime || "",
-
       // Besked
       message: selectedPkg
         ? `Hej! Jeg vil gerne bestille pakken: ${
@@ -38,24 +36,20 @@ export default function ContactForm({ selectedPkg, selectedBooking }) {
 
   const onSubmit = async (data) => {
     try {
-      // Tilføj type-felt baseret på om det er en pakke, booking eller alm. henvendelse
       const requestType = selectedPkg
         ? "package"
         : selectedBooking
         ? "booking"
         : "contact";
 
-      // Gem i Firebase
       await addDoc(collection(db, "contacts"), {
         ...data,
         type: requestType,
         createdAt: serverTimestamp(),
-        status: selectedBooking ? "pending" : undefined, // For bookings tilføj status
+        status: selectedBooking ? "pending" : undefined,
       });
 
       reset();
-
-      // Vis bekræftelse
       if (selectedBooking) {
         alert(
           `Din booking er bekræftet!\n\nTidspunkt: ${selectedBooking.formattedDateTime}\n\nVi har sendt en bekræftelse til din mail.`
@@ -74,12 +68,10 @@ export default function ContactForm({ selectedPkg, selectedBooking }) {
         </div>
       )}
 
-      {/* Skjulte felter for pakker */}
+      {/* Skjulte felter */}
       <input type="hidden" {...register("packageSlug")} />
       <input type="hidden" {...register("packageTitle")} />
       <input type="hidden" {...register("packagePrice")} />
-
-      {/* Skjulte felter for bookings */}
       <input type="hidden" {...register("bookingFormattedDateTime")} />
       {selectedBooking && (
         <input
@@ -97,7 +89,7 @@ export default function ContactForm({ selectedPkg, selectedBooking }) {
           type="text"
           placeholder="Dit navn"
           {...register("name", { required: "Navn er påkrævet" })}
-          className="h-12 w-full pl-12 pr-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-blue)] transition"
+          className="h-12 w-full pl-12 pr-4 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--color-brand-blue)] transition"
         />
         {errors.name && (
           <p className="mt-1 text-red-600 text-sm">{errors.name.message}</p>
@@ -112,14 +104,14 @@ export default function ContactForm({ selectedPkg, selectedBooking }) {
           type="email"
           placeholder="Din email"
           {...register("email", { required: "Email er påkrævet" })}
-          className="h-12 w-full pl-12 pr-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-blue)] transition"
+          className="h-12 w-full pl-12 pr-4 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--color-brand-blue)] transition"
         />
         {errors.email && (
           <p className="mt-1 text-red-600 text-sm">{errors.email.message}</p>
         )}
       </div>
 
-      {/* Telefon (kun obligatorisk for bookings) */}
+      {/* Telefon */}
       <div className="relative">
         <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-primary)]" />
         <input
@@ -133,7 +125,7 @@ export default function ContactForm({ selectedPkg, selectedBooking }) {
               ? "Telefonnummer er påkrævet for bookings"
               : false,
           })}
-          className="h-12 w-full pl-12 pr-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-blue)] transition"
+          className="h-12 w-full pl-12 pr-4 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--color-brand-blue)] transition"
         />
         {errors.phone && (
           <p className="mt-1 text-red-600 text-sm">{errors.phone.message}</p>
@@ -148,28 +140,18 @@ export default function ContactForm({ selectedPkg, selectedBooking }) {
           rows={4}
           placeholder="Din besked"
           {...register("message", { required: "Besked er påkrævet" })}
-          className="w-full pl-12 pr-4 pt-6 pb-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-blue)] transition resize-none"
+          className="w-full pl-12 pr-4 pt-6 pb-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--color-brand-blue)] transition resize-none"
         />
         {errors.message && (
           <p className="mt-1 text-red-600 text-sm">{errors.message.message}</p>
         )}
       </div>
 
-      {/* Opdateret knap */}
+      {/* Send-knap */}
       <button
         type="submit"
         disabled={isSubmitting}
-        className="
-          w-full py-3
-          bg-[var(--color-brand-blue)]
-          text-white
-          rounded-lg
-          font-semibold
-          shadow
-          hover:bg-[var(--color-brand-blue-darker)]
-          transition-colors
-          disabled:opacity-50
-        "
+        className="w-full py-3 bg-[var(--color-brand-blue)] text-white rounded-lg font-semibold hover:bg-[var(--color-brand-blue-darker)] transition disabled:opacity-50"
       >
         {isSubmitting
           ? "Sender…"

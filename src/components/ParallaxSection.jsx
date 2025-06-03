@@ -147,7 +147,8 @@ const ParallaxContent = forwardRef(function ParallaxContent(
           px-8 py-3 rounded-lg text-lg font-semibold
           bg-[var(--color-brand-blue)] text-white
           hover:bg-[var(--color-brand-blue-darker)]
-          transition-colors duration-200 ease-out shadow-xl 
+          transition-all duration-200 ease-out shadow-xl 
+          hover:shadow-2xl
           focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 
           focus-visible:ring-offset-black/60 focus-visible:ring-[var(--color-brand-blue)]
           font-[var(--font-body)]
@@ -166,8 +167,6 @@ const ParallaxContent = forwardRef(function ParallaxContent(
         whileHover={{
           scale: 1.05,
           y: -2,
-          boxShadow:
-            "0 20px 25px -5px rgba(126, 174, 219, 0.4), 0 10px 10px -5px rgba(126, 174, 219, 0.1)",
           transition: { duration: 0.2, ease: SMOOTH_EASE },
         }}
         whileTap={{
@@ -177,6 +176,8 @@ const ParallaxContent = forwardRef(function ParallaxContent(
         style={{
           transform: "translate3d(0,0,0)", // 🔥 GPU LAYER
           willChange: "transform, opacity",
+          transition:
+            "transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1), background-color 0.2s ease, box-shadow 0.2s ease",
         }}
       >
         Kontakt os

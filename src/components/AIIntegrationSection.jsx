@@ -211,97 +211,7 @@ const VideoDemo = forwardRef(function VideoDemo(
           </motion.div>
         )}
       </div>
-
-      {/* Floating elements */}
-      <motion.div
-        className="absolute -top-4 -right-4 w-8 h-8 bg-[var(--color-brand-blue)] rounded-full"
-        animate={{
-          y: [0, -10, 0],
-          scale: [1, 1.1, 1],
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        style={{
-          transform: "translate3d(0,0,0)", // 🔥 GPU LAYER
-        }}
-      />
-      <motion.div
-        className="absolute -bottom-4 -left-4 w-6 h-6 bg-[var(--color-primary)] rounded-full"
-        animate={{
-          y: [0, 10, 0],
-          x: [0, 5, 0],
-        }}
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        style={{
-          transform: "translate3d(0,0,0)", // 🔥 GPU LAYER
-        }}
-      />
     </motion.div>
-  );
-});
-
-// 🔥 MODULÄR KOMPONENT: BackgroundElements med forwardRef
-const BackgroundElements = forwardRef(function BackgroundElements(
-  { sectionInView },
-  ref
-) {
-  return (
-    <div
-      ref={ref}
-      className="absolute inset-0 overflow-hidden pointer-events-none"
-    >
-      <motion.div
-        className="absolute top-20 right-20 w-32 h-32 bg-[var(--color-brand-blue)]/20 rounded-full"
-        animate={{
-          scale: [1, 1.2, 1],
-          rotate: [0, 180, 360],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-        style={{
-          transform: "translate3d(0,0,0)", // 🔥 GPU LAYER
-        }}
-      />
-      <motion.div
-        className="absolute bottom-20 left-20 w-24 h-24 bg-[var(--color-primary)]/10 rounded-full"
-        animate={{
-          y: [0, -20, 0],
-          x: [0, 10, 0],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        style={{
-          transform: "translate3d(0,0,0)", // 🔥 GPU LAYER
-        }}
-      />
-      <motion.div
-        className="absolute top-1/2 left-1/4 w-16 h-16 bg-[var(--color-brand-blue)]/15 rounded-lg rotate-45"
-        animate={{
-          rotate: [45, 225, 45],
-        }}
-        transition={{
-          duration: 12,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        style={{
-          transform: "translate3d(0,0,0)", // 🔥 GPU LAYER
-        }}
-      />
-    </div>
   );
 });
 
@@ -309,7 +219,6 @@ const BackgroundElements = forwardRef(function BackgroundElements(
 export default function AIIntegrationSection() {
   // 🔥 REFS FOR HVER SEKTION (modulær tilgang)
   const sectionRef = useRef(null);
-  const backgroundRef = useRef(null);
   const capabilitiesRef = useRef(null);
   const statsRef = useRef(null);
   const demoRef = useRef(null);
@@ -364,9 +273,6 @@ export default function AIIntegrationSection() {
       }}
       style={{ willChange: "opacity" }} // 🔥 GPU HINT
     >
-      {/* Background Elements - modulær komponent */}
-      <BackgroundElements ref={backgroundRef} sectionInView={sectionInView} />
-
       <div className="container mx-auto px-6 relative z-10">
         {/* Header */}
         <motion.div

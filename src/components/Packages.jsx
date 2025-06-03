@@ -46,12 +46,12 @@ const PackageCard = forwardRef(function PackageCard(
     <motion.div
       ref={ref}
       onClick={() => onSelect(pkg)}
-      className="relative group bg-[var(--color-background)] border-2 border-[var(--color-primary)]/20 hover:border-[var(--color-brand-blue)] rounded-3xl shadow-sm hover:shadow-lg cursor-pointer"
+      className="relative group bg-[var(--color-background)] border-2 border-[var(--color-primary)]/20 hover:border-[var(--color-brand-blue)] rounded-3xl shadow-sm hover:shadow-lg cursor-pointer transition-all duration-200"
       initial={{ opacity: 0, y: 30 }}
       animate={cardInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
       transition={{
-        delay: cardInView ? index * 0.1 : 0, // 🎯 Delay kun for entry
-        duration: cardInView ? 0.6 : 0.2, // 🎯 Hurtig exit, langsom entry
+        delay: cardInView ? index * 0.1 : 0,
+        duration: cardInView ? 0.6 : 0.2,
         ease: [0.215, 0.61, 0.355, 1],
       }}
       whileHover={{
@@ -59,12 +59,13 @@ const PackageCard = forwardRef(function PackageCard(
         y: -5,
         transition: {
           duration: 0.2,
-          ease: [0.25, 0.1, 0.25, 1], // 🎯 SMOOTH cubic-bezier
+          ease: [0.25, 0.1, 0.25, 1],
         },
       }}
       whileTap={{ scale: 0.98 }}
       style={{
-        transition: "transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1)", // 🎯 CSS transition fallback
+        transition:
+          "transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1), border-color 0.2s ease, box-shadow 0.2s ease",
       }}
     >
       {/* Package Icon - floating above card */}
