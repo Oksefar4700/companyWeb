@@ -97,6 +97,15 @@ export default function BookingModal({ onBooking }) {
       type: "booking",
     };
 
+    // Gem booking med API
+    fetch("/api/bookings", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(bookingData),
+    }).catch((err) => {
+      console.error("Fejl ved gem af booking:", err);
+    });
+
     // Send data til parent
     onBooking(bookingData);
 
