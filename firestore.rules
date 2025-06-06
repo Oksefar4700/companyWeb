@@ -6,6 +6,8 @@ service cloud.firestore {
     match /bookings/{bookingId} {
       allow create: if true;
       allow read, update, delete: if false;
+      allow read, create: if true;
+      allow update, delete: if false;
     }
 
     // Disallow all other access by default

@@ -11,6 +11,7 @@
   "dependencies": {
     "@headlessui/react": "^2.2.3",
     "@lottiefiles/lottie-player": "^2.0.12",
+    "@tanstack/react-query": "^5.80.6",
     "date-fns": "^4.1.0",
     "firebase": "^11.6.1",
     "framer-motion": "^12.9.4",

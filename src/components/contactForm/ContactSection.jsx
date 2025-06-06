@@ -1,10 +1,12 @@
-// src/components/contactForm/ContactSection.jsx
+// src/components/contactForm/ContactSection.jsx - MED TOAST
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { X, Calendar, Package as PackageIcon } from "lucide-react";
 import ContactForm from "./ContactForm";
+import { useToast } from "@/hooks/useToast";
+import Toast from "@/components/ui/Toast";
 
 export default function ContactSection({
   selectedPkg,
@@ -15,11 +17,29 @@ export default function ContactSection({
   const controls = useAnimation();
   const inView = useInView(ref, { once: true, amount: 0.3 });
 
+  // 🎯 TOAST STATE FLYTTET HER (påvirkes ikke af ContactForm clearing)
+  const { toast, showBookingSuccess, showContactSuccess, hideToast } =
+    useToast();
+
   useEffect(() => {
     controls.start(inView ? "visible" : "hidden");
   }, [controls, inView]);
 
   const hasSelection = Boolean(selectedPkg || selectedBooking);
+
+  // 🎯 Callback til ContactForm success
+  const handleContactSuccess = (isBooking, bookingData = null) => {
+    console.log("📧 ContactSection received success callback:", {
+      isBooking,
+      bookingData,
+    });
+
+    if (isBooking && bookingData) {
+      showBookingSuccess(bookingData);
+    } else {
+      showContactSuccess();
+    }
+  };
 
   return (
     <motion.section
@@ -119,7 +139,11 @@ export default function ContactSection({
               </div>
               {/* Formular */}
               <div className="md:col-span-2 p-6">
-                <ContactForm selectedPkg={selectedPkg} />
+                <ContactForm
+                  selectedPkg={selectedPkg}
+                  onClear={onClear}
+                  onSuccess={handleContactSuccess}
+                />
               </div>
             </motion.div>
           ) : selectedBooking ? (
@@ -160,7 +184,11 @@ export default function ContactSection({
               </div>
               {/* Formular */}
               <div className="md:col-span-2 p-6">
-                <ContactForm selectedBooking={selectedBooking} />
+                <ContactForm
+                  selectedBooking={selectedBooking}
+                  onClear={onClear}
+                  onSuccess={handleContactSuccess}
+                />
               </div>
             </motion.div>
           ) : (
@@ -172,11 +200,21 @@ export default function ContactSection({
               transition={{ duration: 0.4 }}
               className="p-8"
             >
-              <ContactForm />
+              <ContactForm onClear={onClear} onSuccess={handleContactSuccess} />
             </motion.div>
           )}
         </motion.div>
       </div>
+
+      {/* 🎯 TOAST ER NU HER (påvirkes ikke af ContactForm clearing) */}
+      <Toast
+        isVisible={toast.isVisible}
+        onClose={hideToast}
+        type={toast.type}
+        title={toast.title}
+        message={toast.message}
+        bookingDetails={toast.bookingDetails}
+      />
     </motion.section>
   );
 }
