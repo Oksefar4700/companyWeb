@@ -1,4 +1,4 @@
-// src/components/BookingModal.jsx - OPDATERET med booking ID
+// src/components/BookingModal.jsx - SMART VERSION
 "use client";
 
 import { useState, useMemo } from "react";
@@ -9,20 +9,38 @@ import { setHours, setMinutes } from "date-fns";
 import { da } from "date-fns/locale";
 import { useBookedTimes, useCreateBooking } from "@/hooks/useBookings";
 
-export default function BookingModal({ onBooking }) {
-  const [open, setOpen] = useState(false);
+export default function BookingModal({
+  onBooking,
+  open,
+  onOpenChange,
+  showTrigger = true,
+}) {
+  // 🎯 INTERN STATE for Hero's modal (hvis ikke controlled)
+  const [internalOpen, setInternalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [dateTime, setDateTime] = useState(null);
+
+  // Support både controlled og uncontrolled usage
+  const isOpen = open !== undefined ? open : internalOpen;
+  const setIsOpen = onOpenChange || setInternalOpen;
 
   // React Query hooks
   const {
     data: bookedTimes = [],
     isLoading: loadingAvailability,
     error: availabilityError,
-  } = useBookedTimes(selectedDate);
+  } = useBookedTimes
+    ? useBookedTimes(selectedDate)
+    : { data: [], isLoading: false, error: null };
 
-  const createBookingMutation = useCreateBooking();
+  const createBookingMutation = useCreateBooking
+    ? useCreateBooking()
+    : {
+        mutateAsync: async (data) => ({ id: Math.random().toString(36) }),
+        isPending: false,
+        error: null,
+      };
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -88,7 +106,6 @@ export default function BookingModal({ onBooking }) {
     return includeTimes.filter((time) => !isTimeBooked(time));
   }, [includeTimes, bookedTimes, selectedDate]);
 
-  // 🎯 OPDATERET: Returnerer booking med ID
   const handleConfirmBooking = async () => {
     if (!dateTime) return;
 
@@ -102,10 +119,9 @@ export default function BookingModal({ onBooking }) {
     try {
       const result = await createBookingMutation.mutateAsync(bookingData);
 
-      // 🎯 Send booking med ID til parent
       const bookingWithId = {
         ...bookingData,
-        id: result.id, // Booking ID fra Firestore
+        id: result.id,
       };
 
       onBooking?.(bookingWithId);
@@ -116,7 +132,7 @@ export default function BookingModal({ onBooking }) {
   };
 
   const closeModal = () => {
-    setOpen(false);
+    setIsOpen(false);
     setSelectedDate(null);
     setSelectedTime(null);
     setDateTime(null);
@@ -133,16 +149,35 @@ export default function BookingModal({ onBooking }) {
 
   return (
     <>
-      <button onClick={() => setOpen(true)} className="btn-primary">
-        Book et gratis møde
-      </button>
+      {/* 🎯 CONDITIONAL TRIGGER KNAP - kun til Hero */}
+      {showTrigger && (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="
+            inline-flex items-center justify-center
+            px-10 py-4 text-lg font-semibold
+            rounded-lg border-2 border-[var(--color-brand-blue)]
+            bg-[var(--color-brand-blue)] text-white
+            hover:bg-[var(--color-brand-blue-darker)]
+            hover:shadow-[0_8px_20px_rgba(var(--color-brand-blue-rgb),0.4)]
+            transition-all duration-200 ease-[0.25,0.1,0.25,1]
+            focus:outline-none focus:ring-2 focus:ring-offset-2
+            focus:ring-offset-[var(--color-primary-darkest)]
+            focus:ring-[var(--color-brand-blue)]
+            font-[var(--font-body)]
+          "
+        >
+          Book et gratis møde
+        </button>
+      )}
 
+      {/* 🎯 MODAL med glasmorphism baggrund */}
       <Dialog
-        open={open}
+        open={isOpen}
         onClose={closeModal}
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+        className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-white/20 p-4"
       >
-        <Dialog.Panel className="booking-dialog-panel max-w-[42rem]">
+        <Dialog.Panel className="booking-dialog-panel max-w-[42rem] bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20">
           <Dialog.Title className="dialog-title text-[1.8rem]">
             Vælg dato & tid
           </Dialog.Title>
@@ -158,7 +193,6 @@ export default function BookingModal({ onBooking }) {
           )}
 
           <div className="flex flex-col md:flex-row items-start gap-6">
-            {/* Dato */}
             <div className="w-full md:w-auto">
               <h3 className="flex items-center mb-3 text-lg font-medium text-gray-700">
                 <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[var(--color-brand-blue)] text-white mr-2 text-sm font-bold">
@@ -181,7 +215,6 @@ export default function BookingModal({ onBooking }) {
               </div>
             </div>
 
-            {/* Tid */}
             <div className="w-full md:w-[40%] mt-4 md:mt-0">
               <h3 className="flex items-center mb-4 text-lg font-medium text-gray-700">
                 <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[var(--color-brand-blue)] text-white mr-2 text-sm font-bold">
@@ -228,7 +261,6 @@ export default function BookingModal({ onBooking }) {
             </div>
           </div>
 
-          {/* Bekræftelse */}
           {dateTime && (
             <div className="mt-5 pt-5 border-t border-gray-200">
               <p className="selected-datetime">

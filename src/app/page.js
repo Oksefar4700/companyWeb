@@ -1,4 +1,4 @@
-// src/app/page.js - TILFØJ floating button
+// src/app/page.js - MED SEPARATE BOOKING MODALS
 "use client";
 
 import React, { useState } from "react";
@@ -18,11 +18,15 @@ import TeamSection from "../components/TeamSection";
 import AIIntegrationSection from "@/components/AIIntegrationSection";
 import GDPRSection from "@/components/GDPRSection";
 import ContactSection from "../components/contactForm/ContactSection";
-import FloatingBookingButton from "@/components/ui/FloatingBookingButton"; // 🎯 NY IMPORT
+import FloatingBookingButton from "@/components/ui/FloatingBookingButton";
+import BookingModal from "@/components/BookingModal"; // 🎯 SEPARAT MODAL TIL FLOATING BUTTON
 
 export default function HomePage() {
   const [selectedPkg, setSelectedPkg] = useState(null);
   const [selectedBooking, setSelectedBooking] = useState(null);
+
+  // 🎯 FLOATING MODAL STATE (separat fra Hero's modal)
+  const [isFloatingModalOpen, setIsFloatingModalOpen] = useState(false);
 
   const handleOrder = (pkg) => {
     setSelectedBooking(null);
@@ -30,6 +34,7 @@ export default function HomePage() {
     document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // 🎯 KORREKT: Denne funktion bruges af BEGGE BookingModals
   const handleBooking = (bookingData) => {
     setSelectedPkg(null);
     setSelectedBooking(bookingData);
@@ -45,24 +50,26 @@ export default function HomePage() {
     setSelectedBooking(null);
   };
 
-  // 🎯 NY FUNKTION: Trigger booking modal fra floating button
+  // 🎯 FLOATING BUTTON: Åbn modal hvor brugeren er (IKKE scroll til hero)
   const handleFloatingBooking = () => {
-    // Scroll til hero hvor BookingModal er
-    document.getElementById("hero")?.scrollIntoView({ behavior: "smooth" });
+    setIsFloatingModalOpen(true);
+  };
 
-    // Lille delay så scroll kan fuldføre før modal åbnes
-    setTimeout(() => {
-      // Trigger click på hero booking button
-      const heroBookingButton = document.querySelector(".btn-primary");
-      if (heroBookingButton) {
-        heroBookingButton.click();
-      }
-    }, 500);
+  // 🎯 FLOATING MODAL: Luk modal
+  const handleCloseFloatingModal = () => {
+    setIsFloatingModalOpen(false);
+  };
+
+  // 🎯 FLOATING MODAL: Håndter booking success
+  const handleFloatingBookingComplete = (bookingWithId) => {
+    setIsFloatingModalOpen(false); // Luk floating modal
+    handleBooking(bookingWithId); // Samme flow som Hero's modal
   };
 
   return (
     <QueryClientProvider client={queryClient}>
       <main>
+        {/* Hero med sin egen BookingModal */}
         <Hero onBooking={handleBooking} />
         <WhyChooseUsSection1 />
         <SEOOverview />
@@ -82,8 +89,16 @@ export default function HomePage() {
         />
       </main>
 
-      {/* 🎯 FLOATING BOOKING BUTTON */}
-      <FloatingBookingButton onBooking={handleFloatingBooking} />
+      {/* 🎯 FLOATING BOOKING BUTTON med smart chat-bobler */}
+      <FloatingBookingButton onOpenBooking={handleFloatingBooking} />
+
+      {/* 🎯 SEPARAT BOOKING MODAL til FloatingBookingButton - UDEN trigger knap */}
+      <BookingModal
+        open={isFloatingModalOpen}
+        onOpenChange={setIsFloatingModalOpen}
+        onBooking={handleFloatingBookingComplete}
+        showTrigger={false}
+      />
     </QueryClientProvider>
   );
 }

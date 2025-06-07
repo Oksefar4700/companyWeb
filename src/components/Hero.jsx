@@ -174,7 +174,7 @@ const AnimatedText = forwardRef(function AnimatedText(
   );
 });
 
-// 🔥 MODULÆR KOMPONENT: CTAButtons med forwardRef
+// 🔥 MODULÄR KOMPONENT: CTAButtons med forwardRef
 const CTAButtons = forwardRef(function CTAButtons({ onBooking }, ref) {
   return (
     <motion.div
@@ -184,7 +184,7 @@ const CTAButtons = forwardRef(function CTAButtons({ onBooking }, ref) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: HERO_EASE, delay: 0.8 }}
     >
-      {/* BookingModal */}
+      {/* 🎯 HERO'S EGEN BookingModal - tilbage som før */}
       <BookingModal onBooking={onBooking} />
 
       {/* Cases-knap */}
