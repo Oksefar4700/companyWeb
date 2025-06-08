@@ -1,8 +1,17 @@
-// src/components/ui/Toast.jsx - FIKSERET VERSION
+// src/components/ui/Toast.jsx - Professionel version
 "use client";
 
 import { useState, useEffect } from "react";
-import { CheckCircle, X, Calendar, Mail } from "lucide-react";
+import {
+  CheckCircle,
+  X,
+  Calendar,
+  Mail,
+  AlertCircle,
+  AlertTriangle,
+  Info,
+  Clock,
+} from "lucide-react";
 
 export default function Toast({
   isVisible,
@@ -53,6 +62,49 @@ export default function Toast({
     }, 300);
   };
 
+  // Vælg ikon og farver baseret på type
+  const getTypeConfig = () => {
+    switch (type) {
+      case "success":
+        return {
+          icon: CheckCircle,
+          bgGradient:
+            "from-[var(--color-brand-blue)] to-[var(--color-brand-blue-darker)]",
+          progressColor:
+            "from-[var(--color-brand-blue)] to-[var(--color-brand-blue-darker)]",
+        };
+      case "error":
+        return {
+          icon: AlertCircle,
+          bgGradient: "from-red-500 to-red-600",
+          progressColor: "from-red-500 to-red-600",
+        };
+      case "warning":
+        return {
+          icon: AlertTriangle,
+          bgGradient: "from-amber-500 to-amber-600",
+          progressColor: "from-amber-500 to-amber-600",
+        };
+      case "info":
+        return {
+          icon: Info,
+          bgGradient: "from-blue-500 to-blue-600",
+          progressColor: "from-blue-500 to-blue-600",
+        };
+      default:
+        return {
+          icon: CheckCircle,
+          bgGradient:
+            "from-[var(--color-brand-blue)] to-[var(--color-brand-blue-darker)]",
+          progressColor:
+            "from-[var(--color-brand-blue)] to-[var(--color-brand-blue-darker)]",
+        };
+    }
+  };
+
+  const config = getTypeConfig();
+  const IconComponent = config.icon;
+
   if (!isVisible) return null;
 
   return (
@@ -68,12 +120,12 @@ export default function Toast({
     `}
     >
       <div className="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden min-w-[360px] max-w-[480px]">
-        {/* Header med brand farver */}
-        <div className="bg-gradient-to-r from-[var(--color-brand-blue)] to-[var(--color-brand-blue-darker)] px-6 py-4">
+        {/* Header med type-specifik farve */}
+        <div className={`bg-gradient-to-r ${config.bgGradient} px-6 py-4`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <div className="flex-shrink-0 bg-white/20 backdrop-blur-sm rounded-full p-2">
-                <CheckCircle className="h-5 w-5 text-white" />
+                <IconComponent className="h-5 w-5 text-white" />
               </div>
               <div className="ml-3">
                 <h3
@@ -116,12 +168,17 @@ export default function Toast({
                   Booking detaljer:
                 </span>
               </div>
-              <p
-                className="text-[var(--color-primary)] font-semibold text-lg mb-3"
-                style={{ fontFamily: "var(--font-body)" }}
-              >
-                {bookingDetails.formattedDateTime}
-              </p>
+              <div className="flex items-center mb-3">
+                <div className="bg-[var(--color-brand-blue)]/10 rounded-full p-1 mr-2">
+                  <Clock className="h-3 w-3 text-[var(--color-brand-blue-darker)]" />
+                </div>
+                <p
+                  className="text-[var(--color-primary)] font-semibold text-lg"
+                  style={{ fontFamily: "var(--font-body)" }}
+                >
+                  {bookingDetails.formattedDateTime}
+                </p>
+              </div>
               <div className="flex items-center text-sm text-[var(--color-brand-blue-darker)]">
                 <div className="bg-[var(--color-brand-blue)]/10 rounded-full p-1 mr-2">
                   <Mail className="h-3 w-3" />
@@ -132,11 +189,11 @@ export default function Toast({
           )}
         </div>
 
-        {/* 🎯 FIKSERET Progress bar med animeret countdown */}
+        {/* Progress bar med animeret countdown */}
         <div className="px-6 pb-4">
           <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden">
             <div
-              className="h-1.5 bg-gradient-to-r from-[var(--color-brand-blue)] to-[var(--color-brand-blue-darker)] rounded-full transition-all duration-100 ease-linear"
+              className={`h-1.5 bg-gradient-to-r ${config.progressColor} rounded-full transition-all duration-100 ease-linear`}
               style={{
                 width: `${progress}%`,
               }}

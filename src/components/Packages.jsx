@@ -37,7 +37,7 @@ const getPackageIcon = (slug) => {
   }
 };
 
-// 🔥 ENKEL, PROFESSIONEL PackageCard
+// 🔥 ENKEL, PROFESSIONEL PackageCard med FancyButton animationer
 const PackageCard = forwardRef(function PackageCard(
   { pkg, index, cardInView, onSelect },
   ref
@@ -46,7 +46,11 @@ const PackageCard = forwardRef(function PackageCard(
     <motion.div
       ref={ref}
       onClick={() => onSelect(pkg)}
-      className="relative group bg-[var(--color-background)] border-2 border-[var(--color-primary)]/20 hover:border-[var(--color-brand-blue)] rounded-3xl shadow-sm hover:shadow-lg cursor-pointer transition-all duration-200"
+      className="relative group bg-[var(--color-background)] border-2 border-[var(--color-primary)]/20 hover:border-[var(--color-brand-blue)] rounded-3xl shadow-sm hover:shadow-lg cursor-pointer"
+      style={{
+        // Kun transition for properties som Framer Motion IKKE styrer
+        transition: "border-color 0.2s ease",
+      }}
       initial={{ opacity: 0, y: 30 }}
       animate={cardInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
       transition={{
@@ -54,18 +58,19 @@ const PackageCard = forwardRef(function PackageCard(
         duration: cardInView ? 0.6 : 0.2,
         ease: [0.215, 0.61, 0.355, 1],
       }}
+      // 🎯 FancyButton's animationer - nu med instant exit!
       whileHover={{
-        scale: 1.03,
-        y: -5,
+        scale: 1.05,
+        boxShadow: "0 10px 25px -5px rgba(126, 174, 219, 0.4)",
         transition: {
           duration: 0.2,
-          ease: [0.25, 0.1, 0.25, 1],
+          ease: "easeOut",
         },
       }}
       whileTap={{ scale: 0.98 }}
-      style={{
-        transition:
-          "transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1), border-color 0.2s ease, box-shadow 0.2s ease",
+      transition={{
+        duration: 0.1, // Hurtig exit animation
+        ease: "easeOut",
       }}
     >
       {/* Package Icon - floating above card */}

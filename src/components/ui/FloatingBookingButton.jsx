@@ -1,112 +1,96 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Calendar, X, Sparkles } from "lucide-react";
+import { Calendar, X, MessageCircle } from "lucide-react";
 
 export default function FloatingBookingButton({ onOpenBooking }) {
   const [isVisible, setIsVisible] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
-  const [showBubbles, setShowBubbles] = useState(false);
-  const [currentBubble, setCurrentBubble] = useState(0);
+  const [showBubble, setShowBubble] = useState(false);
 
-  const bubbleTimerRef = useRef(null);
-  const nextBubbleTimerRef = useRef(null);
+  // Use ref to prevent re-initialization
+  const hasShownBubble = useRef(false);
+  const bubbleTimer = useRef(null);
+  const buttonTimer = useRef(null);
 
-  // 🎯 ELEGANT beskeder der matcher dit brand
-  const bubbleMessages = [
-    "✨ Få en gratis konsultation",
-    "🚀 Lad os skabe din digitale løsning",
-    "💼 Book et uforpligtende møde",
-  ];
+  // Enkelt besked der er brugervenlig
+  const message = {
+    text: "Få en gratis konsultation",
+    icon: MessageCircle,
+  };
 
   useEffect(() => {
-    // 1) Vis knappen efter 3 sekunder
-    const showTimer = setTimeout(() => {
-      if (!isDismissed) {
-        setIsVisible(true);
-        // Start bobler med det samme (efter 1 sek)
-        setTimeout(() => {
-          if (!isDismissed) {
-            setShowBubbles(true);
-            startBubbleCycle();
-          }
-        }, 1000);
-      }
-    }, 3000);
+    // Button timer - only once
+    if (buttonTimer.current) return;
 
-    // 2) Scroll-logik
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      if (scrollY < 100 && isVisible) {
-        setIsVisible(false);
-      } else if (scrollY > 100 && !isDismissed) {
-        setIsVisible(true);
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
+    buttonTimer.current = setTimeout(() => {
+      setIsVisible(true);
+    }, 10000);
 
     return () => {
-      clearTimeout(showTimer);
-      if (bubbleTimerRef.current) clearTimeout(bubbleTimerRef.current);
-      if (nextBubbleTimerRef.current) clearTimeout(nextBubbleTimerRef.current);
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [isDismissed, isVisible]);
-
-  const startBubbleCycle = () => {
-    // 🎯 CLEAR alle eksisterende timers først
-    if (bubbleTimerRef.current) clearTimeout(bubbleTimerRef.current);
-    if (nextBubbleTimerRef.current) clearTimeout(nextBubbleTimerRef.current);
-
-    // 🎯 SIKR at der kun er én boble ad gangen
-    setShowBubbles(false);
-
-    // Kort delay for at sikre cleanup, så vis boble
-    setTimeout(() => {
-      if (!isDismissed && isVisible) {
-        setShowBubbles(true);
-
-        // 🎯 FORBEDRET: Vis boble i 7 sekunder
-        bubbleTimerRef.current = setTimeout(() => {
-          setShowBubbles(false);
-
-          // 🎯 LÆNGERE PAUSE mellem bobler for at undgå overlap
-          nextBubbleTimerRef.current = setTimeout(() => {
-            if (!isDismissed && isVisible) {
-              setCurrentBubble((prev) => (prev + 1) % bubbleMessages.length);
-              startBubbleCycle(); // Rekursivt kald
-            }
-          }, 12000); // 12 sekunder pause mellem bobler
-        }, 7000); // 7 sekunder visning
+      if (buttonTimer.current) {
+        clearTimeout(buttonTimer.current);
+        buttonTimer.current = null;
       }
-    }, 100); // 100ms cleanup delay
-  };
+    };
+  }, []);
+
+  useEffect(() => {
+    // Bubble timer - only once ever
+    if (hasShownBubble.current || bubbleTimer.current) return;
+
+    bubbleTimer.current = setTimeout(() => {
+      if (!hasShownBubble.current) {
+        setShowBubble(true);
+        // DON'T set hasShownBubble here - only when user closes it
+      }
+    }, 10000);
+
+    return () => {
+      if (bubbleTimer.current) {
+        clearTimeout(bubbleTimer.current);
+        bubbleTimer.current = null;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    // Scroll logic - only for button visibility
+    const handleScroll = () => {
+      if (window.scrollY < 100) {
+        setIsVisible(false);
+      } else if (!isDismissed) {
+        setIsVisible(true);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isDismissed]);
 
   const handleDismiss = () => {
     setIsDismissed(true);
     setIsVisible(false);
-    setShowBubbles(false);
-    // Clear alle timers
-    [bubbleTimerRef, nextBubbleTimerRef].forEach((timer) => {
-      if (timer.current) clearTimeout(timer.current);
-    });
+    setShowBubble(false);
   };
 
   const handleBookingClick = () => {
     if (typeof onOpenBooking === "function") {
       onOpenBooking();
     }
-    setShowBubbles(false);
+    setShowBubble(false);
   };
 
   const handleCloseBubble = (e) => {
     e.stopPropagation();
-    setShowBubbles(false);
+    setShowBubble(false);
+    hasShownBubble.current = true; // Prevent showing again
   };
 
   if (isDismissed || !isVisible) return null;
 
-  // 🎯 KUN IKON-TILSTAND med FIXED LAYOUT FIX
+  const MessageIcon = message.icon;
+
   return (
     <div
       className="fixed bottom-6 right-6 z-50"
@@ -116,12 +100,12 @@ export default function FloatingBookingButton({ onOpenBooking }) {
         right: "1.5rem",
         zIndex: 9999,
         pointerEvents: "auto",
-        maxWidth: "300px", // Forhindrer overflow
+        maxWidth: "300px",
         width: "auto",
       }}
     >
-      {/* 🎯 ELEGANT CHAT BOBLE - matchende dit tema */}
-      {showBubbles && (
+      {/* Elegant chat boble - simpel og ikke irriterende */}
+      {showBubble && (
         <div
           className="absolute bottom-20 right-0 animate-in slide-in-from-bottom-2 duration-500"
           style={{
@@ -133,17 +117,19 @@ export default function FloatingBookingButton({ onOpenBooking }) {
           }}
         >
           <div className="relative bg-white/95 backdrop-blur-xl border border-white/20 text-gray-800 px-6 py-4 rounded-2xl rounded-br-sm shadow-2xl">
-            <div className="flex items-start gap-3">
-              <div className="flex-shrink-0 w-2 h-2 bg-[var(--color-brand-blue)] rounded-full mt-2 animate-pulse"></div>
+            <div className="flex items-center gap-3">
+              <div className="flex-shrink-0 p-1.5 bg-[var(--color-brand-blue)]/10 rounded-full">
+                <MessageIcon className="w-4 h-4 text-[var(--color-brand-blue-darker)]" />
+              </div>
               <span className="text-sm font-medium leading-relaxed text-gray-700">
-                {bubbleMessages[currentBubble]}
+                {message.text}
               </span>
             </div>
 
             {/* Elegant chat tail */}
             <div className="absolute -bottom-2 right-5 w-0 h-0 border-l-8 border-l-transparent border-t-8 border-t-white/95"></div>
 
-            {/* 🎯 ELEGANT Close button - matching dit tema */}
+            {/* Elegant close button - matching dit tema */}
             <button
               onClick={handleCloseBubble}
               className="absolute -top-2 -right-2 bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-700 rounded-full p-2 transition-all duration-200 shadow-md hover:shadow-lg border border-white/50"
@@ -159,7 +145,7 @@ export default function FloatingBookingButton({ onOpenBooking }) {
         </div>
       )}
 
-      {/* LAYOUT-SIKKER FLOATING ICON BUTTON */}
+      {/* Layout-sikker floating icon button */}
       <div
         className="relative group"
         style={{
@@ -168,7 +154,7 @@ export default function FloatingBookingButton({ onOpenBooking }) {
           height: "4rem",
         }}
       >
-        {/* 🎯 ELEGANT Dismiss button - matching dit tema */}
+        {/* Elegant dismiss button - matching dit tema */}
         <button
           onClick={handleDismiss}
           className="absolute bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-700 rounded-full p-2 hover:scale-105 transition-all duration-200 shadow-md hover:shadow-lg border border-white/50"

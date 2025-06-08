@@ -20,6 +20,7 @@ import GDPRSection from "@/components/GDPRSection";
 import ContactSection from "../components/contactForm/ContactSection";
 import FloatingBookingButton from "@/components/ui/FloatingBookingButton";
 import BookingModal from "@/components/BookingModal"; // 🎯 SEPARAT MODAL TIL FLOATING BUTTON
+import CompleteDigitalSolution from "@/components/CompleteDigitalSolution";
 
 export default function HomePage() {
   const [selectedPkg, setSelectedPkg] = useState(null);
@@ -71,6 +72,7 @@ export default function HomePage() {
       <main>
         {/* Hero med sin egen BookingModal */}
         <Hero onBooking={handleBooking} />
+        <CompleteDigitalSolution />
         <WhyChooseUsSection1 />
         <SEOOverview />
         <LogoGallery />
