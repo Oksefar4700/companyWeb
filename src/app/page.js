@@ -19,7 +19,7 @@ import AIIntegrationSection from "@/components/AIIntegrationSection";
 import GDPRSection from "@/components/GDPRSection";
 import ContactSection from "../components/contactForm/ContactSection";
 import FloatingBookingButton from "@/components/ui/FloatingBookingButton";
-import BookingModal from "@/components/BookingModal"; // 🎯 SEPARAT MODAL TIL FLOATING BUTTON
+import BookingModal from "@/components/BookingModal";
 import CompleteDigitalSolution from "@/components/CompleteDigitalSolution";
 
 export default function HomePage() {
@@ -73,16 +73,15 @@ export default function HomePage() {
         {/* Hero med sin egen BookingModal */}
         <Hero onBooking={handleBooking} />
         <CompleteDigitalSolution />
-        <WhyChooseUsSection1 />
         <SEOOverview />
         <LogoGallery />
         <CompareWithWordPress />
+        <AIIntegrationSection />
         <Packages onOrder={handleOrder} />
         <ParallaxSection src="/images/contact/contactImage.png" />
         <CasesList />
         <AboutSection />
         <TeamSection />
-        <AIIntegrationSection />
         <GDPRSection />
         <ContactSection
           selectedPkg={selectedPkg}

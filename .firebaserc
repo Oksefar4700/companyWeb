@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "companyweb-debef"
-  }
+    "default": "companyweb-debef",
+    "companyweb": "companyweb-debef"
+  },
+  "targets": {},
+  "etags": {}
 }
