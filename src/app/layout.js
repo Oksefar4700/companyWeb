@@ -1,7 +1,8 @@
-// app/layout.js
+// src/app/layout.js - DIN OPDATEREDE VERSION
 import "./styles/globals.css";
 import Script from "next/script";
 import ConditionalHeader from "../components/admin/ConditionalHeader";
+// 🚫 FJERNET: import I18nProvider from "../components/I18nProvider";
 
 export default function RootLayout({ children }) {
   return (
@@ -49,8 +50,10 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
+        {/* 🚫 FJERNET: <I18nProvider> wrapper */}
         <ConditionalHeader />
         {children}
+        {/* 🚫 FJERNET: </I18nProvider> */}
       </body>
     </html>
   );

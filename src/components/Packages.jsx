@@ -58,7 +58,7 @@ const PackageCard = forwardRef(function PackageCard(
         duration: cardInView ? 0.6 : 0.2,
         ease: [0.215, 0.61, 0.355, 1],
       }}
-      // 🎯 FancyButton's animationer - nu med instant exit!
+      // 🎯 FancyButton's animationer - med transition indlejret i whileHover
       whileHover={{
         scale: 1.05,
         boxShadow: "0 10px 25px -5px rgba(126, 174, 219, 0.4)",
@@ -67,10 +67,12 @@ const PackageCard = forwardRef(function PackageCard(
           ease: "easeOut",
         },
       }}
-      whileTap={{ scale: 0.98 }}
-      transition={{
-        duration: 0.1, // Hurtig exit animation
-        ease: "easeOut",
+      whileTap={{
+        scale: 0.98,
+        transition: {
+          duration: 0.1,
+          ease: "easeOut",
+        },
       }}
     >
       {/* Package Icon - floating above card */}

@@ -1,0 +1,153 @@
+{
+  "hero": {
+    "weAre": "WE ARE",
+    "companyName": "CompanyWeb",
+    "subtitle": "Custom web solutions – from eye-catching portfolios to advanced webshops and booking systems.",
+    "viewCases": "View our cases"
+  },
+  "booking": {
+    "bookFreeConsultation": "Book a free meeting",
+    "selectDateTime": "Select date & time",
+    "selectDate": "Select date",
+    "selectTime": "Select time",
+    "selectDateFirst": "Please select a date first",
+    "loadingAvailability": "Loading available times...",
+    "noAvailableTimes": "No available times on this date",
+    "selectedTime": "Selected time",
+    "confirmTime": "Confirm time",
+    "saving": "Saving..."
+  },
+
+  "completeSolution": {
+    "sectionTitle": "HOW WE WORK",
+    "title": "All-in-one digital solution",
+    "subtitle": "Getting a website doesn't have to be complicated. Sit back and relax – we handle EVERYTHING with ongoing conversations so the result is perfect for your needs.",
+    "features": {
+      "delivery": "8 weeks delivery",
+      "allIncluded": "Everything included",
+      "readyToUse": "Ready to use"
+    },
+    "includes": {
+      "title": "Everything you need – nothing more, nothing less",
+      "logoAndBrand": {
+        "title": "Logo & Brand Identity",
+        "description": "Professional logo design and complete brand guidelines",
+        "deliverables": [
+          "3 logo concepts",
+          "Brand color palette",
+          "Typography guide",
+          "Brand guidelines"
+        ]
+      },
+      "customWebsite": {
+        "title": "Custom Website",
+        "description": "Fully responsive website built in React with modern design",
+        "deliverables": [
+          "Mobile-optimized design",
+          "CMS integration",
+          "Contact forms",
+          "Google Analytics"
+        ]
+      },
+      "mediaProduction": {
+        "title": "Images & Video",
+        "description": "Professional photo/video production for your website and social media",
+        "deliverables": [
+          "Product photography",
+          "Corporate images",
+          "Intro video",
+          "Stock images"
+        ]
+      },
+      "seoOptimization": {
+        "title": "SEO & Google Optimization",
+        "description": "Complete SEO setup so you get found on Google",
+        "deliverables": [
+          "Keyword research",
+          "Google My Business",
+          "Technical SEO",
+          "Content optimization"
+        ]
+      },
+      "socialMediaSetup": {
+        "title": "Social Media Setup",
+        "description": "Professional profiles on all relevant platforms",
+        "deliverables": [
+          "Facebook Business",
+          "Instagram Business",
+          "LinkedIn profile",
+          "Content strategy"
+        ]
+      },
+      "supportMaintenance": {
+        "title": "Support & Maintenance",
+        "description": "6 months of support and maintenance included",
+        "deliverables": [
+          "24/7 technical support",
+          "Monthly updates",
+          "Backup & security",
+          "Performance monitoring"
+        ]
+      }
+    },
+    "process": {
+      "title": "How we do it",
+      "subtitle": "A clear process where you know exactly what happens when",
+      "steps": [
+        {
+          "title": "Strategy & Planning",
+          "description": "We analyze your business and create a tailored strategy",
+          "duration": "Week 1"
+        },
+        {
+          "title": "Design & Branding",
+          "description": "Logo design, brand identity and website mockups",
+          "duration": "Week 2-3"
+        },
+        {
+          "title": "Development & Content",
+          "description": "Website development, copywriting and image production",
+          "duration": "Week 4-6"
+        },
+        {
+          "title": "SEO & Launch",
+          "description": "SEO optimization, testing and launch of your new digital presence",
+          "duration": "Week 7-8"
+        }
+      ]
+    },
+    "mission": {
+      "title": "It doesn't have to be difficult",
+      "subtitle": "Our mission is to make the entire process as smooth as possible for you. You don't need to worry about the technical stuff - we handle that.",
+      "points": [
+        {
+          "title": "Close collaboration all the way",
+          "description": "Ongoing conversations and feedback ensure the solution becomes perfect for your needs"
+        },
+        {
+          "title": "Make it simple for you",
+          "description": "You don't need to be technical - we handle all the complicated stuff so you can focus on your business"
+        },
+        {
+          "title": "No surprises",
+          "description": "Clear communication, fixed prices and you always know exactly where we are in the process"
+        }
+      ]
+    },
+    "cta": {
+      "title": "Ready to start your digital adventure?",
+      "subtitle": "Book a free consultation meeting and get a tailored plan for your digital presence. We take our time to understand your needs and wishes.",
+      "benefits": ["Free consultation", "Personal guidance", "No obligation"],
+      "bookConsultation": "Book free consultation",
+      "seeOurWork": "See our work",
+      "pricingFrom": "Complete solutions start from",
+      "price": "75,000 DKK",
+      "pricingFeatures": [
+        "Everything included",
+        "Tailored to you",
+        "No hidden costs"
+      ],
+      "availableThisWeek": "Available consultations this week"
+    }
+  }
+}

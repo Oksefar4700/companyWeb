@@ -1,8 +1,9 @@
-// src/components/CompleteDigitalSolution.jsx
+// src/components/CompleteDigitalSolution.jsx - MED I18N
 "use client";
 
 import React, { useRef, forwardRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { useTranslations } from "next-intl";
 import AnimatedHeading from "./AnimatedHeading";
 import FancyButton from "./FancyButton";
 import {
@@ -15,23 +16,49 @@ import {
   Zap,
   PlayCircle,
   Calendar,
+  Palette,
+  Globe,
+  Camera,
+  Search,
+  BarChart3,
 } from "lucide-react";
-import {
-  packageIncludes,
-  processSteps,
-  missionPoints,
-} from "../data/completeSolutionData";
 
 const SMOOTH_EASE = [0.215, 0.61, 0.355, 1];
+
+// ────────────────────────────────────────────────────────────────────────────
+// Icon mapping - bruger samme ikoner som før
+// ────────────────────────────────────────────────────────────────────────────
+const getPackageIcon = (index) => {
+  const icons = [
+    <Palette className="w-6 h-6" />,
+    <Globe className="w-6 h-6" />,
+    <Camera className="w-6 h-6" />,
+    <Search className="w-6 h-6" />,
+    <BarChart3 className="w-6 h-6" />,
+    <Sparkles className="w-6 h-6" />,
+  ];
+  return icons[index] || <Sparkles className="w-6 h-6" />;
+};
+
+const getMissionIcon = (index) => {
+  const icons = [
+    <Users className="w-6 h-6" />,
+    <Zap className="w-6 h-6" />,
+    <CheckCircle2 className="w-6 h-6" />,
+  ];
+  return icons[index] || <CheckCircle2 className="w-6 h-6" />;
+};
 
 // ────────────────────────────────────────────────────────────────────────────
 // Modulære komponenter
 // ────────────────────────────────────────────────────────────────────────────
 
 const PackageIncludeCard = forwardRef(function PackageIncludeCard(
-  { item, index, cardInView },
+  { packageKey, index, cardInView },
   ref
 ) {
+  const t = useTranslations("completeSolution.includes");
+
   return (
     <motion.div
       ref={ref}
@@ -46,19 +73,21 @@ const PackageIncludeCard = forwardRef(function PackageIncludeCard(
       style={{ willChange: "transform, opacity" }}
     >
       <div className="w-12 h-12 bg-[var(--color-brand-blue-lighter-bg)] rounded-lg flex items-center justify-center mb-4">
-        <div className="text-[var(--color-brand-blue)]">{item.icon}</div>
+        <div className="text-[var(--color-brand-blue)]">
+          {getPackageIcon(index)}
+        </div>
       </div>
 
       <h3 className="text-xl font-semibold text-[var(--color-foreground)] mb-2 font-[var(--font-heading)]">
-        {item.title}
+        {t(`${packageKey}.title`)}
       </h3>
 
       <p className="text-[var(--color-foreground)]/70 mb-4 font-[var(--font-body)] leading-relaxed">
-        {item.description}
+        {t(`${packageKey}.description`)}
       </p>
 
       <div className="space-y-2">
-        {item.deliverables.map((deliverable, i) => (
+        {t.raw(`${packageKey}.deliverables`).map((deliverable, i) => (
           <div key={i} className="flex items-center gap-2 text-sm">
             <CheckCircle2 className="w-4 h-4 text-[var(--color-brand-blue)] flex-shrink-0" />
             <span className="text-[var(--color-foreground)]/80 font-[var(--font-body)]">
@@ -72,30 +101,34 @@ const PackageIncludeCard = forwardRef(function PackageIncludeCard(
 });
 
 const ProcessStep = forwardRef(function ProcessStep(
-  { step, index, stepInView },
+  { stepIndex, stepInView, totalSteps },
   ref
 ) {
+  const t = useTranslations("completeSolution.process");
+  const steps = t.raw("steps");
+  const step = steps[stepIndex];
+
   return (
     <motion.div
       ref={ref}
       className="relative"
-      initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
+      initial={{ opacity: 0, x: stepIndex % 2 === 0 ? -30 : 30 }}
       animate={stepInView ? { opacity: 1, x: 0 } : {}}
       transition={{
         duration: 0.6,
-        delay: index * 0.2,
+        delay: stepIndex * 0.2,
         ease: SMOOTH_EASE,
       }}
       style={{ willChange: "transform, opacity" }}
     >
       {/* Linje til næste step (undtagen sidste) */}
-      {index < processSteps.length - 1 && (
+      {stepIndex < totalSteps - 1 && (
         <div className="hidden md:block absolute top-8 left-8 w-0.5 h-20 bg-[var(--color-brand-blue)]/30" />
       )}
 
       <div className="flex items-start gap-4">
         <div className="w-16 h-16 bg-[var(--color-brand-blue)] text-white rounded-full flex items-center justify-center text-xl font-bold font-[var(--font-heading)] flex-shrink-0">
-          {step.step}
+          {stepIndex + 1}
         </div>
 
         <div className="flex-1 pt-2">
@@ -117,9 +150,13 @@ const ProcessStep = forwardRef(function ProcessStep(
 });
 
 const MissionCard = forwardRef(function MissionCard(
-  { mission, index, missionInView },
+  { missionIndex, missionInView },
   ref
 ) {
+  const t = useTranslations("completeSolution.mission");
+  const missions = t.raw("points");
+  const mission = missions[missionIndex];
+
   return (
     <motion.div
       ref={ref}
@@ -128,13 +165,15 @@ const MissionCard = forwardRef(function MissionCard(
       animate={missionInView ? { opacity: 1, scale: 1 } : {}}
       transition={{
         duration: 0.6,
-        delay: index * 0.2,
+        delay: missionIndex * 0.2,
         ease: SMOOTH_EASE,
       }}
       style={{ willChange: "transform, opacity" }}
     >
       <div className="w-16 h-16 bg-[var(--color-brand-blue-lighter-bg)] rounded-full flex items-center justify-center mx-auto mb-4">
-        <div className="text-[var(--color-brand-blue)]">{mission.icon}</div>
+        <div className="text-[var(--color-brand-blue)]">
+          {getMissionIcon(missionIndex)}
+        </div>
       </div>
 
       <h3 className="text-xl font-semibold text-[var(--color-foreground)] mb-3 font-[var(--font-heading)]">
@@ -153,6 +192,8 @@ const MissionCard = forwardRef(function MissionCard(
 // ────────────────────────────────────────────────────────────────────────────
 
 export default function CompleteDigitalSolution() {
+  const t = useTranslations("completeSolution");
+
   const sectionRef = useRef(null);
   const headerRef = useRef(null);
   const includesRef = useRef(null);
@@ -166,6 +207,18 @@ export default function CompleteDigitalSolution() {
   const processInView = useInView(processRef, { once: true, amount: 0.3 });
   const missionInView = useInView(missionRef, { once: true, amount: 0.5 });
   const ctaInView = useInView(ctaRef, { once: true, amount: 0.8 });
+
+  // Hent package keys for at mappe over dem
+  const packageKeys = [
+    "logoAndBrand",
+    "customWebsite",
+    "mediaProduction",
+    "seoOptimization",
+    "socialMediaSetup",
+    "supportMaintenance",
+  ];
+  const processSteps = t.raw("process.steps");
+  const missionPoints = t.raw("mission.points");
 
   return (
     <section
@@ -205,34 +258,32 @@ export default function CompleteDigitalSolution() {
           <div className="inline-flex items-center gap-3 mb-4">
             <Sparkles className="w-8 h-8 text-[var(--color-brand-blue)]" />
             <span className="bg-[var(--color-brand-blue)] text-white px-4 py-2 rounded-full text-sm font-semibold">
-              SÅDAN ARBEJDER VI
+              {t("sectionTitle")}
             </span>
           </div>
 
           <AnimatedHeading
-            title="Alt-i-én digital løsning"
+            title={t("title")}
             direction="right"
             className="text-[var(--color-foreground)] mb-4"
           />
 
           <p className="text-xl text-[var(--color-foreground)]/70 max-w-3xl mx-auto font-[var(--font-body)] leading-relaxed mb-6">
-            Få en hjemmeside behøver ikke være kompliceret. Læn dig tilbage – vi
-            klarer ALT med løbende samtaler så resultatet bliver perfekt til
-            dine behov.
+            {t("subtitle")}
           </p>
 
           <div className="flex flex-wrap justify-center items-center gap-6 text-sm text-[var(--color-foreground)]/80">
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-[var(--color-brand-blue)]" />
-              <span>8 ugers levering</span>
+              <span>{t("features.delivery")}</span>
             </div>
             <div className="flex items-center gap-2">
               <Trophy className="w-4 h-4 text-[var(--color-brand-blue)]" />
-              <span>Alt inkluderet</span>
+              <span>{t("features.allIncluded")}</span>
             </div>
             <div className="flex items-center gap-2">
               <Zap className="w-4 h-4 text-[var(--color-brand-blue)]" />
-              <span>Klar til brug</span>
+              <span>{t("features.readyToUse")}</span>
             </div>
           </div>
         </motion.div>
@@ -245,14 +296,14 @@ export default function CompleteDigitalSolution() {
             animate={includesInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, ease: SMOOTH_EASE }}
           >
-            Alt du behøver – intet mere, intet mindre
+            {t("includes.title")}
           </motion.h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {packageIncludes.map((item, index) => (
+            {packageKeys.map((packageKey, index) => (
               <PackageIncludeCard
-                key={index}
-                item={item}
+                key={packageKey}
+                packageKey={packageKey}
                 index={index}
                 cardInView={includesInView}
               />
@@ -269,20 +320,20 @@ export default function CompleteDigitalSolution() {
             transition={{ duration: 0.6, ease: SMOOTH_EASE }}
           >
             <h3 className="text-3xl font-bold text-[var(--color-foreground)] mb-4 font-[var(--font-heading)]">
-              Sådan gør vi det
+              {t("process.title")}
             </h3>
             <p className="text-lg text-[var(--color-foreground)]/70 max-w-2xl mx-auto font-[var(--font-body)]">
-              En klar proces hvor du ved præcis hvad der sker hvornår
+              {t("process.subtitle")}
             </p>
           </motion.div>
 
           <div className="max-w-3xl mx-auto space-y-8">
-            {processSteps.map((step, index) => (
+            {processSteps.map((_, index) => (
               <ProcessStep
                 key={index}
-                step={step}
-                index={index}
+                stepIndex={index}
                 stepInView={processInView}
+                totalSteps={processSteps.length}
               />
             ))}
           </div>
@@ -297,20 +348,18 @@ export default function CompleteDigitalSolution() {
             transition={{ duration: 0.6, ease: SMOOTH_EASE }}
           >
             <h3 className="text-3xl font-bold text-[var(--color-foreground)] mb-4 font-[var(--font-heading)]">
-              Det behøver ikke være svært
+              {t("mission.title")}
             </h3>
             <p className="text-lg text-[var(--color-foreground)]/70 max-w-3xl mx-auto font-[var(--font-body)] leading-relaxed">
-              Vores mission er at gøre hele processen så glat som muligt for
-              dig. Du skal ikke bekymre dig om det tekniske - det klarer vi.
+              {t("mission.subtitle")}
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {missionPoints.map((mission, index) => (
+            {missionPoints.map((_, index) => (
               <MissionCard
                 key={index}
-                mission={mission}
-                index={index}
+                missionIndex={index}
                 missionInView={missionInView}
               />
             ))}
@@ -338,36 +387,31 @@ export default function CompleteDigitalSolution() {
                   <Sparkles className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-3xl lg:text-4xl font-bold text-[var(--color-foreground)] font-[var(--font-heading)]">
-                  Klar til at starte dit digitale eventyr?
+                  {t("cta.title")}
                 </h3>
               </div>
 
               <p className="text-lg text-[var(--color-foreground)]/70 mb-8 max-w-2xl mx-auto font-[var(--font-body)] leading-relaxed">
-                Book et gratis konsultationsmøde og få en skræddersyet plan for
-                din digitale tilstedeværelse. Vi tager os god tid til at forstå
-                dine behov og ønsker.
+                {t("cta.subtitle")}
               </p>
 
               {/* Fordele med ikoner */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                <div className="flex items-center justify-center gap-2 bg-white/60 rounded-full px-4 py-3">
-                  <Clock className="w-5 h-5 text-[var(--color-brand-blue)]" />
-                  <span className="text-[var(--color-foreground)] font-medium font-[var(--font-body)]">
-                    Gratis konsultation
-                  </span>
-                </div>
-                <div className="flex items-center justify-center gap-2 bg-white/60 rounded-full px-4 py-3">
-                  <Users className="w-5 h-5 text-[var(--color-brand-blue)]" />
-                  <span className="text-[var(--color-foreground)] font-medium font-[var(--font-body)]">
-                    Personlig vejledning
-                  </span>
-                </div>
-                <div className="flex items-center justify-center gap-2 bg-white/60 rounded-full px-4 py-3">
-                  <CheckCircle2 className="w-5 h-5 text-[var(--color-brand-blue)]" />
-                  <span className="text-[var(--color-foreground)] font-medium font-[var(--font-body)]">
-                    Ingen forpligtelse
-                  </span>
-                </div>
+                {t.raw("cta.benefits").map((benefit, index) => {
+                  const icons = [Clock, Users, CheckCircle2];
+                  const Icon = icons[index];
+                  return (
+                    <div
+                      key={index}
+                      className="flex items-center justify-center gap-2 bg-white/60 rounded-full px-4 py-3"
+                    >
+                      <Icon className="w-5 h-5 text-[var(--color-brand-blue)]" />
+                      <span className="text-[var(--color-foreground)] font-medium font-[var(--font-body)]">
+                        {benefit}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
 
               {/* CTA knapper */}
@@ -377,7 +421,7 @@ export default function CompleteDigitalSolution() {
                   className="bg-[var(--color-brand-blue)] hover:bg-[var(--color-brand-blue-darker)]"
                 >
                   <Calendar className="w-5 h-5 mr-2" />
-                  Book gratis konsultation
+                  {t("cta.bookConsultation")}
                 </FancyButton>
 
                 <motion.button
@@ -386,7 +430,7 @@ export default function CompleteDigitalSolution() {
                   whileTap={{ scale: 0.98 }}
                 >
                   <PlayCircle className="w-5 h-5" />
-                  Se vores arbejde
+                  {t("cta.seeOurWork")}
                 </motion.button>
               </div>
 
@@ -394,24 +438,18 @@ export default function CompleteDigitalSolution() {
               <div className="border-t border-[var(--color-brand-blue)]/20 pt-6">
                 <div className="text-center">
                   <div className="text-sm text-[var(--color-foreground)]/60 mb-2 font-[var(--font-body)]">
-                    Komplette løsninger starter fra
+                    {t("cta.pricingFrom")}
                   </div>
                   <div className="text-2xl font-bold text-[var(--color-brand-blue)] mb-2 font-[var(--font-heading)]">
-                    75.000 kr.
+                    {t("cta.price")}
                   </div>
                   <div className="flex flex-wrap justify-center items-center gap-4 text-sm text-[var(--color-foreground)]/70">
-                    <div className="flex items-center gap-1">
-                      <CheckCircle2 className="w-4 h-4 text-[var(--color-brand-blue)]" />
-                      <span>Alt inkluderet</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <CheckCircle2 className="w-4 h-4 text-[var(--color-brand-blue)]" />
-                      <span>Skræddersyet til dig</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <CheckCircle2 className="w-4 h-4 text-[var(--color-brand-blue)]" />
-                      <span>Ingen skjulte omkostninger</span>
-                    </div>
+                    {t.raw("cta.pricingFeatures").map((feature, index) => (
+                      <div key={index} className="flex items-center gap-1">
+                        <CheckCircle2 className="w-4 h-4 text-[var(--color-brand-blue)]" />
+                        <span>{feature}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -420,7 +458,7 @@ export default function CompleteDigitalSolution() {
               <div className="mt-4 text-center">
                 <div className="inline-flex items-center gap-2 bg-[var(--color-brand-blue)]/10 text-[var(--color-brand-blue)] px-4 py-2 rounded-full text-sm font-medium">
                   <Zap className="w-4 h-4" />
-                  <span>Ledige konsultationer denne uge</span>
+                  <span>{t("cta.availableThisWeek")}</span>
                 </div>
               </div>
             </div>

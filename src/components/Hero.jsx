@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import BookingModal from "@/components/BookingModal";
 import { ChevronRight } from "lucide-react";
 import { useRef, useState, useEffect, forwardRef } from "react";
+import { useTranslations } from "next-intl"; // 🆕 i18n import
 
 // 🚀 SMOOTH EASING CURVES (hardware-accelerated)
 const SMOOTH_EASE = [0.25, 0.1, 0.25, 1];
@@ -175,7 +176,7 @@ const AnimatedText = forwardRef(function AnimatedText(
 });
 
 // 🔥 MODULÄR KOMPONENT: CTAButtons med forwardRef
-const CTAButtons = forwardRef(function CTAButtons({ onBooking }, ref) {
+const CTAButtons = forwardRef(function CTAButtons({ onBooking, t }, ref) {
   return (
     <motion.div
       ref={ref}
@@ -184,10 +185,10 @@ const CTAButtons = forwardRef(function CTAButtons({ onBooking }, ref) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: HERO_EASE, delay: 0.8 }}
     >
-      {/* 🎯 HERO'S EGEN BookingModal - tilbage som før */}
+      {/* 🎯 BookingModal - nu med i18n */}
       <BookingModal onBooking={onBooking} />
 
-      {/* Cases-knap */}
+      {/* Cases-knap - NU MED i18n */}
       <motion.a
         href="#cases"
         className="
@@ -203,7 +204,7 @@ const CTAButtons = forwardRef(function CTAButtons({ onBooking }, ref) {
           focus:ring-[var(--color-brand-blue)]
           font-[var(--font-body)]
         "
-        aria-label="Se vores case-eksempler"
+        aria-label={t("viewCases")}
         whileHover={{
           scale: 1.05,
           transition: { duration: 0.2, ease: SMOOTH_EASE },
@@ -211,7 +212,7 @@ const CTAButtons = forwardRef(function CTAButtons({ onBooking }, ref) {
         whileTap={{ scale: 0.98 }}
         style={{ transform: "translate3d(0,0,0)", willChange: "transform" }}
       >
-        Se vores cases
+        {t("viewCases")}
         <ChevronRight
           size={20}
           className="ml-2 transition-transform group-hover:translate-x-1"
@@ -222,8 +223,10 @@ const CTAButtons = forwardRef(function CTAButtons({ onBooking }, ref) {
   );
 });
 
-// 🔥 HOVEDKOMPONENT
+// 🔥 HOVEDKOMPONENT - NU MED i18n
 export default function Hero({ onBooking }) {
+  const t = useTranslations("hero"); // 🆕 i18n hook
+
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
   const overlayRef = useRef(null);
@@ -260,7 +263,7 @@ export default function Hero({ onBooking }) {
         relative w-full h-[calc(100vh-var(--header-height))]
         overflow-hidden bg-[var(--color-primary-darkest)]
       "
-      aria-label="Velkommen til CompanyWeb"
+      aria-label={`${t("weAre")} ${t("companyName")}`}
       style={{ transform: "translate3d(0,0,0)", willChange: "opacity" }}
     >
       <VideoBackground ref={videoRef} sectionRef={sectionRef} />
@@ -275,15 +278,16 @@ export default function Hero({ onBooking }) {
       >
         <HeroLogo ref={logoRef} />
 
+        {/* 🆕 i18n tekster */}
         <AnimatedText
           ref={textRef}
-          text="VI ER"
+          text={t("weAre")}
           className="text-3xl md:text-4xl font-bold text-white"
           delay={0.1}
         />
 
         <AnimatedText
-          text="CompanyWeb"
+          text={t("companyName")}
           className="text-5xl md:text-6xl lg:text-7xl font-bold text-[var(--color-brand-blue)] drop-shadow-[0_0_15px_rgba(126,174,219,0.6)]"
           delay={0.2}
         />
@@ -297,11 +301,10 @@ export default function Hero({ onBooking }) {
             font-semibold font-[var(--font-body)]
           "
         >
-          Skræddersyede webløsninger – fra iøjnefaldende portfolioer til
-          avancerede webshops og bookingsystemer.
+          {t("subtitle")}
         </motion.p>
 
-        <CTAButtons ref={ctaRef} onBooking={onBooking} />
+        <CTAButtons ref={ctaRef} onBooking={onBooking} t={t} />
       </motion.div>
     </section>
   );

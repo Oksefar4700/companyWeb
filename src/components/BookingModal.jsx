@@ -1,4 +1,4 @@
-// src/components/BookingModal.jsx - SMART VERSION
+// src/components/BookingModal.jsx - MED I18N
 "use client";
 
 import { useState, useMemo } from "react";
@@ -6,8 +6,9 @@ import DatePicker from "react-datepicker";
 import { Dialog } from "@headlessui/react";
 import { FiX as X } from "react-icons/fi";
 import { setHours, setMinutes } from "date-fns";
-import { da } from "date-fns/locale";
+import { da, enUS } from "date-fns/locale";
 import { useBookedTimes, useCreateBooking } from "@/hooks/useBookings";
+import { useTranslations, useLocale } from "next-intl"; // 🆕 i18n imports
 
 export default function BookingModal({
   onBooking,
@@ -15,6 +16,9 @@ export default function BookingModal({
   onOpenChange,
   showTrigger = true,
 }) {
+  const t = useTranslations("booking"); // 🆕 i18n hook
+  const locale = useLocale(); // 🆕 for datepicker locale
+
   // 🎯 INTERN STATE for Hero's modal (hvis ikke controlled)
   const [internalOpen, setInternalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -44,6 +48,10 @@ export default function BookingModal({
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+
+  // 🆕 Locale for datepicker
+  const datePickerLocale = locale === "en" ? enUS : da;
+  const dateLocaleString = locale === "en" ? "en-US" : "da-DK";
 
   const includeTimes = useMemo(() => {
     const times = [];
@@ -76,15 +84,20 @@ export default function BookingModal({
 
   const formatDateTime = (date) => {
     if (!date) return "";
-    const weekday = date.toLocaleString("da-DK", { weekday: "long" });
+    const weekday = date.toLocaleString(dateLocaleString, { weekday: "long" });
     const day = date.getDate();
-    const month = date.toLocaleString("da-DK", { month: "long" });
+    const month = date.toLocaleString(dateLocaleString, { month: "long" });
     const year = date.getFullYear();
-    const time = date.toLocaleString("da-DK", {
+    const time = date.toLocaleString(dateLocaleString, {
       hour: "2-digit",
       minute: "2-digit",
     });
-    return `${weekday} den ${day}. ${month} ${year} kl. ${time}`;
+
+    if (locale === "en") {
+      return `${weekday}, ${month} ${day}, ${year} at ${time}`;
+    } else {
+      return `${weekday} den ${day}. ${month} ${year} kl. ${time}`;
+    }
   };
 
   const isTimeBooked = (time) => {
@@ -140,7 +153,7 @@ export default function BookingModal({
 
   const formatTime = (time) => {
     if (!time) return "";
-    return time.toLocaleTimeString("da-DK", {
+    return time.toLocaleTimeString(dateLocaleString, {
       hour: "2-digit",
       minute: "2-digit",
       hour12: false,
@@ -149,7 +162,7 @@ export default function BookingModal({
 
   return (
     <>
-      {/* 🎯 CONDITIONAL TRIGGER KNAP - kun til Hero */}
+      {/* 🎯 CONDITIONAL TRIGGER KNAP - NU MED i18n */}
       {showTrigger && (
         <button
           onClick={() => setIsOpen(true)}
@@ -167,11 +180,11 @@ export default function BookingModal({
             font-[var(--font-body)]
           "
         >
-          Book et gratis møde
+          {t("bookFreeConsultation")}
         </button>
       )}
 
-      {/* 🎯 MODAL med glasmorphism baggrund */}
+      {/* 🎯 MODAL med glasmorphism baggrund - NU MED i18n */}
       <Dialog
         open={isOpen}
         onClose={closeModal}
@@ -179,7 +192,7 @@ export default function BookingModal({
       >
         <Dialog.Panel className="booking-dialog-panel max-w-[42rem] bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20">
           <Dialog.Title className="dialog-title text-[1.8rem]">
-            Vælg dato & tid
+            {t("selectDateTime")}
           </Dialog.Title>
           <button onClick={closeModal} className="close-button">
             <X size={24} />
@@ -198,7 +211,7 @@ export default function BookingModal({
                 <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[var(--color-brand-blue)] text-white mr-2 text-sm font-bold">
                   1
                 </span>
-                Vælg dato
+                {t("selectDate")}
               </h3>
               <div className="flex justify-center">
                 <DatePicker
@@ -207,7 +220,7 @@ export default function BookingModal({
                   onChange={handleDateChange}
                   showTimeSelect={false}
                   dateFormat="PP"
-                  locale={da}
+                  locale={datePickerLocale}
                   minDate={new Date()}
                   filterDate={(date) => date >= today}
                   calendarClassName="custom-datepicker"
@@ -220,21 +233,21 @@ export default function BookingModal({
                 <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[var(--color-brand-blue)] text-white mr-2 text-sm font-bold">
                   2
                 </span>
-                Vælg tidspunkt
+                {t("selectTime")}
               </h3>
 
               {!selectedDate ? (
                 <div className="text-gray-500 italic text-center p-4 border border-dashed border-gray-300 rounded-lg">
-                  Vælg først en dato
+                  {t("selectDateFirst")}
                 </div>
               ) : loadingAvailability ? (
                 <div className="text-gray-500 text-center p-4">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--color-brand-blue)] mx-auto mb-2"></div>
-                  Henter ledige tidspunkter...
+                  {t("loadingAvailability")}
                 </div>
               ) : availableTimes.length === 0 ? (
                 <div className="text-gray-500 italic text-center p-4 border border-dashed border-gray-300 rounded-lg">
-                  Ingen ledige tidspunkter på denne dato
+                  {t("noAvailableTimes")}
                 </div>
               ) : (
                 <div className="grid grid-cols-2 gap-2 md:gap-3 max-h-[320px] overflow-y-auto pr-2">
@@ -264,7 +277,7 @@ export default function BookingModal({
           {dateTime && (
             <div className="mt-5 pt-5 border-t border-gray-200">
               <p className="selected-datetime">
-                Valgt tidspunkt: <strong>{formatDateTime(dateTime)}</strong>
+                {t("selectedTime")}: <strong>{formatDateTime(dateTime)}</strong>
               </p>
               <button
                 onClick={handleConfirmBooking}
@@ -276,8 +289,8 @@ export default function BookingModal({
                 }`}
               >
                 {createBookingMutation.isPending
-                  ? "Gemmer..."
-                  : "Bekræft tidspunkt"}
+                  ? t("saving")
+                  : t("confirmTime")}
               </button>
             </div>
           )}

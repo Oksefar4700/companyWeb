@@ -1,9 +1,10 @@
-// src/components/Header.jsx
+// src/components/Header.jsx - FINAL VERSION
 "use client";
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, X, Phone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import LanguageSwitcher from "./ui/LanguageSwitcher";
 
 const navLinks = [
   { href: "#hero", label: "Hjem" },
@@ -129,6 +130,9 @@ export default function Header() {
             <Phone size={16} className="mr-2" />
             Kontakt
           </Link>
+
+          {/* Language Switcher - helt ude til højre EFTER kontakt */}
+          <LanguageSwitcher />
         </nav>
 
         {/* Mobile menu button */}
@@ -172,9 +176,22 @@ export default function Header() {
                   </Link>
                 </motion.div>
               ))}
+
+              {/* Language Switcher i mobile menu */}
               <motion.div
                 variants={navLinkVariants}
                 custom={navLinks.length}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="!mt-4 flex justify-center"
+              >
+                <LanguageSwitcher />
+              </motion.div>
+
+              <motion.div
+                variants={navLinkVariants}
+                custom={navLinks.length + 1}
                 initial="hidden"
                 animate="visible"
                 exit="exit"

@@ -1,0 +1,156 @@
+{
+  "hero": {
+    "weAre": "VI ER",
+    "companyName": "CompanyWeb",
+    "subtitle": "Skræddersyede webløsninger – fra iøjnefaldende portfolioer til avancerede webshops og bookingsystemer.",
+    "viewCases": "Se vores cases"
+  },
+  "booking": {
+    "bookFreeConsultation": "Book et gratis møde",
+    "selectDateTime": "Vælg dato & tid",
+    "selectDate": "Vælg dato",
+    "selectTime": "Vælg tidspunkt",
+    "selectDateFirst": "Vælg først en dato",
+    "loadingAvailability": "Henter ledige tidspunkter...",
+    "noAvailableTimes": "Ingen ledige tidspunkter på denne dato",
+    "selectedTime": "Valgt tidspunkt",
+    "confirmTime": "Bekræft tidspunkt",
+    "saving": "Gemmer..."
+  },
+  "completeSolution": {
+    "sectionTitle": "SÅDAN ARBEJDER VI",
+    "title": "Alt-i-én digital løsning",
+    "subtitle": "Få en hjemmeside behøver ikke være kompliceret. Læn dig tilbage – vi klarer ALT med løbende samtaler så resultatet bliver perfekt til dine behov.",
+    "features": {
+      "delivery": "8 ugers levering",
+      "allIncluded": "Alt inkluderet",
+      "readyToUse": "Klar til brug"
+    },
+    "includes": {
+      "title": "Alt du behøver – intet mere, intet mindre",
+      "logoAndBrand": {
+        "title": "Logo & Brand Identitet",
+        "description": "Professionelt logo design og komplet brand guidelines",
+        "deliverables": [
+          "3 logo koncepter",
+          "Brand farvepalette",
+          "Typografi guide",
+          "Brand retningslinjer"
+        ]
+      },
+      "customWebsite": {
+        "title": "Skræddersyet Hjemmeside",
+        "description": "Fuldt responsivt website bygget i React med moderne design",
+        "deliverables": [
+          "Mobil-optimeret design",
+          "CMS integration",
+          "Kontaktformularer",
+          "Google Analytics"
+        ]
+      },
+      "mediaProduction": {
+        "title": "Billeder & Video",
+        "description": "Professionel foto/video produktion til dit website og sociale medier",
+        "deliverables": [
+          "Produktfotografering",
+          "Virksomhedsbilleder",
+          "Intro video",
+          "Stock billeder"
+        ]
+      },
+      "seoOptimization": {
+        "title": "SEO & Google Optimering",
+        "description": "Komplet SEO setup så du bliver fundet på Google",
+        "deliverables": [
+          "Keyword research",
+          "Google My Business",
+          "Teknisk SEO",
+          "Indholdsoptimering"
+        ]
+      },
+      "socialMediaSetup": {
+        "title": "Social Media Setup",
+        "description": "Professionelle profiler på alle relevante platforme",
+        "deliverables": [
+          "Facebook Business",
+          "Instagram erhverv",
+          "LinkedIn profil",
+          "Content strategi"
+        ]
+      },
+      "supportMaintenance": {
+        "title": "Support & Vedligeholdelse",
+        "description": "6 måneders support og vedligeholdelse inkluderet",
+        "deliverables": [
+          "24/7 teknisk support",
+          "Månedlige opdateringer",
+          "Backup & sikkerhed",
+          "Performance monitoring"
+        ]
+      }
+    },
+    "process": {
+      "title": "Sådan gør vi det",
+      "subtitle": "En klar proces hvor du ved præcis hvad der sker hvornår",
+      "steps": [
+        {
+          "title": "Strategi & Planlægning",
+          "description": "Vi analyserer din virksomhed og laver en skræddersyet strategi",
+          "duration": "Uge 1"
+        },
+        {
+          "title": "Design & Branding",
+          "description": "Logo design, brand identitet og website mockups",
+          "duration": "Uge 2-3"
+        },
+        {
+          "title": "Udvikling & Indhold",
+          "description": "Website udvikling, tekstskrivning og billedproduktion",
+          "duration": "Uge 4-6"
+        },
+        {
+          "title": "SEO & Lancering",
+          "description": "SEO optimering, test og lancering af din nye digitale tilstedeværelse",
+          "duration": "Uge 7-8"
+        }
+      ]
+    },
+    "mission": {
+      "title": "Det behøver ikke være svært",
+      "subtitle": "Vores mission er at gøre hele processen så glat som muligt for dig. Du skal ikke bekymre dig om det tekniske - det klarer vi.",
+      "points": [
+        {
+          "title": "Tæt samarbejde hele vejen",
+          "description": "Løbende samtaler og feedback sikrer at løsningen bliver perfekt til dine behov"
+        },
+        {
+          "title": "Gør det enkelt for dig",
+          "description": "Du behøver ikke være teknisk - vi håndterer alt det komplicerede så du kan fokusere på din forretning"
+        },
+        {
+          "title": "Ingen overraskelser",
+          "description": "Klar kommunikation, faste priser og du ved altid præcis hvor vi er i processen"
+        }
+      ]
+    },
+    "cta": {
+      "title": "Klar til at starte dit digitale eventyr?",
+      "subtitle": "Book et gratis konsultationsmøde og få en skræddersyet plan for din digitale tilstedeværelse. Vi tager os god tid til at forstå dine behov og ønsker.",
+      "benefits": [
+        "Gratis konsultation",
+        "Personlig vejledning",
+        "Ingen forpligtelse"
+      ],
+      "bookConsultation": "Book gratis konsultation",
+      "seeOurWork": "Se vores arbejde",
+      "pricingFrom": "Komplette løsninger starter fra",
+      "price": "75.000 kr.",
+      "pricingFeatures": [
+        "Alt inkluderet",
+        "Skræddersyet til dig",
+        "Ingen skjulte omkostninger"
+      ],
+      "availableThisWeek": "Ledige konsultationer denne uge"
+    }
+  }
+}

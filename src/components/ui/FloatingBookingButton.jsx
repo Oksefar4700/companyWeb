@@ -25,7 +25,7 @@ export default function FloatingBookingButton({ onOpenBooking }) {
 
     buttonTimer.current = setTimeout(() => {
       setIsVisible(true);
-    }, 10000);
+    }, 20000);
 
     return () => {
       if (buttonTimer.current) {
