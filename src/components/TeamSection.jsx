@@ -3,31 +3,13 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, forwardRef } from "react";
+import { useTranslations } from "next-intl"; // 🆕 i18n import
 import AnimatedHeading from "./AnimatedHeading";
 
 // 🚀 SMOOTH EASING CURVES (hardware-accelerated)
 const SMOOTH_EASE = [0.25, 0.1, 0.25, 1];
 
-// Teammedlemmer data
-const teamMembers = [
-  {
-    name: "Frederik Brøsen",
-    role: "Fullstack udvikler",
-    img: "/images/team/Frederik_Broesen.jpg",
-  },
-  {
-    name: "Oliver Larsen",
-    role: "HR ansvarlig",
-    img: "/images/team/Oliver_larsen.jpg",
-  },
-  {
-    name: "Daniel Bonne",
-    role: "Fullstack udvikler, kvalitetskontrollør",
-    img: "/images/team/Daniel_Bonne.png",
-  },
-];
-
-// 🔥 MODULÆR KOMPONENT: TeamMemberCard med forwardRef
+// 🔥 MODULÄR KOMPONENT: TeamMemberCard med forwardRef
 const TeamMemberCard = forwardRef(function TeamMemberCard(
   { member, index, cardInView },
   ref
@@ -229,6 +211,8 @@ const BackgroundElements = forwardRef(function BackgroundElements(
 
 // 🔥 HOVEDKOMPONENT
 export default function TeamSection() {
+  const t = useTranslations("team"); // 🆕 i18n hook
+
   // 🔥 REFS FOR HVER SEKTION (modulær tilgang)
   const sectionRef = useRef(null);
   const backgroundRef = useRef(null);
@@ -237,6 +221,25 @@ export default function TeamSection() {
   // 🔥 OPTIMERET useInView - once: true + hardware acceleration
   const sectionInView = useInView(sectionRef, { once: true, amount: 0.1 });
   const cardsInView = useInView(cardsRef, { once: true, amount: 0.3 });
+
+  // 🆕 Teammedlemmer data med i18n
+  const teamMembers = [
+    {
+      name: "Frederik Brøsen",
+      role: t("members.frederik.role"),
+      img: "/images/team/Frederik_Broesen.jpg",
+    },
+    {
+      name: "Oliver Larsen",
+      role: t("members.oliver.role"),
+      img: "/images/team/Oliver_larsen.jpg",
+    },
+    {
+      name: "Daniel Bonne",
+      role: t("members.daniel.role"),
+      img: "/images/team/Daniel_Bonne.png",
+    },
+  ];
 
   return (
     <motion.section
@@ -255,10 +258,10 @@ export default function TeamSection() {
       <BackgroundElements ref={backgroundRef} sectionInView={sectionInView} />
 
       <div className="container mx-auto px-6 lg:px-20 text-center relative z-10">
-        {/* Header */}
+        {/* 🆕 Header med i18n */}
         <div className="mb-12">
           <AnimatedHeading
-            title="Mød teamet"
+            title={t("title")}
             direction="right"
             className="text-[var(--color-foreground)]"
           />

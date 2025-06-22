@@ -3,8 +3,9 @@
 
 import { useRef, forwardRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { useTranslations } from "next-intl"; // 🆕 i18n import
 import AnimatedHeading from "./AnimatedHeading";
-import { FaWordpress, FaReact, FaPlug } from "react-icons/fa"; // <-- Tilføj FaPlug
+import { FaWordpress, FaReact, FaPlug } from "react-icons/fa";
 import {
   FiAlertTriangle,
   FiBox,
@@ -112,8 +113,8 @@ const ComparisonCard = forwardRef(function ComparisonCard(
   );
 });
 
-// 🔥 IntroSection
-const IntroSection = forwardRef(function IntroSection({ introInView }, ref) {
+// 🔥 IntroSection med i18n
+const IntroSection = forwardRef(function IntroSection({ introInView, t }, ref) {
   return (
     <motion.p
       ref={ref}
@@ -123,13 +124,14 @@ const IntroSection = forwardRef(function IntroSection({ introInView }, ref) {
       transition={{ duration: 0.6, ease: SMOOTH_EASE, delay: 0.3 }}
       style={{ willChange: "transform, opacity" }}
     >
-      Hos os får du ikke bare en standard WordPress-skabelon – du får en
-      dynamisk React-løsning.
+      {t("subtitle")}
     </motion.p>
   );
 });
 
 export default function CompareWithWordPress() {
+  const t = useTranslations("compare"); // 🆕 i18n hook
+
   const sectionRef = useRef(null);
   const introRef = useRef(null);
   const gridRef = useRef(null);
@@ -138,59 +140,61 @@ export default function CompareWithWordPress() {
   const introInView = useInView(introRef, { once: true, amount: 0.8 });
   const gridInView = useInView(gridRef, { once: true, amount: 0.3 });
 
+  // 🆕 WordPress features med i18n
   const wordpressFeatures = [
     {
       icon: FaPlug,
       iconColor: "text-[var(--color-foreground)]/60",
-      text: "Plug-in-kaos: Mange tredjeparts-plugins",
+      text: t("wordpress.features.plugins"),
     },
     {
       icon: FiAlertTriangle,
       iconColor: "text-[var(--color-foreground)]/60",
-      text: "Uforudsigelige opdateringer kan bryde din side",
+      text: t("wordpress.features.updates"),
     },
     {
       icon: FiBox,
       iconColor: "text-[var(--color-foreground)]/60",
-      text: "Generisk design, der ligner alle andres",
+      text: t("wordpress.features.generic"),
     },
     {
       icon: FiServer,
       iconColor: "text-[var(--color-foreground)]/60",
-      text: "Tungere sider med mange plugins",
+      text: t("wordpress.features.heavy"),
     },
     {
       icon: FiLock,
       iconColor: "text-[var(--color-foreground)]/60",
-      text: "Begrænset fleksibilitet uden custom-code",
+      text: t("wordpress.features.limited"),
     },
   ];
 
+  // 🆕 React features med i18n
   const reactFeatures = [
     {
       icon: FiZap,
       iconColor: "text-[var(--color-brand-blue)]",
-      text: "Ultralynhurtig frontend uden ballast",
+      text: t("react.features.fast"),
     },
     {
       icon: FiRefreshCcw,
       iconColor: "text-[var(--color-brand-blue)]",
-      text: "Dynamisk indhold – automatisk opdateret",
+      text: t("react.features.dynamic"),
     },
     {
       icon: FiFeather,
       iconColor: "text-[var(--color-brand-blue)]",
-      text: "Fuld kreativ frihed med unikt design",
+      text: t("react.features.creative"),
     },
     {
       icon: FiCode,
       iconColor: "text-[var(--color-brand-blue)]",
-      text: "Nemme opdateringer via kode-repository",
+      text: t("react.features.updates"),
     },
     {
       icon: FiUsers,
       iconColor: "text-[var(--color-brand-blue)]",
-      text: "Personlig 24/7 support & sparring",
+      text: t("react.features.support"),
     },
   ];
 
@@ -210,20 +214,20 @@ export default function CompareWithWordPress() {
       style={{ willChange: "opacity" }}
     >
       <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
-        {/* Titel */}
+        {/* 🆕 Titel med i18n */}
         <AnimatedHeading
-          title="React vs. WordPress"
+          title={t("title")}
           direction="right"
           className="text-[var(--color-foreground)]"
         />
 
-        {/* Intro */}
-        <IntroSection ref={introRef} introInView={introInView} />
+        {/* 🆕 Intro med i18n */}
+        <IntroSection ref={introRef} introInView={introInView} t={t} />
 
         {/* Sammenligningskort */}
         <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <ComparisonCard
-            title="WordPress-skabelon"
+            title={t("wordpress.title")}
             icon={FaWordpress}
             iconColor="text-[var(--color-foreground)]/60"
             features={wordpressFeatures}
@@ -232,7 +236,7 @@ export default function CompareWithWordPress() {
           />
 
           <ComparisonCard
-            title="React-baseret løsning"
+            title={t("react.title")}
             icon={FaReact}
             iconColor="text-[var(--color-brand-blue)]"
             features={reactFeatures}

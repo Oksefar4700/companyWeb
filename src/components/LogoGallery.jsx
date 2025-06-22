@@ -3,6 +3,7 @@
 
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { useTranslations } from "next-intl"; // 🆕 i18n import
 
 // Logoerne ligger i public/images/logo/ og hedder logo3.png til logo10.png
 const logoImages = [
@@ -17,19 +18,20 @@ const logoImages = [
 ];
 
 export default function LogoGallery() {
+  const t = useTranslations("logoGallery"); // 🆕 i18n hook
   const gridRef = useRef(null);
   const gridInView = useInView(gridRef, { once: true, amount: 0.2 });
 
   return (
     <section className="py-20 bg-[var(--color-secondary-light)]">
       <div className="container mx-auto px-6 text-center">
+        {/* 🆕 Titel med i18n */}
         <h2 className="text-3xl sm:text-4xl font-bold mb-6 font-[var(--font-heading)] text-[var(--color-foreground)]">
-          Vores tidligere logo-projekter
+          {t("title")}
         </h2>
+        {/* 🆕 Beskrivelse med i18n */}
         <p className="text-[var(--color-foreground)]/70 mb-12 font-[var(--font-body)] max-w-2xl mx-auto">
-          Her er et udsnit af nogle af de logoer og ikon-designs, vi har skabt
-          for vores kunder. Hvert logo er håndlavet for at passe perfekt til
-          brandets identitet.
+          {t("description")}
         </p>
 
         <div
@@ -54,7 +56,7 @@ export default function LogoGallery() {
             >
               <img
                 src={src}
-                alt={`Logo ${idx + 3}`}
+                alt={t("logoAlt", { number: idx + 3 })} // 🆕 Alt tekst med i18n
                 className="max-w-full h-auto object-contain"
               />
             </motion.div>

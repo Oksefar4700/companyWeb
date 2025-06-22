@@ -3,6 +3,7 @@
 
 import React, { useRef, forwardRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { useTranslations } from "next-intl"; // 🆕 i18n import
 import { Shield, Lock, FileText, CheckCircle2, Eye } from "lucide-react";
 
 // 🚀 SMOOTH EASING CURVES (hardware-accelerated)
@@ -91,9 +92,9 @@ const ComplianceFeatureCard = forwardRef(function ComplianceFeatureCard(
   );
 });
 
-// 🔥 MODULÄR KOMPONENT: CertificationBadge med forwardRef
+// 🔥 MODULÄR KOMPONENT: CertificationBadge med forwardRef og i18n
 const CertificationBadge = forwardRef(function CertificationBadge(
-  { badgeInView },
+  { badgeInView, t },
   ref
 ) {
   return (
@@ -126,7 +127,7 @@ const CertificationBadge = forwardRef(function CertificationBadge(
       >
         <CheckCircle2 className="w-6 h-6 text-[var(--color-brand-blue)] mr-3" />
         <span className="text-[var(--color-foreground)] font-semibold font-[var(--font-body)]">
-          GDPR Certificeret & EU-kompatibel
+          {t("certification")}
         </span>
       </motion.div>
     </motion.div>
@@ -182,6 +183,8 @@ const BackgroundElements = forwardRef(function BackgroundElements(
 
 // 🔥 HOVEDKOMPONENT
 export default function GDPRSection() {
+  const t = useTranslations("gdpr"); // 🆕 i18n hook
+
   // 🔥 REFS FOR HVER SEKTION (modulær tilgang)
   const sectionRef = useRef(null);
   const backgroundRef = useRef(null);
@@ -195,27 +198,27 @@ export default function GDPRSection() {
   const cardsInView = useInView(cardsRef, { once: true, amount: 0.3 });
   const badgeInView = useInView(badgeRef, { once: true, amount: 0.8 });
 
+  // 🆕 Compliance features med i18n
   const complianceFeatures = [
     {
       icon: Shield,
-      title: "GDPR Compliance",
-      description:
-        "Alle vores løsninger overholder EU's databeskyttelsesforordning",
+      title: t("features.gdprCompliance.title"),
+      description: t("features.gdprCompliance.description"),
     },
     {
       icon: Lock,
-      title: "SSL & Sikkerhed",
-      description: "256-bit kryptering og sikre dataoverførsler som standard",
+      title: t("features.sslSecurity.title"),
+      description: t("features.sslSecurity.description"),
     },
     {
       icon: FileText,
-      title: "Privatlivspolitik",
-      description: "Klare og gennemsigtige privatlivspolitikker integreret",
+      title: t("features.privacyPolicy.title"),
+      description: t("features.privacyPolicy.description"),
     },
     {
       icon: Eye,
-      title: "Cookie Consent",
-      description: "GDPR-kompatible cookie bannere og consent management",
+      title: t("features.cookieConsent.title"),
+      description: t("features.cookieConsent.description"),
     },
   ];
 
@@ -235,7 +238,7 @@ export default function GDPRSection() {
       <BackgroundElements ref={backgroundRef} sectionInView={sectionInView} />
 
       <div className="container mx-auto px-6 relative z-10">
-        {/* Header */}
+        {/* 🆕 Header med i18n */}
         <motion.div
           ref={headerRef}
           className="text-center mb-16"
@@ -250,13 +253,12 @@ export default function GDPRSection() {
           <div className="inline-flex items-center mb-4">
             <Shield className="w-8 h-8 text-[var(--color-brand-blue)] mr-3" />
             <h2 className="text-4xl font-bold text-[var(--color-foreground)] font-[var(--font-heading)]">
-              Sikkerhed & Compliance
+              {t("title")}
             </h2>
           </div>
           <div className="w-24 h-1 bg-[var(--color-brand-blue)] rounded-full mx-auto mb-6"></div>
           <p className="text-xl text-[var(--color-foreground)]/70 max-w-3xl mx-auto font-[var(--font-body)]">
-            Vi tager datasikkerhed alvorligt. Alle vores løsninger er bygget med
-            GDPR-compliance og høj sikkerhed som fundament.
+            {t("subtitle")}
           </p>
         </motion.div>
 
@@ -275,8 +277,8 @@ export default function GDPRSection() {
           ))}
         </div>
 
-        {/* Certification Badge */}
-        <CertificationBadge ref={badgeRef} badgeInView={badgeInView} />
+        {/* 🆕 Certification Badge med i18n */}
+        <CertificationBadge ref={badgeRef} badgeInView={badgeInView} t={t} />
       </div>
     </motion.section>
   );

@@ -3,6 +3,7 @@
 
 import React, { useRef, useState, forwardRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { useTranslations } from "next-intl"; // 🆕 i18n import
 import {
   Bot,
   MessageCircle,
@@ -89,9 +90,9 @@ const StatsCard = forwardRef(function StatsCard(
   );
 });
 
-// 🔥 MODULÄR KOMPONENT: VideoDemo med forwardRef
+// 🔥 MODULÄR KOMPONENT: VideoDemo med forwardRef og i18n
 const VideoDemo = forwardRef(function VideoDemo(
-  { isPlaying, onPlay, demoInView },
+  { isPlaying, onPlay, demoInView, t },
   ref
 ) {
   const videoRef = useRef(null);
@@ -127,7 +128,7 @@ const VideoDemo = forwardRef(function VideoDemo(
           </div>
           <div className="flex-1 mx-4">
             <div className="bg-[var(--color-background)] rounded px-3 py-1 text-sm text-[var(--color-foreground)]/60 text-center border border-[var(--color-primary)]/10">
-              www.dinvirksomhed.dk
+              {t("demo.browserUrl")}
             </div>
           </div>
         </div>
@@ -155,10 +156,10 @@ const VideoDemo = forwardRef(function VideoDemo(
               <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-brand-blue)]/20 to-[var(--color-primary)]/10 flex items-center justify-center">
                 <div className="text-center">
                   <div className="text-lg font-semibold text-[var(--color-foreground)] mb-2 font-[var(--font-heading)]">
-                    Se AI Chatbot i Aktion
+                    {t("demo.title")}
                   </div>
                   <div className="text-sm text-[var(--color-foreground)]/70 font-[var(--font-body)]">
-                    Demonstration af kundeservice og ordrestatus
+                    {t("demo.description")}
                   </div>
                 </div>
               </div>
@@ -176,7 +177,7 @@ const VideoDemo = forwardRef(function VideoDemo(
               }}
             >
               <source src="/videos/ai-chatbot-demo.mp4" type="video/mp4" />
-              Din browser understøtter ikke HTML5 video.
+              {t("demo.videoNotSupported")}
             </video>
           )}
         </div>
@@ -200,13 +201,12 @@ const VideoDemo = forwardRef(function VideoDemo(
                 <Bot className="w-4 h-4 text-white" />
               </div>
               <div className="text-sm font-medium text-[var(--color-foreground)] font-[var(--font-body)]">
-                AI Assistant
+                {t("demo.chatAssistant")}
               </div>
               <div className="w-2 h-2 bg-green-400 rounded-full ml-auto"></div>
             </div>
             <div className="text-xs text-[var(--color-foreground)]/70 bg-[var(--color-secondary-light)] rounded p-2 font-[var(--font-body)]">
-              "Hej! Jeg kan hjælpe med at finde dit ordrenummer og svare på
-              spørgsmål om levering 😊"
+              {t("demo.chatMessage")}
             </div>
           </motion.div>
         )}
@@ -217,6 +217,8 @@ const VideoDemo = forwardRef(function VideoDemo(
 
 // 🔥 HOVEDKOMPONENT
 export default function AIIntegrationSection() {
+  const t = useTranslations("aiIntegration"); // 🆕 i18n hook
+
   // 🔥 REFS FOR HVER SEKTION (modulær tilgang)
   const sectionRef = useRef(null);
   const capabilitiesRef = useRef(null);
@@ -234,30 +236,27 @@ export default function AIIntegrationSection() {
 
   const [isPlaying, setIsPlaying] = useState(false);
 
+  // 🆕 AI capabilities med i18n
   const aiCapabilities = [
     {
       icon: MessageCircle,
-      title: "24/7 Kundesupport",
-      description:
-        "AI-chatbot besvarer kundeforespørgsler øjeblikkeligt, også udenfor åbningstid",
+      title: t("capabilities.customerSupport.title"),
+      description: t("capabilities.customerSupport.description"),
     },
     {
       icon: Search,
-      title: "Ordrestatus & Sporing",
-      description:
-        "Kunder kan spørge om ordrenummer, leveringsstatus og få øjeblikkelige opdateringer",
+      title: t("capabilities.orderTracking.title"),
+      description: t("capabilities.orderTracking.description"),
     },
     {
       icon: Clock,
-      title: "Booking & Tidsplanlægning",
-      description:
-        "Intelligent booking-assistent der hjælper med at finde ledige tider og bestille møder",
+      title: t("capabilities.booking.title"),
+      description: t("capabilities.booking.description"),
     },
     {
       icon: Users,
-      title: "Lead Kvalificering",
-      description:
-        "AI'en identificerer og kvalificerer potentielle kunder gennem samtaler",
+      title: t("capabilities.leadQualification.title"),
+      description: t("capabilities.leadQualification.description"),
     },
   ];
 
@@ -274,7 +273,7 @@ export default function AIIntegrationSection() {
       style={{ willChange: "opacity" }} // 🔥 GPU HINT
     >
       <div className="container mx-auto px-6 relative z-10">
-        {/* Header */}
+        {/* 🆕 Header med i18n */}
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: -20 }}
@@ -286,13 +285,12 @@ export default function AIIntegrationSection() {
           <div className="inline-flex items-center mb-4">
             <Bot className="w-8 h-8 text-[var(--color-brand-blue)] mr-3" />
             <h2 className="text-4xl font-bold text-[var(--color-foreground)] font-[var(--font-heading)]">
-              AI-Drevet Kundeservice
+              {t("title")}
             </h2>
           </div>
           <div className="w-24 h-1 bg-[var(--color-brand-blue)] rounded-full mx-auto mb-6"></div>
           <p className="text-xl text-[var(--color-foreground)]/70 max-w-3xl mx-auto font-[var(--font-body)]">
-            Integrér intelligente chatbots der arbejder 24/7 for at give dine
-            kunder øjeblikkelig hjælp og forbedre deres oplevelse markant.
+            {t("subtitle")}
           </p>
         </motion.div>
 
@@ -310,7 +308,7 @@ export default function AIIntegrationSection() {
               }
               transition={{ duration: 0.6, ease: SMOOTH_EASE }}
             >
-              Hvad kan din AI-assistent?
+              {t("capabilitiesTitle")}
             </motion.h3>
 
             <div ref={capabilitiesRef} className="space-y-6">
@@ -324,17 +322,17 @@ export default function AIIntegrationSection() {
               ))}
             </div>
 
-            {/* Stats */}
+            {/* 🆕 Stats med i18n */}
             <div ref={statsRef} className="mt-12 grid grid-cols-2 gap-6">
               <StatsCard
-                value="95%"
-                label="Hurtigere responstid"
+                value={t("stats.responseTime.value")}
+                label={t("stats.responseTime.label")}
                 index={0}
                 statsInView={statsInView}
               />
               <StatsCard
-                value="24/7"
-                label="Tilgængelighed"
+                value={t("stats.availability.value")}
+                label={t("stats.availability.label")}
                 index={1}
                 statsInView={statsInView}
               />
@@ -347,10 +345,11 @@ export default function AIIntegrationSection() {
             isPlaying={isPlaying}
             onPlay={() => setIsPlaying(true)}
             demoInView={demoInView}
+            t={t} // 🆕 Pass t to VideoDemo
           />
         </div>
 
-        {/* CTA */}
+        {/* 🆕 CTA med i18n */}
         <motion.div
           className="text-center mt-16"
           initial={{ opacity: 0, y: 20 }}
@@ -372,7 +371,7 @@ export default function AIIntegrationSection() {
             }}
           >
             <Zap className="w-5 h-5 mr-2" />
-            Få AI integreret i din løsning
+            {t("cta")}
           </motion.a>
         </motion.div>
       </div>

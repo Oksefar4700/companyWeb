@@ -3,11 +3,12 @@
 
 import React, { useRef, useEffect, useState, forwardRef } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { useTranslations } from "next-intl"; // 🆕 i18n import
 
 // 🚀 SMOOTH EASING CURVES (hardware-accelerated)
 const SMOOTH_EASE = [0.25, 0.1, 0.25, 1];
 
-// 🔥 MODULÆR KOMPONENT: OptimizedParallaxBackground med forwardRef
+// 🔥 MODULÄR KOMPONENT: OptimizedParallaxBackground med forwardRef
 const OptimizedParallaxBackground = forwardRef(
   function OptimizedParallaxBackground({ src, scrollYProgress }, ref) {
     const [imageLoaded, setImageLoaded] = useState(false);
@@ -74,7 +75,7 @@ const OptimizedParallaxBackground = forwardRef(
   }
 );
 
-// 🔥 MODULÆR KOMPONENT: ContentOverlay med forwardRef
+// 🔥 MODULÄR KOMPONENT: ContentOverlay med forwardRef
 const ContentOverlay = forwardRef(function ContentOverlay({}, ref) {
   return (
     <div
@@ -88,9 +89,9 @@ const ContentOverlay = forwardRef(function ContentOverlay({}, ref) {
   );
 });
 
-// 🔥 MODULÄR KOMPONENT: ParallaxContent med forwardRef
+// 🔥 MODULÄR KOMPONENT: ParallaxContent med forwardRef og i18n
 const ParallaxContent = forwardRef(function ParallaxContent(
-  { contentInView },
+  { contentInView, t },
   ref
 ) {
   return (
@@ -110,7 +111,7 @@ const ParallaxContent = forwardRef(function ParallaxContent(
         willChange: "opacity",
       }}
     >
-      {/* Heading */}
+      {/* 🆕 Heading med i18n */}
       <motion.h2
         className="text-4xl sm:text-5xl font-bold text-[var(--color-foreground)] drop-shadow-lg mb-4 font-[var(--font-heading)]"
         initial={{ opacity: 0, y: 20 }}
@@ -122,10 +123,10 @@ const ParallaxContent = forwardRef(function ParallaxContent(
         }}
         style={{ willChange: "transform, opacity" }} // 🔥 GPU HINT
       >
-        Er du i tvivl om, hvilke pakker der passer til dig?
+        {t("title")}
       </motion.h2>
 
-      {/* Description */}
+      {/* 🆕 Description med i18n */}
       <motion.p
         className="text-lg sm:text-xl text-[var(--color-foreground)] drop-shadow-md mb-6 max-w-xl font-[var(--font-body)]"
         initial={{ opacity: 0, y: 20 }}
@@ -137,10 +138,10 @@ const ParallaxContent = forwardRef(function ParallaxContent(
         }}
         style={{ willChange: "transform, opacity" }} // 🔥 GPU HINT
       >
-        Kontakt os, og vi hjælper dig med at vælge den perfekte løsning.
+        {t("description")}
       </motion.p>
 
-      {/* CTA Button */}
+      {/* 🆕 CTA Button med i18n */}
       <motion.a
         href="#contact"
         className="
@@ -180,7 +181,7 @@ const ParallaxContent = forwardRef(function ParallaxContent(
             "transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1), background-color 0.2s ease, box-shadow 0.2s ease",
         }}
       >
-        Kontakt os
+        {t("contactUs")}
       </motion.a>
     </motion.div>
   );
@@ -191,6 +192,8 @@ export default function ParallaxSection({
   src = "/images/contact/contactImage.png",
   height = "70vh",
 }) {
+  const t = useTranslations("parallax"); // 🆕 i18n hook
+
   // 🔥 REFS FOR HVER SEKTION (modulær tilgang)
   const sectionRef = useRef(null);
   const backgroundRef = useRef(null);
@@ -235,8 +238,8 @@ export default function ParallaxSection({
       {/* 🔥 CONTENT OVERLAY */}
       <ContentOverlay ref={overlayRef} />
 
-      {/* 🔥 PARALLAX CONTENT */}
-      <ParallaxContent ref={contentRef} contentInView={contentInView} />
+      {/* 🔥 PARALLAX CONTENT med i18n */}
+      <ParallaxContent ref={contentRef} contentInView={contentInView} t={t} />
     </motion.section>
   );
 }

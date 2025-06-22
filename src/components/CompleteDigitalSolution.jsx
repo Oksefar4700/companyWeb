@@ -18,23 +18,19 @@ import {
   Calendar,
   Palette,
   Globe,
-  Camera,
   Search,
-  BarChart3,
 } from "lucide-react";
 
 const SMOOTH_EASE = [0.215, 0.61, 0.355, 1];
 
 // ────────────────────────────────────────────────────────────────────────────
-// Icon mapping - bruger samme ikoner som før
+// Icon mapping - opdateret til kun de resterende pakker
 // ────────────────────────────────────────────────────────────────────────────
 const getPackageIcon = (index) => {
   const icons = [
     <Palette className="w-6 h-6" />,
     <Globe className="w-6 h-6" />,
-    <Camera className="w-6 h-6" />,
     <Search className="w-6 h-6" />,
-    <BarChart3 className="w-6 h-6" />,
     <Sparkles className="w-6 h-6" />,
   ];
   return icons[index] || <Sparkles className="w-6 h-6" />;
@@ -132,14 +128,9 @@ const ProcessStep = forwardRef(function ProcessStep(
         </div>
 
         <div className="flex-1 pt-2">
-          <div className="flex items-center gap-3 mb-2">
-            <h3 className="text-lg font-semibold text-[var(--color-foreground)] font-[var(--font-heading)]">
-              {step.title}
-            </h3>
-            <span className="bg-[var(--color-brand-blue-lighter-bg)] text-[var(--color-brand-blue)] px-3 py-1 rounded-full text-sm font-medium">
-              {step.duration}
-            </span>
-          </div>
+          <h3 className="text-lg font-semibold text-[var(--color-foreground)] font-[var(--font-heading)] mb-2">
+            {step.title}
+          </h3>
           <p className="text-[var(--color-foreground)]/70 font-[var(--font-body)]">
             {step.description}
           </p>
@@ -208,13 +199,11 @@ export default function CompleteDigitalSolution() {
   const missionInView = useInView(missionRef, { once: true, amount: 0.5 });
   const ctaInView = useInView(ctaRef, { once: true, amount: 0.8 });
 
-  // Hent package keys for at mappe over dem
+  // Hent package keys for at mappe over dem - fjernet mediaProduction og socialMediaSetup
   const packageKeys = [
     "logoAndBrand",
     "customWebsite",
-    "mediaProduction",
     "seoOptimization",
-    "socialMediaSetup",
     "supportMaintenance",
   ];
   const processSteps = t.raw("process.steps");
@@ -274,10 +263,6 @@ export default function CompleteDigitalSolution() {
 
           <div className="flex flex-wrap justify-center items-center gap-6 text-sm text-[var(--color-foreground)]/80">
             <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4 text-[var(--color-brand-blue)]" />
-              <span>{t("features.delivery")}</span>
-            </div>
-            <div className="flex items-center gap-2">
               <Trophy className="w-4 h-4 text-[var(--color-brand-blue)]" />
               <span>{t("features.allIncluded")}</span>
             </div>
@@ -299,7 +284,7 @@ export default function CompleteDigitalSolution() {
             {t("includes.title")}
           </motion.h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {packageKeys.map((packageKey, index) => (
               <PackageIncludeCard
                 key={packageKey}
@@ -398,7 +383,7 @@ export default function CompleteDigitalSolution() {
               {/* Fordele med ikoner */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                 {t.raw("cta.benefits").map((benefit, index) => {
-                  const icons = [Clock, Users, CheckCircle2];
+                  const icons = [Users, CheckCircle2, Zap];
                   const Icon = icons[index];
                   return (
                     <div

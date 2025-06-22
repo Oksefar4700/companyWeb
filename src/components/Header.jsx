@@ -1,23 +1,73 @@
-// src/components/Header.jsx - FINAL VERSION
+// src/components/Header.jsx - OPDATERET MED FDO LOGO
 "use client";
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, X, Phone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import LanguageSwitcher from "./ui/LanguageSwitcher";
+import Image from "next/image";
 
-const navLinks = [
-  { href: "#hero", label: "Hjem" },
-  { href: "#packages", label: "Løsninger" },
-  { href: "#cases", label: "Cases" },
-  { href: "#process", label: "Proces" },
-  { href: "#about-us", label: "Om os" },
-];
+// 🎯 FALLBACK TEKSTER (bruges hvis i18n ikke er tilgængelig)
+const fallbackTexts = {
+  da: {
+    nav: {
+      home: "Hjem",
+      solutions: "Løsninger",
+      cases: "Cases",
+      process: "Proces",
+      about: "Om os",
+    },
+    contact: "Kontakt",
+    contactUs: "Kontakt os",
+    openMenu: "Åbn menu",
+  },
+  en: {
+    nav: {
+      home: "Home",
+      solutions: "Solutions",
+      cases: "Cases",
+      process: "Process",
+      about: "About",
+    },
+    contact: "Contact",
+    contactUs: "Contact us",
+    openMenu: "Open menu",
+  },
+};
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
+  // 🎯 TRY TO USE i18n, FALL BACK TO DEFAULT
+  let t;
+  let currentLocale = "da"; // default
+
+  try {
+    const { useTranslations, useLocale } = require("next-intl");
+    t = useTranslations("header");
+    currentLocale = useLocale();
+  } catch (error) {
+    // Fallback hvis i18n ikke er tilgængelig
+    t = (key) => {
+      const keys = key.split(".");
+      let value = fallbackTexts[currentLocale];
+      for (const k of keys) {
+        value = value?.[k];
+      }
+      return value || key;
+    };
+  }
+
   const toggleMenu = () => setIsOpen(!isOpen);
+
+  // Navigation links med smart fallback
+  const navLinks = [
+    { href: "#hero", label: t("nav.home") },
+    { href: "#packages", label: t("nav.solutions") },
+    { href: "#cases", label: t("nav.cases") },
+    { href: "#process", label: t("nav.process") },
+    { href: "#about-us", label: t("nav.about") },
+  ];
 
   // Fast hvid baggrund, skygge og kant
   const headerDynamicClasses =
@@ -70,43 +120,22 @@ export default function Header() {
   return (
     <header className={headerDynamicClasses}>
       <div className="container mx-auto px-6 h-[var(--header-height)] flex justify-between items-center">
-        {/* Logo - NU MED SVG+TEKST */}
+        {/* Logo - NU MED FDO LOGO */}
         <Link
           href="/"
           className="flex items-center group transition-all duration-300 ease-in-out"
         >
-          {/* CW SVG Logo */}
-          <div className="mr-2 md:mr-3 relative">
-            <svg
-              width="38"
-              height="38"
-              viewBox="0 0 1000 1000"
-              xmlns="http://www.w3.org/2000/svg"
-              className="drop-shadow-sm transition-transform duration-300 group-hover:scale-105"
-            >
-              <path
-                d="M500 200C331.8 200 200 331.8 200 500C200 668.2 331.8 800 500 800"
-                stroke="#7eaedb"
-                strokeWidth="100"
-                fill="none"
-              />
-              <path
-                d="M480 330L600 740L700 450L800 740L910 330"
-                stroke="#7eaedb"
-                strokeWidth="100"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+          {/* FDO Logo */}
+          <div className="relative h-20 sm:h-24 w-auto">
+            <Image
+              src="/images/logo/logoFDO.png"
+              alt="FDO Development"
+              width={300}
+              height={100}
+              className="h-20 sm:h-24 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              priority
+            />
           </div>
-
-          {/* CompanyWeb tekst */}
-          <span
-            className={`text-2xl sm:text-3xl font-extrabold uppercase tracking-wider font-heading transition-colors duration-300 ease-in-out ${logoColorClass}`}
-          >
-            CompanyWeb
-          </span>
         </Link>
 
         {/* Desktop nav */}
@@ -122,24 +151,24 @@ export default function Header() {
             </Link>
           ))}
 
-          {/* Kontakt-knap */}
+          {/* Kontakt-knap med smart fallback */}
           <Link
             href="/kontakt"
             className={`px-6 py-3 rounded-lg text-base font-bold transition-all duration-200 ease-in-out shadow-md hover:shadow-lg transform ${kontaktBtnClasses} inline-flex items-center`}
           >
             <Phone size={16} className="mr-2" />
-            Kontakt
+            {t("contact")}
           </Link>
 
-          {/* Language Switcher - helt ude til højre EFTER kontakt */}
+          {/* Language Switcher - kun vis hvis tilgængelig */}
           <LanguageSwitcher />
         </nav>
 
-        {/* Mobile menu button */}
+        {/* Mobile menu button med smart fallback */}
         <div className="lg:hidden">
           <button
             onClick={toggleMenu}
-            aria-label="Åbn menu"
+            aria-label={t("openMenu")}
             className={`transition-colors duration-300 ${mobileIconColorClass}`}
           >
             {isOpen ? <X size={28} /> : <Menu size={28} />}
@@ -189,6 +218,7 @@ export default function Header() {
                 <LanguageSwitcher />
               </motion.div>
 
+              {/* Mobile kontakt knap med smart fallback */}
               <motion.div
                 variants={navLinkVariants}
                 custom={navLinks.length + 1}
@@ -203,7 +233,7 @@ export default function Header() {
                   className="w-full px-5 py-3 rounded-lg text-base font-semibold text-center bg-[var(--color-brand-blue)] text-white hover:bg-[var(--color-brand-blue-darker)] transition-all duration-300 ease-in-out shadow-sm hover:shadow-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-secondary-light)] focus-visible:ring-[var(--color-brand-blue)] inline-flex items-center justify-center"
                 >
                   <Phone size={18} className="mr-2" />
-                  Kontakt os
+                  {t("contactUs")}
                 </Link>
               </motion.div>
             </div>
