@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl"; // 🆕 i18n import
 import {
   Zap,
   Clock,
@@ -54,69 +55,37 @@ const staggerChildren = {
   },
 };
 
-// Mock data - replace with your actual data
-const stats = [
-  { value: "100+", label: "Tilfredse kunder" },
-  { value: "50+", label: "Projekter leveret" },
-  { value: "24/7", label: "Support tilgængelig" },
-];
-
-const features = [
-  {
-    id: "react",
-    icon: <Zap size={32} />,
-    title: "React & Next.js Ekspertise",
-    description:
-      "Vi bygger moderne, hurtige og skalerbare webapplikationer med de nyeste teknologier. Vores løsninger er optimeret for performance og SEO.",
-    highlights: [
-      { icon: <Rocket size={16} />, text: "Lynhurtig indlæsning" },
-      { icon: <Shield size={16} />, text: "Sikker og stabil" },
-      { icon: <PenTool size={16} />, text: "Moderne design" },
-      { icon: <TrendingUp size={16} />, text: "SEO optimeret" },
-    ],
-  },
-  {
-    id: "support",
-    icon: <Clock size={32} />,
-    title: "Pålidelig Support",
-    description:
-      "Vi er her når du har brug for os. Vores erfarne team sørger for at dit website altid kører optimalt med hurtig respons på alle henvendelser.",
-    responseTime: "< 2 timer",
-    testimonial: {
-      text: "Fantastisk service og super hurtig respons!",
-      author: "Maria Hansen, CEO",
-    },
-  },
-  {
-    id: "custom",
-    icon: <Code size={32} />,
-    title: "Skræddersyede Løsninger",
-    description:
-      "Hver virksomhed er unik, og det samme gælder vores løsninger. Vi skaber præcis det du har brug for - ikke mere, ikke mindre.",
-    guarantee: "100% tilfredshedsgaranti",
-  },
-];
-
 // Simplified Stats Component
-const StatsSection = ({ isVisible }) => (
-  <motion.div
-    className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-16"
-    variants={staggerChildren}
-    initial="hidden"
-    animate={isVisible ? "visible" : "hidden"}
-  >
-    {stats.map((stat, index) => (
-      <motion.div
-        key={index}
-        className="bg-white rounded-xl p-6 text-center shadow-sm border border-blue-100 hover:shadow-md transition-shadow"
-        variants={fadeInUp}
-      >
-        <h3 className="text-3xl font-bold text-blue-600 mb-2">{stat.value}</h3>
-        <p className="text-gray-600">{stat.label}</p>
-      </motion.div>
-    ))}
-  </motion.div>
-);
+const StatsSection = ({ isVisible, t }) => {
+  // 🆕 Stats data med i18n
+  const stats = [
+    { value: "100+", label: t("stats.satisfiedCustomers") },
+    { value: "50+", label: t("stats.projectsDelivered") },
+    { value: "24/7", label: t("stats.supportAvailable") },
+  ];
+
+  return (
+    <motion.div
+      className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-16"
+      variants={staggerChildren}
+      initial="hidden"
+      animate={isVisible ? "visible" : "hidden"}
+    >
+      {stats.map((stat, index) => (
+        <motion.div
+          key={index}
+          className="bg-white rounded-xl p-6 text-center shadow-sm border border-blue-100 hover:shadow-md transition-shadow"
+          variants={fadeInUp}
+        >
+          <h3 className="text-3xl font-bold text-blue-600 mb-2">
+            {stat.value}
+          </h3>
+          <p className="text-gray-600">{stat.label}</p>
+        </motion.div>
+      ))}
+    </motion.div>
+  );
+};
 
 // Simplified Feature Component
 const FeatureCard = ({ feature, isVisible, index }) => (
@@ -171,7 +140,7 @@ const FeatureCard = ({ feature, isVisible, index }) => (
                   {feature.responseTime}
                 </p>
                 <p className="text-sm text-gray-600">
-                  Gennemsnitlig responstid
+                  {feature.responseTimeLabel}
                 </p>
               </div>
             </div>
@@ -201,6 +170,8 @@ const FeatureCard = ({ feature, isVisible, index }) => (
 
 // Main Component
 export default function WhyChooseUsSection() {
+  const t = useTranslations("whyChooseUs"); // 🆕 i18n hook
+
   const sectionRef = useRef();
   const statsRef = useRef();
   const featuresRef = useRef();
@@ -213,6 +184,53 @@ export default function WhyChooseUsSection() {
   const videoInView = useIntersection(videoRef);
   const ctaInView = useIntersection(ctaRef);
 
+  // 🆕 Features data med i18n
+  const features = [
+    {
+      id: "react",
+      icon: <Zap size={32} />,
+      title: t("features.react.title"),
+      description: t("features.react.description"),
+      highlights: [
+        {
+          icon: <Rocket size={16} />,
+          text: t("features.react.highlights.fastLoading"),
+        },
+        {
+          icon: <Shield size={16} />,
+          text: t("features.react.highlights.secureStable"),
+        },
+        {
+          icon: <PenTool size={16} />,
+          text: t("features.react.highlights.modernDesign"),
+        },
+        {
+          icon: <TrendingUp size={16} />,
+          text: t("features.react.highlights.seoOptimized"),
+        },
+      ],
+    },
+    {
+      id: "support",
+      icon: <Clock size={32} />,
+      title: t("features.support.title"),
+      description: t("features.support.description"),
+      responseTime: t("features.support.responseTime"),
+      responseTimeLabel: t("features.support.responseTimeLabel"),
+      testimonial: {
+        text: t("features.support.testimonial.text"),
+        author: t("features.support.testimonial.author"),
+      },
+    },
+    {
+      id: "custom",
+      icon: <Code size={32} />,
+      title: t("features.custom.title"),
+      description: t("features.custom.description"),
+      guarantee: t("features.custom.guarantee"),
+    },
+  ];
+
   return (
     <section
       id="why-us"
@@ -220,7 +238,7 @@ export default function WhyChooseUsSection() {
       className="py-20 bg-gradient-to-b from-gray-50 to-white"
     >
       <div className="container mx-auto px-4 max-w-6xl">
-        {/* Header */}
+        {/* Header - 🆕 med i18n */}
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
@@ -228,20 +246,19 @@ export default function WhyChooseUsSection() {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Hvorfor vælge os
+            {t("title")}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Vi skaber ikke bare hjemmesider – vi bygger digitale oplevelser der
-            gør en forskel for din virksomhed og dine kunder.
+            {t("subtitle")}
           </p>
         </motion.div>
 
         {/* Stats */}
         <div ref={statsRef}>
-          <StatsSection isVisible={statsInView} />
+          <StatsSection isVisible={statsInView} t={t} />
         </div>
 
-        {/* Video Section */}
+        {/* Video Section - 🆕 med i18n */}
         <motion.div
           ref={videoRef}
           className="max-w-4xl mx-auto mb-16"
@@ -253,11 +270,10 @@ export default function WhyChooseUsSection() {
         >
           <div className="text-center mb-8">
             <h3 className="text-3xl font-bold text-gray-900 mb-4">
-              Mød teamet bag løsningerne
+              {t("video.title")}
             </h3>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Hør fra vores grundlæggere om hvad der driver os, og hvorfor vi er
-              passionerede omkring at skabe exceptionelle digitale oplevelser.
+              {t("video.description")}
             </p>
           </div>
 
@@ -269,7 +285,7 @@ export default function WhyChooseUsSection() {
               preload="metadata"
             >
               <source src="/videos/why_us_demo.mp4" type="video/mp4" />
-              Din browser understøtter ikke HTML5 video.
+              {t("video.notSupported")}
             </video>
             <div className="absolute top-4 right-4 bg-black/60 text-white px-2 py-1 rounded text-sm">
               2:15
@@ -277,8 +293,7 @@ export default function WhyChooseUsSection() {
           </div>
 
           <p className="text-center text-sm text-gray-500 mt-4">
-            💡 Et personligt indblik i vores tilgang til webudvikling og
-            kundeservice
+            {t("video.insight")}
           </p>
         </motion.div>
 
@@ -294,7 +309,7 @@ export default function WhyChooseUsSection() {
           ))}
         </div>
 
-        {/* CTA */}
+        {/* CTA - 🆕 med i18n */}
         <motion.div
           ref={ctaRef}
           className="text-center bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-12 text-white"
@@ -302,13 +317,12 @@ export default function WhyChooseUsSection() {
           animate={ctaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.6 }}
         >
-          <h3 className="text-3xl font-bold mb-4">Klar til at komme i gang?</h3>
+          <h3 className="text-3xl font-bold mb-4">{t("cta.title")}</h3>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Lad os tage en snak om hvordan vi kan hjælpe din virksomhed med den
-            perfekte digitale løsning.
+            {t("cta.description")}
           </p>
           <button className="inline-flex items-center bg-white text-blue-600 px-8 py-4 rounded-full font-semibold hover:bg-blue-50 transition-colors">
-            Kontakt os i dag
+            {t("cta.button")}
             <ArrowRight size={20} className="ml-2" />
           </button>
         </motion.div>

@@ -8,7 +8,7 @@ import { useTranslations } from "next-intl"; // 🆕 i18n import
 // 🚀 SMOOTH EASING CURVES (hardware-accelerated)
 const SMOOTH_EASE = [0.25, 0.1, 0.25, 1];
 
-// 🔥 MODULÄR KOMPONENT: OptimizedParallaxBackground med forwardRef
+// 🔥 MODULÆR KOMPONENT: OptimizedParallaxBackground med forwardRef
 const OptimizedParallaxBackground = forwardRef(
   function OptimizedParallaxBackground({ src, scrollYProgress }, ref) {
     const [imageLoaded, setImageLoaded] = useState(false);
@@ -75,7 +75,7 @@ const OptimizedParallaxBackground = forwardRef(
   }
 );
 
-// 🔥 MODULÄR KOMPONENT: ContentOverlay med forwardRef
+// 🔥 MODULÆR KOMPONENT: ContentOverlay med forwardRef
 const ContentOverlay = forwardRef(function ContentOverlay({}, ref) {
   return (
     <div
@@ -111,7 +111,7 @@ const ParallaxContent = forwardRef(function ParallaxContent(
         willChange: "opacity",
       }}
     >
-      {/* 🆕 Heading med i18n */}
+      {/* Heading - 🆕 med i18n */}
       <motion.h2
         className="text-4xl sm:text-5xl font-bold text-[var(--color-foreground)] drop-shadow-lg mb-4 font-[var(--font-heading)]"
         initial={{ opacity: 0, y: 20 }}
@@ -126,7 +126,7 @@ const ParallaxContent = forwardRef(function ParallaxContent(
         {t("title")}
       </motion.h2>
 
-      {/* 🆕 Description med i18n */}
+      {/* Description - 🆕 med i18n */}
       <motion.p
         className="text-lg sm:text-xl text-[var(--color-foreground)] drop-shadow-md mb-6 max-w-xl font-[var(--font-body)]"
         initial={{ opacity: 0, y: 20 }}
@@ -138,10 +138,10 @@ const ParallaxContent = forwardRef(function ParallaxContent(
         }}
         style={{ willChange: "transform, opacity" }} // 🔥 GPU HINT
       >
-        {t("description")}
+        {t("subtitle")}
       </motion.p>
 
-      {/* 🆕 CTA Button med i18n */}
+      {/* CTA Button - 🆕 med i18n */}
       <motion.a
         href="#contact"
         className="
@@ -181,13 +181,13 @@ const ParallaxContent = forwardRef(function ParallaxContent(
             "transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1), background-color 0.2s ease, box-shadow 0.2s ease",
         }}
       >
-        {t("contactUs")}
+        {t("buttonText")}
       </motion.a>
     </motion.div>
   );
 });
 
-// 🔥 HOVEDKOMPONENT
+// 🔥 HOVEDKOMPONENT med i18n
 export default function ParallaxSection({
   src = "/images/contact/contactImage.png",
   height = "70vh",

@@ -1,7 +1,7 @@
 {
   "hero": {
     "weAre": "VI ER",
-    "companyName": "CompanyWeb",
+    "companyName": "FDO - development",
     "subtitle": "Skræddersyede webløsninger – fra iøjnefaldende portfolioer til avancerede webshops og bookingsystemer.",
     "viewCases": "Se vores cases"
   },
@@ -151,6 +151,317 @@
         "Ingen skjulte omkostninger"
       ],
       "availableThisWeek": "Ledige konsultationer denne uge"
+    }
+  },
+  "seo": {
+    "title": "Hvorfor SEO betyder alt",
+    "subtitle": "Over 90% af alle online-oplevelser starter med en søgning – med en skarp SEO-strategi kan du lande øverst og hente kvalificerede leads året rundt.",
+    "ctaButton": "Få en gratis SEO-audit",
+    "stats": {
+      "localTraffic": {
+        "label": "126% mere trafik (lokal 3-pack)",
+        "detail": "Virksomheder i Google 3-pack får 126% mere trafik og 93% flere handlinger."
+      },
+      "organicClicks": {
+        "label": "65% klikker organisk",
+        "detail": "65% af brugerne klikker på et organisk søgeresultat i stedet for en annonce."
+      },
+      "positiveEffect": {
+        "label": "91% positiv SEO-effekt",
+        "detail": "91% af marketingfolk rapporterer, at SEO har haft en positiv effekt på deres business."
+      }
+    },
+    "services": {
+      "technicalAudit": {
+        "title": "Teknisk SEO-audit",
+        "description": "Vi gennemgår site-struktur, hastighed og mobilvenlighed, så Google nemt crawler og indekserer dit indhold."
+      },
+      "keywordResearch": {
+        "title": "Keyword-Research & Indhold",
+        "description": "Vi finder de søgeord, dine potentielle kunder bruger, og skaber værdifuldt indhold til hver fase i kunderejsen."
+      },
+      "localSeo": {
+        "title": "Lokalt SEO & Linkbuilding",
+        "description": "Vi optimerer din Google Business Profile, sikrer korrekt NAP (Navn, Adresse, Telefon) og opbygger lokale kvalitets-backlinks."
+      }
+    }
+  },
+  "logoGallery": {
+    "title": "Vores Logo Portfolio",
+    "subtitle": "Se nogle af de logoer vi har designet for vores kunder",
+    "description": "Vi skaber unikke logoer der reflekterer din virksomheds identitet og værdier. Her kan du se eksempler på forskellige stilarter og designs vi kan lave for dig.",
+    "viewMore": "Se flere",
+    "logoAlt": "Logo design eksempel {number}"
+  },
+  "compare": {
+    "title": "React vs. WordPress",
+    "subtitle": "Hos os får du ikke bare en standard WordPress-skabelon – du får en dynamisk React-løsning.",
+    "wordpress": {
+      "title": "WordPress-skabelon",
+      "features": {
+        "pluginChaos": "Plug-in-kaos: Mange tredjeparts-plugins",
+        "unpredictableUpdates": "Uforudsigelige opdateringer kan bryde din side",
+        "genericDesign": "Generisk design, der ligner alle andres",
+        "heavyPages": "Tungere sider med mange plugins",
+        "limitedFlexibility": "Begrænset fleksibilitet uden custom-code"
+      }
+    },
+    "react": {
+      "title": "React-baseret løsning",
+      "features": {
+        "ultraFast": "Ultralynhurtig frontend uden ballast",
+        "dynamicContent": "Dynamisk indhold – automatisk opdateret",
+        "creativeFreedom": "Fuld kreativ frihed med unikt design",
+        "easyUpdates": "Nemme opdateringer via kode-repository",
+        "personalSupport": "Personlig 24/7 support & sparring"
+      }
+    }
+  },
+  "aiIntegration": {
+    "title": "AI-Drevet Kundeservice",
+    "subtitle": "Integrér intelligente chatbots der arbejder 24/7 for at give dine kunder øjeblikkelig hjælp og forbedre deres oplevelse markant.",
+    "capabilitiesTitle": "Hvad kan din AI-assistent?",
+    "capabilities": {
+      "customerSupport": {
+        "title": "24/7 Kundesupport",
+        "description": "AI-chatbot besvarer kundeforespørgsler øjeblikkeligt, også udenfor åbningstid"
+      },
+      "orderTracking": {
+        "title": "Ordrestatus & Sporing",
+        "description": "Kunder kan spørge om ordrenummer, leveringsstatus og få øjeblikkelige opdateringer"
+      },
+      "booking": {
+        "title": "Booking & Tidsplanlægning",
+        "description": "Intelligent booking-assistent der hjælper med at finde ledige tider og bestille møder"
+      },
+      "leadQualification": {
+        "title": "Lead Kvalificering",
+        "description": "AI'en identificerer og kvalificerer potentielle kunder gennem samtaler"
+      }
+    },
+    "stats": {
+      "responseTime": {
+        "value": "95%",
+        "label": "Hurtigere responstid"
+      },
+      "availability": {
+        "value": "24/7",
+        "label": "Tilgængelighed"
+      }
+    },
+    "demo": {
+      "websiteUrl": "www.dinvirksomhed.dk",
+      "title": "Se AI Chatbot i Aktion",
+      "subtitle": "Demonstration af kundeservice og ordrestatus",
+      "assistantName": "AI Assistant",
+      "chatMessage": "\"Hej! Jeg kan hjælpe med at finde dit ordrenummer og svare på spørgsmål om levering 😊\"",
+      "videoNotSupported": "Din browser understøtter ikke HTML5 video."
+    },
+    "ctaButton": "Få AI integreret i din løsning"
+  },
+  "packages": {
+    "title": "Vælg din løsning",
+    "subtitle": "Vælg den pakke der passer bedst til dine behov",
+    "viewDetails": "Se flere detaljer →",
+    "orderNow": "Bestil nu",
+    "basic": {
+      "title": "Basis Pakke",
+      "description": "Perfekt til små virksomheder",
+      "price": "25.000 kr."
+    },
+    "premium": {
+      "title": "Premium Pakke",
+      "description": "For virksomheder der vil have det hele",
+      "price": "75.000 kr."
+    },
+    "enterprise": {
+      "title": "Enterprise Pakke",
+      "description": "Til store virksomheder med komplekse behov",
+      "price": "150.000 kr."
+    }
+  },
+  "packageDetail": {
+    "title": "Pakke Detaljer",
+    "includes": "Inkluderet",
+    "duration": "Varighed",
+    "support": "Support",
+    "orderPackage": "Bestil pakke",
+    "features": "Funktioner",
+    "deliverables": "Leverancer"
+  },
+  "parallax": {
+    "title": "Er du i tvivl om, hvilke pakker der passer til dig?",
+    "subtitle": "Kontakt os, og vi hjælper dig med at vælge den perfekte løsning.",
+    "buttonText": "Kontakt os"
+  },
+  "about": {
+    "title": "Om FDO - development",
+    "subtitle": "Vi er passionerede omkring at skabe digitale oplevelser der gør en forskel",
+    "description": "Som nyuddannede datamatikere bringer vi frisk energi og de nyeste teknologier til bordet, uden forældet viden eller dårlige vaner.",
+    "intro": {
+      "description": "Tre venner der mødtes på datamatiker uddannelsen i Næstved og opdagede at vi komplementerede hinanden perfekt med forskellige styrker. Hvad der startede som et venskab, har nu udviklet sig til FDO - development – hvor vi tager chancen ude i den store verden.",
+      "badge": "Vores historie",
+      "heading": {
+        "part1": "Fra venskab til",
+        "part2": "digitalt eventyr"
+      },
+      "points": {
+        "classmates": "Mødtes på datamatiker uddannelsen",
+        "vision": "Opdagede vi komplementerede hinanden perfekt",
+        "built": "Tog chancen sammen ude i den store verden"
+      },
+      "cards": {
+        "passion": {
+          "title": "Kode er vores kærlighed",
+          "text": "Det der begyndte som hobby blev til livslang passion"
+        },
+        "communication": {
+          "title": "Direkte kommunikation",
+          "text": "Tal direkte med os – ikke mellemled eller salgsteam"
+        }
+      }
+    },
+    "story": {
+      "meeting": {
+        "title": "Mødet på datamatiker uddannelsen",
+        "text": "Vi mødtes som studerende på datamatiker uddannelsen i Næstved, hvor vi hurtigt opdagede vores fælles passion for webudvikling og innovative løsninger."
+      },
+      "passion": {
+        "title": "Forskellige styrker, samme vision",
+        "text": "Vi fandt ud af at vi komplementerede hinanden perfekt med hver vores unikke styrker og specialer. Det der startede som et stærkt venskab, udviklede sig til en drøm om at skabe noget sammen."
+      },
+      "vision": {
+        "title": "Chancen ude i den store verden",
+        "text": "Efter uddannelsen besluttede vi tre venner at tage chancen sammen og starte FDO - development. Nu hjælper vi virksomheder med deres digitale tilstedeværelse."
+      }
+    },
+    "teamTitle": "Mød vores team",
+    "team": {
+      "frederik": {
+        "role": "Fullstack Udvikler"
+      },
+      "oliver": {
+        "role": "HR & Scrum Master"
+      },
+      "daniel": {
+        "role": "Fullstack Udvikler"
+      }
+    },
+    "video": {
+      "notSupported": "Din browser understøtter ikke video afspilning.",
+      "description": "Mød teamet bag FDO - development og hør om vores tilgang til webudvikling"
+    },
+    "missionTitle": "Vores mission",
+    "missionIntro": "Som nyuddannede datamatikere brænder vi for at hjælpe virksomheder med at vokse gennem moderne digitale løsninger. Vi kommer med frisk energi, de nyeste teknologier og ingen forældede metoder.",
+    "mission": {
+      "passion": {
+        "title": "Passion for kode",
+        "text": "Vi lever og ånder webudvikling. Vores team holder sig konstant opdateret med de nyeste teknologier og best practices for at levere cutting-edge løsninger.",
+        "bullets": {
+          "frontend": "Frontend & Backend ekspertise",
+          "modern": "Moderne teknologi stack",
+          "practices": "Best practices & trends"
+        }
+      },
+      "expertise": {
+        "title": "Teknisk ekspertise",
+        "text": "Med vores friske uddannelse inden for React, Next.js og moderne webudvikling, skaber vi hurtige, sikre og skalerbare løsninger der vokser med din virksomhed.",
+        "bullets": {
+          "react": "React & Next.js specialister",
+          "database": "Database & API design",
+          "scalable": "Skalerbare arkitekturer"
+        }
+      },
+      "innovation": {
+        "title": "Innovation & fremtid",
+        "text": "Vi elsker at eksperimentere med nye teknologier og push grænser for hvad der er muligt på web. Vores løsninger er altid et skridt foran konkurrencen.",
+        "bullets": {
+          "cutting": "Cutting-edge teknologier",
+          "custom": "Skræddersyede løsninger",
+          "innovation": "Innovation & eksperimenter"
+        }
+      }
+    }
+  },
+  "team": {
+    "title": "Mød vores team",
+    "subtitle": "De eksperter der står bag dine digitale løsninger",
+    "members": {
+      "ceo": {
+        "name": "Frederik Brøsen",
+        "title": "Fullstack Udvikler",
+        "description": "Ekspert i webudvikling og digital strategi"
+      }
+    }
+  },
+  "whyChooseUs": {
+    "title": "Hvorfor vælge os",
+    "subtitle": "Vi skaber ikke bare hjemmesider – vi bygger digitale oplevelser der gør en forskel for din virksomhed og dine kunder.",
+    "stats": {
+      "satisfiedCustomers": "Tilfredse kunder",
+      "projectsDelivered": "Projekter leveret",
+      "supportAvailable": "Support tilgængelig"
+    },
+    "video": {
+      "title": "Mød teamet bag løsningerne",
+      "description": "Hør fra vores grundlæggere om hvad der driver os, og hvorfor vi er passionerede omkring at skabe exceptionelle digitale oplevelser.",
+      "notSupported": "Din browser understøtter ikke HTML5 video.",
+      "insight": "💡 Et personligt indblik i vores tilgang til webudvikling og kundeservice"
+    },
+    "features": {
+      "react": {
+        "title": "React & Next.js Ekspertise",
+        "description": "Vi bygger moderne, hurtige og skalerbare webapplikationer med de nyeste teknologier. Vores løsninger er optimeret for performance og SEO.",
+        "highlights": {
+          "fastLoading": "Lynhurtig indlæsning",
+          "secureStable": "Sikker og stabil",
+          "modernDesign": "Moderne design",
+          "seoOptimized": "SEO optimeret"
+        }
+      },
+      "support": {
+        "title": "Pålidelig Support",
+        "description": "Vi er her når du har brug for os. Vores erfarne team sørger for at dit website altid kører optimalt med hurtig respons på alle henvendelser.",
+        "responseTime": "< 2 timer",
+        "responseTimeLabel": "Gennemsnitlig responstid",
+        "testimonial": {
+          "text": "Fantastisk service og super hurtig respons!",
+          "author": "Maria Hansen, CEO"
+        }
+      },
+      "custom": {
+        "title": "Skræddersyede Løsninger",
+        "description": "Hver virksomhed er unik, og det samme gælder vores løsninger. Vi skaber præcis det du har brug for - ikke mere, ikke mindre.",
+        "guarantee": "100% tilfredshedsgaranti"
+      }
+    },
+    "cta": {
+      "title": "Klar til at komme i gang?",
+      "description": "Lad os tage en snak om hvordan vi kan hjælpe din virksomhed med den perfekte digitale løsning.",
+      "button": "Kontakt os i dag"
+    }
+  },
+  "gdpr": {
+    "title": "GDPR & Sikkerhed",
+    "subtitle": "Vi sikrer at din hjemmeside overholder alle gældende regler og er fuldt sikker",
+    "certification": "GDPR Certificeret",
+    "features": {
+      "gdprCompliance": {
+        "title": "GDPR Overholdelse",
+        "description": "Fuld overholdelse af EU's databeskyttelsesforordning"
+      },
+      "sslSecurity": {
+        "title": "SSL Sikkerhed",
+        "description": "Sikker kryptering af alle data med SSL-certifikater"
+      },
+      "privacyPolicy": {
+        "title": "Privatlivspolitik",
+        "description": "Klare og transparente privatlivspolitikker"
+      },
+      "cookieConsent": {
+        "title": "Cookie Samtykke",
+        "description": "Lovpligtigt cookie samtykke system"
+      }
     }
   }
 }

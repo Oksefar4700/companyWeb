@@ -1,7 +1,7 @@
 {
   "hero": {
     "weAre": "WE ARE",
-    "companyName": "CompanyWeb",
+    "companyName": "FDO - development",
     "subtitle": "Custom web solutions – from eye-catching portfolios to advanced webshops and booking systems.",
     "viewCases": "View our cases"
   },
@@ -17,7 +17,6 @@
     "confirmTime": "Confirm time",
     "saving": "Saving..."
   },
-
   "completeSolution": {
     "sectionTitle": "HOW WE WORK",
     "title": "All-in-one digital solution",
@@ -148,6 +147,317 @@
         "No hidden costs"
       ],
       "availableThisWeek": "Available consultations this week"
+    }
+  },
+  "seo": {
+    "title": "Why SEO means everything",
+    "subtitle": "Over 90% of all online experiences start with a search – with a sharp SEO strategy you can land at the top and attract qualified leads year-round.",
+    "ctaButton": "Get a free SEO audit",
+    "stats": {
+      "localTraffic": {
+        "label": "126% more traffic (local 3-pack)",
+        "detail": "Businesses in Google's 3-pack get 126% more traffic and 93% more actions."
+      },
+      "organicClicks": {
+        "label": "65% click organic",
+        "detail": "65% of users click on an organic search result instead of an ad."
+      },
+      "positiveEffect": {
+        "label": "91% positive SEO effect",
+        "detail": "91% of marketers report that SEO has had a positive effect on their business."
+      }
+    },
+    "services": {
+      "technicalAudit": {
+        "title": "Technical SEO audit",
+        "description": "We review site structure, speed and mobile-friendliness so Google can easily crawl and index your content."
+      },
+      "keywordResearch": {
+        "title": "Keyword Research & Content",
+        "description": "We find the keywords your potential customers use and create valuable content for every stage of the customer journey."
+      },
+      "localSeo": {
+        "title": "Local SEO & Linkbuilding",
+        "description": "We optimize your Google Business Profile, ensure correct NAP (Name, Address, Phone) and build local quality backlinks."
+      }
+    }
+  },
+  "logoGallery": {
+    "title": "Our Logo Portfolio",
+    "subtitle": "See some of the logos we've designed for our clients",
+    "description": "We create unique logos that reflect your company's identity and values. Here you can see examples of different styles and designs we can create for you.",
+    "viewMore": "View more",
+    "logoAlt": "Logo design example {number}"
+  },
+  "compare": {
+    "title": "React vs. WordPress",
+    "subtitle": "With us, you don't just get a standard WordPress template – you get a dynamic React solution.",
+    "wordpress": {
+      "title": "WordPress template",
+      "features": {
+        "pluginChaos": "Plugin chaos: Many third-party plugins",
+        "unpredictableUpdates": "Unpredictable updates can break your site",
+        "genericDesign": "Generic design that looks like everyone else's",
+        "heavyPages": "Heavier pages with many plugins",
+        "limitedFlexibility": "Limited flexibility without custom code"
+      }
+    },
+    "react": {
+      "title": "React-based solution",
+      "features": {
+        "ultraFast": "Ultra-fast frontend without bloat",
+        "dynamicContent": "Dynamic content – automatically updated",
+        "creativeFreedom": "Full creative freedom with unique design",
+        "easyUpdates": "Easy updates via code repository",
+        "personalSupport": "Personal 24/7 support & consultation"
+      }
+    }
+  },
+  "aiIntegration": {
+    "title": "AI-Powered Customer Service",
+    "subtitle": "Integrate intelligent chatbots that work 24/7 to provide your customers with instant help and significantly improve their experience.",
+    "capabilitiesTitle": "What can your AI assistant do?",
+    "capabilities": {
+      "customerSupport": {
+        "title": "24/7 Customer Support",
+        "description": "AI chatbot answers customer inquiries instantly, even outside business hours"
+      },
+      "orderTracking": {
+        "title": "Order Status & Tracking",
+        "description": "Customers can ask about order numbers, delivery status and get instant updates"
+      },
+      "booking": {
+        "title": "Booking & Scheduling",
+        "description": "Intelligent booking assistant that helps find available times and book meetings"
+      },
+      "leadQualification": {
+        "title": "Lead Qualification",
+        "description": "AI identifies and qualifies potential customers through conversations"
+      }
+    },
+    "stats": {
+      "responseTime": {
+        "value": "95%",
+        "label": "Faster response time"
+      },
+      "availability": {
+        "value": "24/7",
+        "label": "Availability"
+      }
+    },
+    "demo": {
+      "websiteUrl": "www.yourcompany.com",
+      "title": "See AI Chatbot in Action",
+      "subtitle": "Demonstration of customer service and order status",
+      "assistantName": "AI Assistant",
+      "chatMessage": "\"Hi! I can help you find your order number and answer questions about delivery 😊\"",
+      "videoNotSupported": "Your browser does not support HTML5 video."
+    },
+    "ctaButton": "Get AI integrated into your solution"
+  },
+  "packages": {
+    "title": "Choose your solution",
+    "subtitle": "Choose the package that best fits your needs",
+    "viewDetails": "View more details →",
+    "orderNow": "Order now",
+    "basic": {
+      "title": "Basic Package",
+      "description": "Perfect for small businesses",
+      "price": "25,000 DKK"
+    },
+    "premium": {
+      "title": "Premium Package",
+      "description": "For businesses that want it all",
+      "price": "75,000 DKK"
+    },
+    "enterprise": {
+      "title": "Enterprise Package",
+      "description": "For large businesses with complex needs",
+      "price": "150,000 DKK"
+    }
+  },
+  "packageDetail": {
+    "title": "Package Details",
+    "includes": "Included",
+    "duration": "Duration",
+    "support": "Support",
+    "orderPackage": "Order package",
+    "features": "Features",
+    "deliverables": "Deliverables"
+  },
+  "parallax": {
+    "title": "Are you unsure about which packages are right for you?",
+    "subtitle": "Contact us, and we'll help you choose the perfect solution.",
+    "buttonText": "Contact us"
+  },
+  "about": {
+    "title": "About FDO - development",
+    "subtitle": "We're passionate about creating digital experiences that make a difference",
+    "description": "As newly graduated Computer Science students, we bring fresh energy and the latest technologies to the table, without outdated knowledge or bad habits.",
+    "intro": {
+      "description": "Three friends who met at the Computer Science program in Næstved and discovered we complemented each other perfectly with different strengths. What started as a friendship has now evolved into FDO - development – where we're taking our chance out in the big world.",
+      "badge": "Our story",
+      "heading": {
+        "part1": "From friendship to",
+        "part2": "digital adventure"
+      },
+      "points": {
+        "classmates": "Met at Computer Science program",
+        "vision": "Discovered we complemented each other perfectly",
+        "built": "Took the chance together out in the big world"
+      },
+      "cards": {
+        "passion": {
+          "title": "Code is our love",
+          "text": "What started as a hobby became a lifelong passion"
+        },
+        "communication": {
+          "title": "Direct communication",
+          "text": "Talk directly with us – no intermediaries or sales teams"
+        }
+      }
+    },
+    "story": {
+      "meeting": {
+        "title": "Meeting at Computer Science program",
+        "text": "We met as students at the Computer Science program in Næstved, where we quickly discovered our shared passion for web development and innovative solutions."
+      },
+      "passion": {
+        "title": "Different strengths, same vision",
+        "text": "We found out that we complemented each other perfectly with our unique strengths and specialties. What started as a strong friendship developed into a dream of creating something together."
+      },
+      "vision": {
+        "title": "Taking the chance in the big world",
+        "text": "After graduation, we three friends decided to take the chance together and start FDO - development. Now we help businesses with their digital presence."
+      }
+    },
+    "teamTitle": "Meet our team",
+    "team": {
+      "frederik": {
+        "role": "Fullstack Developer"
+      },
+      "oliver": {
+        "role": "HR & Scrum Master"
+      },
+      "daniel": {
+        "role": "Fullstack Developer"
+      }
+    },
+    "video": {
+      "notSupported": "Your browser does not support video playback.",
+      "description": "Meet the team behind FDO - development and hear about our approach to web development"
+    },
+    "missionTitle": "Our mission",
+    "missionIntro": "As newly graduated Computer Science students, we're passionate about helping businesses grow through modern digital solutions. We bring fresh energy, the latest technologies, and no outdated methods.",
+    "mission": {
+      "passion": {
+        "title": "Passion for code",
+        "text": "We live and breathe web development. Our team constantly stays updated with the latest technologies and best practices to deliver cutting-edge solutions.",
+        "bullets": {
+          "frontend": "Frontend & Backend expertise",
+          "modern": "Modern technology stack",
+          "practices": "Best practices & trends"
+        }
+      },
+      "expertise": {
+        "title": "Technical expertise",
+        "text": "With our fresh education in React, Next.js and modern web development, we create fast, secure and scalable solutions that grow with your business.",
+        "bullets": {
+          "react": "React & Next.js specialists",
+          "database": "Database & API design",
+          "scalable": "Scalable architectures"
+        }
+      },
+      "innovation": {
+        "title": "Innovation & future",
+        "text": "We love experimenting with new technologies and pushing the boundaries of what's possible on the web. Our solutions are always one step ahead of the competition.",
+        "bullets": {
+          "cutting": "Cutting-edge technologies",
+          "custom": "Tailored solutions",
+          "innovation": "Innovation & experiments"
+        }
+      }
+    }
+  },
+  "team": {
+    "title": "Meet our team",
+    "subtitle": "The experts behind your digital solutions",
+    "members": {
+      "ceo": {
+        "name": "Frederik Brøsen",
+        "title": "Fullstack Developer",
+        "description": "Expert in web development and digital strategy"
+      }
+    }
+  },
+  "whyChooseUs": {
+    "title": "Why choose us",
+    "subtitle": "We don't just create websites – we build digital experiences that make a difference for your business and your customers.",
+    "stats": {
+      "satisfiedCustomers": "Satisfied customers",
+      "projectsDelivered": "Projects delivered",
+      "supportAvailable": "Support available"
+    },
+    "video": {
+      "title": "Meet the team behind the solutions",
+      "description": "Hear from our founders about what drives us, and why we're passionate about creating exceptional digital experiences.",
+      "notSupported": "Your browser does not support HTML5 video.",
+      "insight": "💡 A personal insight into our approach to web development and customer service"
+    },
+    "features": {
+      "react": {
+        "title": "React & Next.js Expertise",
+        "description": "We build modern, fast and scalable web applications with the latest technologies. Our solutions are optimized for performance and SEO.",
+        "highlights": {
+          "fastLoading": "Lightning fast loading",
+          "secureStable": "Secure and stable",
+          "modernDesign": "Modern design",
+          "seoOptimized": "SEO optimized"
+        }
+      },
+      "support": {
+        "title": "Reliable Support",
+        "description": "We're here when you need us. Our experienced team ensures your website always runs optimally with quick response to all inquiries.",
+        "responseTime": "< 2 hours",
+        "responseTimeLabel": "Average response time",
+        "testimonial": {
+          "text": "Fantastic service and super fast response!",
+          "author": "Maria Hansen, CEO"
+        }
+      },
+      "custom": {
+        "title": "Tailored Solutions",
+        "description": "Every business is unique, and so are our solutions. We create exactly what you need - no more, no less.",
+        "guarantee": "100% satisfaction guarantee"
+      }
+    },
+    "cta": {
+      "title": "Ready to get started?",
+      "description": "Let's have a conversation about how we can help your business with the perfect digital solution.",
+      "button": "Contact us today"
+    }
+  },
+  "gdpr": {
+    "title": "GDPR & Security",
+    "subtitle": "We ensure your website complies with all applicable regulations and is fully secure",
+    "certification": "GDPR Certified",
+    "features": {
+      "gdprCompliance": {
+        "title": "GDPR Compliance",
+        "description": "Full compliance with EU General Data Protection Regulation"
+      },
+      "sslSecurity": {
+        "title": "SSL Security",
+        "description": "Secure encryption of all data with SSL certificates"
+      },
+      "privacyPolicy": {
+        "title": "Privacy Policy",
+        "description": "Clear and transparent privacy policies"
+      },
+      "cookieConsent": {
+        "title": "Cookie Consent",
+        "description": "Mandatory cookie consent system"
+      }
     }
   }
 }

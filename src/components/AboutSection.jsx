@@ -109,14 +109,13 @@ const TeamCard = forwardRef(function TeamCard(
 
 // MissionItem
 const MissionItem = forwardRef(function MissionItem(
-  { icon: Icon, title, text, index, cardInView },
+  { icon: Icon, title, text, index, cardInView, bulletPoints },
   ref
 ) {
   return (
     <motion.div
       ref={ref}
-      // "text-center" er fjernet herfra for at undgå at centrere alt indhold.
-      className="max-w-sm mx-auto h-full flex flex-col" // <-- ÆNDRING HER
+      className="max-w-sm mx-auto h-full flex flex-col"
       initial={{ opacity: 0, y: 40 }}
       animate={cardInView ? { opacity: 1, y: 0 } : {}}
       transition={{
@@ -133,7 +132,7 @@ const MissionItem = forwardRef(function MissionItem(
         backfaceVisibility: "hidden",
       }}
     >
-      {/* Icon med lyseblå gradient - forbliver centreret pga. "mx-auto" */}
+      {/* Icon med lyseblå gradient */}
       <div
         className="
           w-20 h-20
@@ -148,84 +147,26 @@ const MissionItem = forwardRef(function MissionItem(
         <Icon className="w-10 h-10 text-[var(--color-brand-blue)]" />
       </div>
 
-      {/* Titel - "text-center" er tilføjet her for at holde overskriften centreret. */}
+      {/* Titel */}
       <h3 className="text-2xl font-bold text-[var(--color-foreground)] font-[var(--font-heading)] mb-4 leading-tight text-center">
         {title}
       </h3>
 
-      {/* Hovedtekst - "text-left" er tilføjet for at justere teksten til venstre. */}
+      {/* Hovedtekst */}
       <p className="text-base text-[var(--color-foreground)]/70 font-[var(--font-body)] leading-relaxed mb-6 flex-grow text-left">
         {text}
       </p>
 
-      {/* Bullets - er allerede justeret til venstre */}
+      {/* Bullets */}
       <div className="space-y-3 text-left mt-auto">
-        {index === 0 && (
-          <>
-            <div className="flex items-center gap-3">
-              <CheckCircle2 className="w-5 h-5 text-[var(--color-brand-blue)] flex-shrink-0" />
-              <span className="text-sm text-[var(--color-foreground)] font-medium">
-                Frontend & Backend ekspertise
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <CheckCircle2 className="w-5 h-5 text-[var(--color-brand-blue)] flex-shrink-0" />
-              <span className="text-sm text-[var(--color-foreground)] font-medium">
-                Moderne teknologi stack
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <CheckCircle2 className="w-5 h-5 text-[var(--color-brand-blue)] flex-shrink-0" />
-              <span className="text-sm text-[var(--color-foreground)] font-medium">
-                Best practices & trends
-              </span>
-            </div>
-          </>
-        )}
-        {index === 1 && (
-          <>
-            <div className="flex items-center gap-3">
-              <CheckCircle2 className="w-5 h-5 text-[var(--color-brand-blue)] flex-shrink-0" />
-              <span className="text-sm text-[var(--color-foreground)] font-medium">
-                React & Next.js specialister
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <CheckCircle2 className="w-5 h-5 text-[var(--color-brand-blue)] flex-shrink-0" />
-              <span className="text-sm text-[var(--color-foreground)] font-medium">
-                Database & API design
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <CheckCircle2 className="w-5 h-5 text-[var(--color-brand-blue)] flex-shrink-0" />
-              <span className="text-sm text-[var(--color-foreground)] font-medium">
-                Skalerbare arkitekturer
-              </span>
-            </div>
-          </>
-        )}
-        {index === 2 && (
-          <>
-            <div className="flex items-center gap-3">
-              <CheckCircle2 className="w-5 h-5 text-[var(--color-brand-blue)] flex-shrink-0" />
-              <span className="text-sm text-[var(--color-foreground)] font-medium">
-                Cutting-edge teknologier
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <CheckCircle2 className="w-5 h-5 text-[var(--color-brand-blue)] flex-shrink-0" />
-              <span className="text-sm text-[var(--color-foreground)] font-medium">
-                Skræddersyede løsninger
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <CheckCircle2 className="w-5 h-5 text-[var(--color-brand-blue)] flex-shrink-0" />
-              <span className="text-sm text-[var(--color-foreground)] font-medium">
-                Innovation & eksperimenter
-              </span>
-            </div>
-          </>
-        )}
+        {bulletPoints.map((point, pointIndex) => (
+          <div key={pointIndex} className="flex items-center gap-3">
+            <CheckCircle2 className="w-5 h-5 text-[var(--color-brand-blue)] flex-shrink-0" />
+            <span className="text-sm text-[var(--color-foreground)] font-medium">
+              {point}
+            </span>
+          </div>
+        ))}
       </div>
     </motion.div>
   );
@@ -290,16 +231,31 @@ const AboutSection = () => {
       icon: Code,
       title: t("mission.passion.title"),
       text: t("mission.passion.text"),
+      bulletPoints: [
+        t("mission.passion.bullets.frontend"),
+        t("mission.passion.bullets.modern"),
+        t("mission.passion.bullets.practices"),
+      ],
     },
     {
       icon: Globe,
       title: t("mission.expertise.title"),
       text: t("mission.expertise.text"),
+      bulletPoints: [
+        t("mission.expertise.bullets.react"),
+        t("mission.expertise.bullets.database"),
+        t("mission.expertise.bullets.scalable"),
+      ],
     },
     {
       icon: Zap,
       title: t("mission.innovation.title"),
       text: t("mission.innovation.text"),
+      bulletPoints: [
+        t("mission.innovation.bullets.cutting"),
+        t("mission.innovation.bullets.custom"),
+        t("mission.innovation.bullets.innovation"),
+      ],
     },
   ];
 
@@ -353,38 +309,38 @@ const AboutSection = () => {
                   <Users className="w-6 h-6 text-white" />
                 </div>
                 <span className="bg-[var(--color-brand-blue)]/10 text-[var(--color-brand-blue)] px-4 py-2 rounded-full text-sm font-semibold">
-                  Vores historie
+                  {t("intro.badge")}
                 </span>
               </div>
 
               <h2 className="text-4xl font-bold text-[var(--color-foreground)] font-[var(--font-heading)] mb-6 leading-tight">
-                Fra uddannelse til{" "}
+                {t("intro.heading.part1")}{" "}
                 <span className="text-[var(--color-brand-blue)]">
-                  entreprenant eventyr
+                  {t("intro.heading.part2")}
                 </span>
               </h2>
 
               <p className="text-xl text-[var(--color-foreground)]/80 font-[var(--font-body)] leading-relaxed mb-6 text-left">
-                {t("intro")}
+                {t("intro.description")}
               </p>
 
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 bg-[var(--color-brand-blue)] rounded-full" />
                   <span className="text-lg text-[var(--color-foreground)]/80 font-[var(--font-body)]">
-                    Vi startede som studiekammerater
+                    {t("intro.points.classmates")}
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 bg-[var(--color-brand-blue)] rounded-full" />
                   <span className="text-lg text-[var(--color-foreground)]/80 font-[var(--font-body)]">
-                    Delt samme vision fra dag ét
+                    {t("intro.points.vision")}
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 bg-[var(--color-brand-blue)] rounded-full" />
                   <span className="text-lg text-[var(--color-foreground)]/80 font-[var(--font-body)]">
-                    Byggede CompanyWeb sammen
+                    {t("intro.points.built")}
                   </span>
                 </div>
               </div>
@@ -402,10 +358,10 @@ const AboutSection = () => {
                   <Heart className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-[var(--color-foreground)] font-[var(--font-heading)] mb-2">
-                  Kode er vores kærlighed
+                  {t("intro.cards.passion.title")}
                 </h3>
                 <p className="text-[var(--color-foreground)]/70 font-[var(--font-body)]">
-                  Det der begyndte som hobby blev til livslang passion
+                  {t("intro.cards.passion.text")}
                 </p>
               </motion.div>
 
@@ -419,10 +375,10 @@ const AboutSection = () => {
                   <Zap className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-[var(--color-foreground)] font-[var(--font-heading)] mb-2">
-                  Direkte kommunikation
+                  {t("intro.cards.communication.title")}
                 </h3>
                 <p className="text-[var(--color-foreground)]/70 font-[var(--font-body)]">
-                  Tal direkte med os – ikke mellemled eller salgsteam
+                  {t("intro.cards.communication.text")}
                 </p>
               </motion.div>
             </div>
@@ -491,7 +447,7 @@ const AboutSection = () => {
               >
                 <source src="/video/why_us_demo.mp4" type="video/mp4" />
                 <div className="flex items-center justify-center h-64 bg-[var(--color-primary-darkest)] text-white">
-                  <p>Din browser understøtter ikke video afspilning.</p>
+                  <p>{t("video.notSupported")}</p>
                 </div>
               </video>
             </div>
@@ -501,7 +457,7 @@ const AboutSection = () => {
               animate={videoInView ? { opacity: 1 } : {}}
               transition={{ duration: 0.6, delay: 0.5 }}
             >
-              Mød teamet bag CompanyWeb og hør om vores tilgang til webudvikling
+              {t("video.description")}
             </motion.p>
           </motion.div>
         </div>

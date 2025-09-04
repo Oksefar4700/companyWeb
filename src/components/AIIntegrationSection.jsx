@@ -128,7 +128,7 @@ const VideoDemo = forwardRef(function VideoDemo(
           </div>
           <div className="flex-1 mx-4">
             <div className="bg-[var(--color-background)] rounded px-3 py-1 text-sm text-[var(--color-foreground)]/60 text-center border border-[var(--color-primary)]/10">
-              {t("demo.browserUrl")}
+              {t("demo.websiteUrl")}
             </div>
           </div>
         </div>
@@ -159,7 +159,7 @@ const VideoDemo = forwardRef(function VideoDemo(
                     {t("demo.title")}
                   </div>
                   <div className="text-sm text-[var(--color-foreground)]/70 font-[var(--font-body)]">
-                    {t("demo.description")}
+                    {t("demo.subtitle")}
                   </div>
                 </div>
               </div>
@@ -201,7 +201,7 @@ const VideoDemo = forwardRef(function VideoDemo(
                 <Bot className="w-4 h-4 text-white" />
               </div>
               <div className="text-sm font-medium text-[var(--color-foreground)] font-[var(--font-body)]">
-                {t("demo.chatAssistant")}
+                {t("demo.assistantName")}
               </div>
               <div className="w-2 h-2 bg-green-400 rounded-full ml-auto"></div>
             </div>
@@ -215,7 +215,7 @@ const VideoDemo = forwardRef(function VideoDemo(
   );
 });
 
-// 🔥 HOVEDKOMPONENT
+// 🔥 HOVEDKOMPONENT med i18n
 export default function AIIntegrationSection() {
   const t = useTranslations("aiIntegration"); // 🆕 i18n hook
 
@@ -273,7 +273,7 @@ export default function AIIntegrationSection() {
       style={{ willChange: "opacity" }} // 🔥 GPU HINT
     >
       <div className="container mx-auto px-6 relative z-10">
-        {/* 🆕 Header med i18n */}
+        {/* Header - 🆕 med i18n */}
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: -20 }}
@@ -322,7 +322,7 @@ export default function AIIntegrationSection() {
               ))}
             </div>
 
-            {/* 🆕 Stats med i18n */}
+            {/* Stats - 🆕 med i18n */}
             <div ref={statsRef} className="mt-12 grid grid-cols-2 gap-6">
               <StatsCard
                 value={t("stats.responseTime.value")}
@@ -339,17 +339,17 @@ export default function AIIntegrationSection() {
             </div>
           </div>
 
-          {/* Højre side - Video Demo */}
+          {/* Højre side - Video Demo med i18n */}
           <VideoDemo
             ref={demoRef}
             isPlaying={isPlaying}
             onPlay={() => setIsPlaying(true)}
             demoInView={demoInView}
-            t={t} // 🆕 Pass t to VideoDemo
+            t={t}
           />
         </div>
 
-        {/* 🆕 CTA med i18n */}
+        {/* CTA - 🆕 med i18n */}
         <motion.div
           className="text-center mt-16"
           initial={{ opacity: 0, y: 20 }}
@@ -371,7 +371,7 @@ export default function AIIntegrationSection() {
             }}
           >
             <Zap className="w-5 h-5 mr-2" />
-            {t("cta")}
+            {t("ctaButton")}
           </motion.a>
         </motion.div>
       </div>

@@ -22,7 +22,7 @@ import {
 const SMOOTH_EASE = [0.215, 0.61, 0.355, 1];
 const BOUNCE_EASE = [0.6, 0.05, -0.01, 0.9];
 
-// 🔥 ComparisonCard
+// 🔥 ComparisonCard med i18n support
 const ComparisonCard = forwardRef(function ComparisonCard(
   {
     title,
@@ -131,7 +131,6 @@ const IntroSection = forwardRef(function IntroSection({ introInView, t }, ref) {
 
 export default function CompareWithWordPress() {
   const t = useTranslations("compare"); // 🆕 i18n hook
-
   const sectionRef = useRef(null);
   const introRef = useRef(null);
   const gridRef = useRef(null);
@@ -145,27 +144,27 @@ export default function CompareWithWordPress() {
     {
       icon: FaPlug,
       iconColor: "text-[var(--color-foreground)]/60",
-      text: t("wordpress.features.plugins"),
+      text: t("wordpress.features.pluginChaos"),
     },
     {
       icon: FiAlertTriangle,
       iconColor: "text-[var(--color-foreground)]/60",
-      text: t("wordpress.features.updates"),
+      text: t("wordpress.features.unpredictableUpdates"),
     },
     {
       icon: FiBox,
       iconColor: "text-[var(--color-foreground)]/60",
-      text: t("wordpress.features.generic"),
+      text: t("wordpress.features.genericDesign"),
     },
     {
       icon: FiServer,
       iconColor: "text-[var(--color-foreground)]/60",
-      text: t("wordpress.features.heavy"),
+      text: t("wordpress.features.heavyPages"),
     },
     {
       icon: FiLock,
       iconColor: "text-[var(--color-foreground)]/60",
-      text: t("wordpress.features.limited"),
+      text: t("wordpress.features.limitedFlexibility"),
     },
   ];
 
@@ -174,27 +173,27 @@ export default function CompareWithWordPress() {
     {
       icon: FiZap,
       iconColor: "text-[var(--color-brand-blue)]",
-      text: t("react.features.fast"),
+      text: t("react.features.ultraFast"),
     },
     {
       icon: FiRefreshCcw,
       iconColor: "text-[var(--color-brand-blue)]",
-      text: t("react.features.dynamic"),
+      text: t("react.features.dynamicContent"),
     },
     {
       icon: FiFeather,
       iconColor: "text-[var(--color-brand-blue)]",
-      text: t("react.features.creative"),
+      text: t("react.features.creativeFreedom"),
     },
     {
       icon: FiCode,
       iconColor: "text-[var(--color-brand-blue)]",
-      text: t("react.features.updates"),
+      text: t("react.features.easyUpdates"),
     },
     {
       icon: FiUsers,
       iconColor: "text-[var(--color-brand-blue)]",
-      text: t("react.features.support"),
+      text: t("react.features.personalSupport"),
     },
   ];
 
@@ -214,14 +213,14 @@ export default function CompareWithWordPress() {
       style={{ willChange: "opacity" }}
     >
       <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
-        {/* 🆕 Titel med i18n */}
+        {/* Titel - 🆕 med i18n */}
         <AnimatedHeading
           title={t("title")}
           direction="right"
           className="text-[var(--color-foreground)]"
         />
 
-        {/* 🆕 Intro med i18n */}
+        {/* Intro - 🆕 med i18n */}
         <IntroSection ref={introRef} introInView={introInView} t={t} />
 
         {/* Sammenligningskort */}

@@ -60,6 +60,7 @@ export default function HomePage() {
     <QueryClientProvider client={queryClient}>
       <main>
         <Hero onBooking={handleBooking} />
+        <AboutSection />
         <CompleteDigitalSolution />
         <SEOOverview />
         <LogoGallery />
@@ -68,8 +69,6 @@ export default function HomePage() {
         <Packages onOrder={handleOrder} />
         <ParallaxSection src="/images/contact/contactImage.png" />
         <CasesList />
-        <AboutSection />
-        <TeamSection />
         <GDPRSection />
         <ContactSection
           selectedPkg={selectedPkg}
