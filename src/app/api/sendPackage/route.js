@@ -1,4 +1,4 @@
-// src/app/api/sendPackage/route.js
+/* src/app/api/sendPackage/route.js
 
 import nodemailer from "nodemailer";
 
@@ -30,3 +30,5 @@ export async function POST(request) {
     });
   }
 }
+
+*/
